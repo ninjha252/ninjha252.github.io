@@ -3789,3 +3789,30 @@ input, select, textarea {
 			}
 
 		}
+
+
+/* icons */
+
+/* Custom styles for colored social media icons in the footer */
+
+.footer .icons li a {
+    color: #636363; /* Default color */
+    transition: color 0.3s ease;
+}
+
+/* Instagram */
+.footer .icons li a.instagram:hover {
+    color: #E1306C; /* Instagram color on hover */
+}
+
+/* LinkedIn */
+.footer .icons li a.linkedin:hover {
+    color: #0077b5; /* LinkedIn color on hover */
+}
+
+/* GitHub */
+.footer .icons li a.github:hover {
+    color: #171515; /* GitHub color on hover */
+}
+
+
