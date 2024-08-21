@@ -3109,16 +3109,13 @@ input, select, textarea {
 			}
 
 			#header.alt .logo {
-				-moz-transition: opacity 1.25s ease, -moz-transform 0.5s ease;
-				-webkit-transition: opacity 1.25s ease, -webkit-transform 0.5s ease;
-				-ms-transition: opacity 1.25s ease, -ms-transform 0.5s ease;
-				transition: opacity 1.25s ease, transform 0.5s ease;
-				-moz-transition-delay: 0s;
-				-webkit-transition-delay: 0s;
-				-ms-transition-delay: 0s;
-				transition-delay: 0s;
-				display: block;
-				margin: 0 0 1.5em 0;
+				    width: 100px; /* Adjust the size as needed */
+				    height: 100px; /* Ensure the height matches the width for a perfect circle */
+				    border-radius: 50%; /* This makes the image a circle */
+				    object-fit: cover; /* This ensures the image fits well within the circle */
+				    border: 2px solid #ffffff; /* Optional: Add a border around the circle */
+				    display: block;
+				    margin: 0 auto;
 			}
 
 				#header.alt .logo img {
