@@ -3113,7 +3113,7 @@ input, select, textarea {
 				    height: 100px; /* Ensure the height matches the width for a perfect circle */
 				    border-radius: 50%; /* This makes the image a circle */
 				    object-fit: cover; /* This ensures the image fits well within the circle */
-				    border: 2px solid #ffffff; /* Optional: Add a border around the circle */
+				    /* Optional: Add a border around the circle */
 				    display: block;
 				    margin: 0 auto;
 			}
