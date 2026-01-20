@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitin Jha | Quantum Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a1a;
+            color: #e0e0ff;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            animation: gradient-shift 3s ease infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            color: #00ffff;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .wave-visualizer {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            margin-top: 20px;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: linear-gradient(to top, #00ffff, #ff00ff);
+            border-radius: 2px;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        .wave-bar:nth-child(1) { animation-delay: 0s; }
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+        .wave-bar:nth-child(6) { animation-delay: 0.5s; }
+        .wave-bar:nth-child(7) { animation-delay: 0.6s; }
+        .wave-bar:nth-child(8) { animation-delay: 0.5s; }
+        .wave-bar:nth-child(9) { animation-delay: 0.4s; }
+        .wave-bar:nth-child(10) { animation-delay: 0.3s; }
+
+        @keyframes wave {
+            0%, 100% { height: 10px; }
+            50% { height: 50px; }
+        }
+
+        .circuit-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 12px 24px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .control-btn.active {
+            background: rgba(255, 0, 255, 0.3);
+            border-color: #ff00ff;
+            color: #ff00ff;
+        }
+
+        .circuit-container {
+            position: relative;
+            padding: 80px 100px;
+            margin: 40px 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .qubit-line {
+            position: relative;
+            height: 100px;
+            margin: 20px 0;
+        }
+
+        .line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #00ffff;
+            transform: translateY(-50%);
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+
+        .qubit-label {
+            position: absolute;
+            left: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #00ffff;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .qubit-label:hover {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        .measurement {
+            position: absolute;
+            right: -70px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 70px;
+            border: 3px solid #00ffff;
+            border-radius: 8px;
+            background: rgba(0, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .measurement:hover {
+            background: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .measurement::before {
+            content: "⌒";
+            font-size: 2em;
+            color: #00ffff;
+        }
+
+        .measurement-result {
+            position: absolute;
+            right: -120px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #00ffff;
+            font-size: 1.2em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .measurement-result.show {
+            opacity: 1;
+        }
+
+        .gate {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 70px;
+            height: 70px;
+            border: 3px solid #00ffff;
+            background: rgba(0, 20, 40, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            z-index: 10;
+        }
+
+        .gate:hover {
+            background: rgba(0, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.15);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.8);
+        }
+
+        .gate.active {
+            background: rgba(255, 0, 255, 0.4);
+            border-color: #ff00ff;
+            box-shadow: 0 0 40px rgba(255, 0, 255, 0.8);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 0, 255, 0.8); }
+            50% { box-shadow: 0 0 60px rgba(255, 0, 255, 1); }
+        }
+
+        .gate-h-0 { left: 8%; }
+        .gate-h-1 { left: 8%; }
+        .gate-h-2 { left: 8%; }
+        .gate-cx-02 { left: 26%; }
+        .gate-cx-12 { left: 44%; }
+        .gate-rz-0 { left: 62%; border-color: #ffaa00; color: #ffaa00; }
+        .gate-ry-1 { left: 62%; border-color: #ff0099; color: #ff0099; }
+        .gate-rx-2 { left: 62%; border-color: #00ff99; color: #00ff99; }
+        .gate-cx-01 { left: 80%; }
+
+        .cx-control {
+            width: 15px;
+            height: 15px;
+            background: #00ffff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+        }
+
+        .cx-target {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #00ffff;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .cx-target::before,
+        .cx-target::after {
+            content: '';
+            position: absolute;
+            background: #00ffff;
+        }
+
+        .cx-target::before {
+            width: 30px;
+            height: 3px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cx-target::after {
+            width: 3px;
+            height: 30px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cx-line-02, .cx-line-12, .cx-line-01 {
+            position: absolute;
+            width: 3px;
+            background: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+
+        .cx-line-02 {
+            left: calc(26% + 35px);
+            top: 50%;
+            height: 220px;
+        }
+
+        .cx-line-12 {
+            left: calc(44% + 35px);
+            top: 50%;
+            height: 120px;
+        }
+
+        .cx-line-01 {
+            left: calc(80% + 35px);
+            top: 50%;
+            height: 120px;
+            transform: translateY(-100%);
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #00ffff;
+            border-radius: 50%;
+            opacity: 0;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        @keyframes flow {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .content-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 40px;
+            margin-top: 60px;
+            backdrop-filter: blur(10px);
+            display: none;
+            animation: fadeIn 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .content-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-panel h2 {
+            color: #00ffff;
+            margin-bottom: 20px;
+            font-size: 2em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-panel h3 {
+            color: #ff00ff;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-panel p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #d0d0ff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-panel ul {
+            list-style: none;
+            padding-left: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-panel li {
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .content-panel li:before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: #ff00ff;
+        }
+
+        .content-panel a {
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .content-panel a:hover {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            padding: 10px 20px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .social-link:hover {
+            background: rgba(0, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95em;
+        }
+
+        .legend-box {
+            width: 35px;
+            height: 35px;
+            border: 2px solid;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .circuit-container {
+                padding: 60px 20px;
+                overflow-x: auto;
+            }
+            
+            .qubit-label {
+                left: -50px;
+                font-size: 1em;
+            }
+            
+            .measurement {
+                right: -50px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .gate {
+                width: 60px;
+                height: 60px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>⟨Ψ| Nitin Jha |Ψ⟩</h1>
+            <p class="subtitle">PhD Student | Quantum Networks & Communications Researcher</p>
+            <p>Click on any quantum gate to explore different sections</p>
+            <div class="wave-visualizer">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+            </div>
+        </div>
+
+        <div class="circuit-controls">
+            <button class="control-btn" onclick="runCircuit()">▶ Run Circuit</button>
+            <button class="control-btn" onclick="resetCircuit()">⟲ Reset</button>
+            <button class="control-btn" onclick="showProbabilities()">📊 Show Probabilities</button>
+        </div>
+
+        <div class="circuit-container" id="circuit">
+            <div class="qubit-line" data-qubit="0">
+                <div class="qubit-label" title="Click to see qubit state">|q₀⟩</div>
+                <div class="line"></div>
+                <div class="gate gate-h-0" data-section="intro" title="Hadamard Gate - Introduction">H</div>
+                <div class="gate gate-cx-02" data-section="research" title="CNOT Gate - Research">
+                    <div class="cx-control"></div>
+                </div>
+                <div class="gate gate-rz-0" data-section="skills" title="Z-Rotation - Skills">Rz</div>
+                <div class="gate gate-cx-01" data-section="contact" title="CNOT Gate - Contact">
+                    <div class="cx-control"></div>
+                </div>
+                <div class="measurement" onclick="measureQubit(0)"></div>
+                <div class="measurement-result" id="measure-0"></div>
+            </div>
+
+            <div class="qubit-line" data-qubit="1">
+                <div class="qubit-label" title="Click to see qubit state">|q₁⟩</div>
+                <div class="line"></div>
+                <div class="gate gate-h-1" data-section="about" title="Hadamard Gate - About">H</div>
+                <div class="gate gate-cx-12" data-section="publications" title="CNOT Gate - Publications">
+                    <div class="cx-control"></div>
+                </div>
+                <div class="gate gate-ry-1" data-section="experience" title="Y-Rotation - Experience">Ry</div>
+                <div class="gate gate-cx-01" data-section="contact" title="CNOT Gate - Contact">
+                    <div class="cx-target"></div>
+                </div>
+                <div class="measurement" onclick="measureQubit(1)"></div>
+                <div class="measurement-result" id="measure-1"></div>
+            </div>
+
+            <div class="qubit-line" data-qubit="2">
+                <div class="qubit-label" title="Click to see qubit state">|q₂⟩</div>
+                <div class="line"></div>
+                <div class="gate gate-h-2" data-section="home" title="Hadamard Gate - Home">H</div>
+                <div class="gate gate-cx-02" data-section="research" title="CNOT Gate - Research">
+                    <div class="cx-target"></div>
+                </div>
+                <div class="gate gate-cx-12" data-section="publications" title="CNOT Gate - Publications">
+                    <div class="cx-target"></div>
+                </div>
+                <div class="gate gate-rx-2" data-section="education" title="X-Rotation - Education">Rx</div>
+                <div class="measurement" onclick="measureQubit(2)"></div>
+                <div class="measurement-result" id="measure-2"></div>
+            </div>
+
+            <div class="cx-line-02"></div>
+            <div class="cx-line-12"></div>
+            <div class="cx-line-01"></div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box" style="border-color: #00ffff; background: rgba(0,255,255,0.1); color: #00ffff;">H</div>
+                <span>Hadamard - Home, About & Introduction</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="border-color: #00ffff; background: rgba(0,255,255,0.1); color: #00ffff;">CX</div>
+                <span>CNOT - Research, Publications & Contact</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="border-color: #ffaa00; background: rgba(255,170,0,0.1); color: #ffaa00;">Rz</div>
+                <span>Z-Rotation - Skills</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="border-color: #ff0099; background: rgba(255,0,153,0.1); color: #ff0099;">Ry</div>
+                <span>Y-Rotation - Experience</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="border-color: #00ff99; background: rgba(0,255,153,0.1); color: #00ff99;">Rx</div>
+                <span>X-Rotation - Education</span>
+            </div>
+        </div>
+
+        <!-- Content Panels -->
+        <div id="home" class="content-panel active">
+            <h2>🏠 Welcome - H Gate (q₂)</h2>
+            <p>Hello! I'm Nitin Jha, a PhD student at Kennesaw State University in the Department of Computer Science. Welcome to my quantum-inspired portfolio!</p>
+            <p>Like the Hadamard gate that creates superposition, my research explores the intersection of quantum mechanics and computer science, creating new possibilities in quantum networks and secure communications.</p>
+            <p>Navigate through the quantum circuit above to explore my research, publications, and professional journey. Each gate represents a different aspect of my work in quantum computing.</p>
+        </div>
+
+        <div id="intro" class="content-panel">
+            <h2>🌟 Introduction - H Gate (q₀)</h2>
+            <p>My research interests lie at the cutting edge of quantum technology, focusing on:</p>
+            <ul>
+                <li><strong>Quantum Networks</strong> - Building the infrastructure for quantum internet</li>
+                <li><strong>Quantum Communications</strong> - Enabling secure information transfer through quantum channels</li>
+                <li><strong>Quantum Secure Direct Communication Protocols</strong> - Developing novel approaches to quantum-secured messaging</li>
+            </ul>
+            <p>Just as the Hadamard gate puts qubits into superposition, my work explores multiple approaches to solving the challenges of quantum networking and communication.</p>
+        </div>
+
+        <div id="about" class="content-panel">
+            <h2>👤 About Me - H Gate (q₁)</h2>
+            <p>I'm currently pursuing my PhD in Computer Science at Kennesaw State University in Georgia, USA, where I work as a Graduate Research Assistant focusing on quantum network and communication protocols.</p>
+            <p>My journey in physics and quantum computing began at Ashoka University in India, where I earned my BSc (Hons) in Physics with Cum Laude distinction. This strong foundation in physics, combined with my computer science expertise, allows me to bridge theory and practical implementation in quantum systems.</p>
+            <h3>Research Philosophy</h3>
+            <p>I believe in the transformative potential of quantum technologies to revolutionize secure communications and networking. My approach combines rigorous theoretical understanding with practical protocol development, always keeping real-world implementation challenges in mind.</p>
+        </div>
+
+        <div id="research" class="content-panel">
+            <h2>🔬 Research - CNOT Gate (q₀→q₂)</h2>
+            <p>The CNOT gate creates entanglement between qubits - a fundamental resource in quantum computing. Similarly, my research creates connections between theoretical quantum mechanics and practical networking protocols.</p>
+            
+            <h3>Current Research Focus</h3>
+            <ul>
+                <li><strong>Quantum Network Protocols</strong> - Developing efficient protocols for quantum information distribution across networks</li>
+                <li><strong>Noise and Topology Effects</strong> - Analyzing how different network structures and environmental noise affect multiphoton quantum protocols</li>
+                <li><strong>Quantum-Classical Hybrid Networks</strong> - Bridging classical and quantum communication systems for practical deployment</li>
+                <li><strong>Machine Learning for Quantum Protocols</strong> - Applying ML techniques to optimize quantum communication protocols</li>
+                <li><strong>Quantum Security</strong> - Investigating attacks and developing security measures for quantum networks</li>
+            </ul>
+
+            <h3>Research Experience</h3>
+            <ul>
+                <li><strong>Graduate Research Assistant</strong> - Kennesaw State University (August 2023 - Present)<br>
+                    Working on quantum network and communication protocols, including quantum anonymous notification and error correction schemes</li>
+                <li><strong>Research Assistant</strong> - Ashoka University (June 2022 - August 2022)<br>
+                    Worked on permalloy simulations using MuMax3 for spintronics applications</li>
+            </ul>
+        </div>
+
+        <div id="publications" class="content-panel">
+            <h2>📚 Publications - CNOT Gate (q₁→q₂)</h2>
+            <p>Like the CNOT gate that correlates qubit states, my publications connect theoretical quantum concepts with practical implementations.</p>
+
+            <h3>Journal Publications</h3>
+            <ul>
+                <li><strong>Scientific Reports</strong> (2024)<br>
+                    "Joint Encryption and Error Correction for Secure Quantum Communication"<br>
+                    DOI: <a href="https://doi.org/10.1038/s41598-024-75212-8" target="_blank">10.1038/s41598-024-75212-8</a></li>
+                
+                <li><strong>Infocommunications Journal</strong> (2025)<br>
+                    "Multi-photon QKD for Practical Quantum Networks"<br>
+                    DOI: <a href="https://doi.org/10.36244/ICJ.2025.2.9" target="_blank">10.36244/ICJ.2025.2.9</a></li>
+                
+                <li><strong>In Review - Cryptologia</strong><br>
+                    "A Review of Attacks and Security of Quantum Networks"</li>
+                
+                <li><strong>In Review - Frontiers in Quantum Science and Technology</strong><br>
+                    "An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks"</li>
+                
+                <li><strong>In Review - IEEE Potentials</strong><br>
+                    "Towards a Global Quantum Internet: A Review of Challenges Facing Aerial Quantum Networks"</li>
+            </ul>
+
+            <h3>Conference Presentations</h3>
+            <ul>
+                <li><strong>SPIE Photonics West 2024</strong><br>
+                    "Effect of Noise and Topologies on Multiphoton Quantum Protocols"</li>
+                
+                <li><strong>SPIE Photonics West 2025</strong><br>
+                    "Towards a Quantum Classical Augmented Networks"</li>
+                
+                <li><strong>IEEE QCE 2024</strong><br>
+                    Poster: "A ML based approach to quantum augmented HTTP protocol"</li>
+            </ul>
+
+            <p style="margin-top: 20px;">
+                <a href="https://scholar.google.com/citations?user=u0OLK6cAAAAJ&hl=en" target="_blank" class="social-link">📖 View Full Publication List on Google Scholar</a>
+            </p>
+        </div>
+
+        <div id="education" class="content-panel">
+            <h2>🎓 Education - Rx Gate</h2>
+            <p>The Rx gate represents rotation in quantum state space. My educational journey has continuously rotated my perspective, adding new dimensions to my understanding.</p>
+
+            <h3>Academic Background</h3>
+            <ul>
+                <li><strong>PhD in Computer Science</strong> (2023 - Present)<br>
+                    Kennesaw State University, Marietta, GA, USA<br
