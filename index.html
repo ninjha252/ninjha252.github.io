@@ -363,12 +363,13 @@
         }
 
         .measurement-result {
-            min-width: 60px;
+            min-width: 40px;
             text-align: center;
             color: #ff00ff;
             font-size: 1.3em;
             font-weight: bold;
-            margin-left: 10px;
+            margin-left: 15px;
+            position: relative;
         }
 
         .content-panel {
@@ -601,10 +602,11 @@
                         </div>
                     </div>
                     <!-- Measurement -->
+                    <!-- NEW CODE -->
                     <div class="gate-wrapper" style="left: 90%;">
                         <div class="measurement" onclick="measureQubit(0)"></div>
+                        <div class="measurement-result" id="measure-0"></div>
                     </div>
-                    <div class="measurement-result" id="measure-0" style="position: absolute; right: -80px; top: 50%; transform: translateY(-50%);"></div>
                 </div>
             </div>
 
@@ -633,10 +635,11 @@
                         </div>
                     </div>
                     <!-- Measurement -->
+                    <!-- NEW CODE -->
                     <div class="gate-wrapper" style="left: 90%;">
                         <div class="measurement" onclick="measureQubit(1)"></div>
+                        <div class="measurement-result" id="measure-1"></div>
                     </div>
-                    <div class="measurement-result" id="measure-1" style="position: absolute; right: -80px; top: 50%; transform: translateY(-50%);"></div>
                 </div>
             </div>
 
@@ -665,10 +668,11 @@
                         <div class="gate gate-rx-2" data-section="education" title="X-Rotation - Education">Rx</div>
                     </div>
                     <!-- Measurement -->
+                    <!-- NEW CODE -->
                     <div class="gate-wrapper" style="left: 90%;">
                         <div class="measurement" onclick="measureQubit(2)"></div>
+                        <div class="measurement-result" id="measure-2"></div>
                     </div>
-                    <div class="measurement-result" id="measure-2" style="position: absolute; right: -80px; top: 50%; transform: translateY(-50%);"></div>
                 </div>
             </div>
 
