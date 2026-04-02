@@ -85,6 +85,7 @@
             transform: translateX(-50%);
             background: linear-gradient(to bottom, #00ffff44, #00ffff, #ff00ff, #ff00ff44);
             border-radius: 2px;
+            z-index: 0;
         }
 
         /* ── Year marker ── */
@@ -152,10 +153,11 @@
             padding: 14px 16px;
             border-radius: 10px;
             border: 2px solid rgba(0,255,255,0.4);
-            background: rgba(0,255,255,0.05);
+            background: #0e0e22;
             cursor: pointer;
             transition: all .3s ease;
             position: relative;
+            z-index: 2;
         }
         .node:hover {
             border-color: #00ffff;
