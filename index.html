@@ -730,7 +730,7 @@
                             <div class="gate gate-h-0" data-section="intro" title="Hadamard Gate - Introduction">H</div>
                         </div>
                         <div class="gate-wrapper cx-02-control" style="left: 25%;" id="cx-02-q0">
-                            <div class="gate-cx-control" data-section="research" title="CNOT Gate - Research">
+                            <div class="gate gate-cx-control" data-section="research" title="CNOT Gate - Research">
                                 <div class="cx-control-dot"></div>
                             </div>
                         </div>
@@ -738,7 +738,7 @@
                             <div class="gate gate-rz-0" data-section="skills" title="Z-Rotation - Skills">Rz</div>
                         </div>
                         <div class="gate-wrapper cx-01-control" style="left: 72%;" id="cx-01-q0">
-                            <div class="gate-cx-control" data-section="contact" title="CNOT Gate - Contact">
+                            <div class="gate gate-cx-control" data-section="contact" title="CNOT Gate - Contact">
                                 <div class="cx-control-dot"></div>
                             </div>
                         </div>
@@ -757,7 +757,7 @@
                             <div class="gate gate-h-1" data-section="about" title="Hadamard Gate - About">H</div>
                         </div>
                         <div class="gate-wrapper cx-12-control" style="left: 38%;" id="cx-12-q1">
-                            <div class="gate-cx-control" data-section="publications" title="CNOT Gate - Publications">
+                            <div class="gate gate-cx-control" data-section="publications" title="CNOT Gate - Publications">
                                 <div class="cx-control-dot"></div>
                             </div>
                         </div>
@@ -765,7 +765,7 @@
                             <div class="gate gate-ry-1" data-section="experience" title="Y-Rotation - Experience">Ry</div>
                         </div>
                         <div class="gate-wrapper cx-01-target" style="left: 72%;" id="cx-01-q1">
-                            <div class="gate-cx-target" data-section="contact" title="CNOT Gate - Contact">
+                            <div class="gate gate-cx-target" data-section="contact" title="CNOT Gate - Contact">
                                 <div class="cx-target-circle"></div>
                             </div>
                         </div>
@@ -784,12 +784,12 @@
                             <div class="gate gate-h-2" data-section="home" title="Hadamard Gate - Home">H</div>
                         </div>
                         <div class="gate-wrapper cx-02-target" style="left: 25%;" id="cx-02-q2">
-                            <div class="gate-cx-target" data-section="research" title="CNOT Gate - Research">
+                            <div class="gate gate-cx-target" data-section="research" title="CNOT Gate - Research">
                                 <div class="cx-target-circle"></div>
                             </div>
                         </div>
                         <div class="gate-wrapper cx-12-target" style="left: 38%;" id="cx-12-q2">
-                            <div class="gate-cx-target" data-section="publications" title="CNOT Gate - Publications">
+                            <div class="gate gate-cx-target" data-section="publications" title="CNOT Gate - Publications">
                                 <div class="cx-target-circle"></div>
                             </div>
                         </div>
@@ -1065,7 +1065,7 @@
             <p>I'm always interested in discussing quantum networking/communication research, potential collaborations, and new opportunities in quantum technology. Best way to contact me is through my email listed here!</p>
 
             <div style="margin-top: 30px;">
-                <p><strong>Email:</strong> <a href="mailto:njha@students.kennesaw.edu">njha@students.kennesaw.edu</a></p>
+                <p><strong>Email:</strong> <span id="obf-email"></span></p>
                 <p><strong>Location:</strong> Georgia, USA</p>
                 <a href="resume.pdf" download class="social-link" style="margin-top: 10px; display: inline-block;">
                     📄 Download Resume
@@ -1282,6 +1282,13 @@
             createStars();
             setTimeout(initCNOTLines, 100);
             sortPublications();
+            // Email obfuscation — assembled at runtime so bots can't scrape it
+            (function() {
+                const c = [110,106,104,97,49,64,115,116,117,100,101,110,116,115,46,107,101,110,110,101,115,97,119,46,101,100,117];
+                const e = c.map(n => String.fromCharCode(n)).join('');
+                const el = document.getElementById('obf-email');
+                if (el) el.innerHTML = '<a href="mailto:' + e + '">' + e + '</a>';
+            })();
         });
     </script>
 </body>
