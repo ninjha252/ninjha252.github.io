@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Tree | Nitin Jha</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0YR64TBD6K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      const _allowed = ['nitinjha.github.io', 'localhost', '127.0.0.1'];
+      if (_allowed.some(h => location.hostname === h || location.hostname.endsWith('.' + h))) {
+        gtag('config', 'G-0YR64TBD6K');
+      }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a1a;
+            color: #e0e0ff;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── Starfield ── */
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
+        @keyframes twinkle { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+        /* ── Header ── */
+        .header {
+            position: relative; z-index: 1;
+            text-align: center;
+            padding: 36px 20px 28px;
+            background: rgba(255,255,255,0.04);
+            border-bottom: 1px solid rgba(0,255,255,0.15);
+            backdrop-filter: blur(10px);
+        }
+        .header h1 {
+            font-size: 2em;
+            background: linear-gradient(45deg,#00ffff,#ff00ff,#00ffff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gshift 3s ease infinite;
+            margin-bottom: 6px;
+        }
+        @keyframes gshift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+        .header p { color: rgba(0,255,255,0.7); font-size: 0.9em; }
+
+        .back-btn {
+            position: absolute; top: 20px; left: 20px;
+            padding: 8px 16px;
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            background: rgba(0,255,255,0.08);
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .3s;
+        }
+        .back-btn:hover { background: rgba(0,255,255,0.22); box-shadow: 0 0 14px rgba(0,255,255,0.4); }
+
+        /* ── Tree container ── */
+        .tree-wrapper {
+            position: relative; z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        /* Vertical trunk line */
+        .trunk {
+            position: absolute;
+            left: 50%;
+            top: 40px;
+            bottom: 60px;
+            width: 3px;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, #00ffff44, #00ffff, #ff00ff, #ff00ff44);
+            border-radius: 2px;
+        }
+
+        /* ── Year marker ── */
+        .year-marker {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0 6px;
+            z-index: 2;
+        }
+        .year-badge {
+            background: #0a0a1a;
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            font-size: 0.9em;
+            font-weight: bold;
+            padding: 4px 18px;
+            border-radius: 20px;
+            letter-spacing: 2px;
+            box-shadow: 0 0 16px rgba(0,255,255,0.35);
+        }
+
+        /* ── Tree node row ── */
+        .tree-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 24px 0;
+            z-index: 2;
+        }
+
+        /* The horizontal connector from trunk to node */
+        .tree-row::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: calc(50% - 34px);
+            height: 2px;
+            background: #00ffff88;
+            transform: translateY(-50%);
+        }
+        .tree-row.left::before  { right: 50%; left: auto; margin-right: 34px; }
+        .tree-row.right::before { left: 50%;  right: auto; margin-left: 34px; }
+
+        /* Dot on the trunk */
+        .tree-row::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+            z-index: 3;
+        }
+
+        /* Node card */
+        .node {
+            width: calc(50% - 50px);
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 2px solid rgba(0,255,255,0.4);
+            background: rgba(0,255,255,0.05);
+            cursor: pointer;
+            transition: all .3s ease;
+            position: relative;
+        }
+        .node:hover {
+            border-color: #00ffff;
+            background: rgba(0,255,255,0.12);
+            box-shadow: 0 0 22px rgba(0,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        .tree-row.left  .node { margin-right: auto; text-align: right; }
+        .tree-row.right .node { margin-left: auto;  text-align: left;  }
+
+        .node-venue {
+            font-size: 0.7em;
+            color: #ff00ff;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .node-title {
+            font-size: 0.88em;
+            color: #e0e0ff;
+            line-height: 1.4;
+        }
+        .node-hint {
+            font-size: 0.68em;
+            color: rgba(0,255,255,0.5);
+            margin-top: 6px;
+        }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: #0e0e22;
+            border: 2px solid #00ffff;
+            border-radius: 14px;
+            max-width: 620px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+            animation: modalIn .25s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 40px rgba(0,255,255,0.25);
+        }
+        @keyframes modalIn { from{opacity:0;transform:scale(.93)} to{opacity:1;transform:scale(1)} }
+
+        .modal-close {
+            position: absolute; top: 14px; right: 16px;
+            background: none; border: none;
+            color: #00ffff; font-size: 1.4em;
+            cursor: pointer; line-height: 1;
+            transition: color .2s;
+        }
+        .modal-close:hover { color: #ff00ff; }
+
+        .modal-venue {
+            font-size: 0.75em;
+            color: #ff00ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .modal-title {
+            font-size: 1.1em;
+            color: #00ffff;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+        .modal-authors {
+            font-size: 0.8em;
+            color: rgba(224,224,255,0.7);
+            margin-bottom: 16px;
+        }
+        .modal-abstract {
+            font-size: 0.88em;
+            color: #d0d0ff;
+            line-height: 1.8;
+            border-left: 3px solid rgba(0,255,255,0.4);
+            padding-left: 14px;
+        }
+        .modal-doi {
+            margin-top: 18px;
+            font-size: 0.8em;
+        }
+        .modal-doi a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+        .modal-doi a:hover { color: #ff00ff; }
+
+        /* ── Mobile ── */
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.4em; }
+            .back-btn { font-size: 0.75em; padding: 6px 12px; top: 14px; left: 14px; }
+
+            .trunk { left: 22px; transform: none; }
+
+            .tree-row { justify-content: flex-end; }
+            .tree-row::before { left: 22px; width: calc(100% - 80px); right: auto; margin: 0; }
+            .tree-row.left::before,
+            .tree-row.right::before { left: 22px; width: calc(100% - 80px); right: auto; margin: 0; }
+            .tree-row::after { left: 22px; }
+
+            .node {
+                width: calc(100% - 65px);
+                margin-left: 65px !important;
+                margin-right: 0 !important;
+                text-align: left !important;
+            }
+
+            .year-marker { justify-content: flex-start; padding-left: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="header">
+    <a href="index.html" class="back-btn">← Back</a>
+    <h1>Research Tree</h1>
+    <p>Click any node to read a brief overview</p>
+</div>
+
+<div class="tree-wrapper">
+    <div class="trunk"></div>
+
+    <!-- ── 2024 ── -->
+    <div class="year-marker"><span class="year-badge">2024</span></div>
+
+    <div class="tree-row left" data-paper="0">
+        <div class="node" onclick="openModal(0)">
+            <div class="node-venue">SPIE Photonics West 2024</div>
+            <div class="node-title">Effect of Noise and Topologies on Multi-Photon Quantum Protocols</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <div class="tree-row right" data-paper="1">
+        <div class="node" onclick="openModal(1)">
+            <div class="node-venue">IEEE QCE 2024</div>
+            <div class="node-title">A ML Based Approach to Quantum Augmented HTTP Protocol</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <div class="tree-row left" data-paper="2">
+        <div class="node" onclick="openModal(2)">
+            <div class="node-venue">Scientific Reports 2024</div>
+            <div class="node-title">Joint Encryption and Error Correction for Secure Quantum Communication</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <!-- ── 2025 ── -->
+    <div class="year-marker"><span class="year-badge">2025</span></div>
+
+    <div class="tree-row right" data-paper="3">
+        <div class="node" onclick="openModal(3)">
+            <div class="node-venue">SPIE Photonics West 2025</div>
+            <div class="node-title">Towards a Quantum-Classical Augmented Network</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <div class="tree-row left" data-paper="4">
+        <div class="node" onclick="openModal(4)">
+            <div class="node-venue">Infocommunications Journal 2025</div>
+            <div class="node-title">Multi-Photon QKD for Practical Quantum Networks</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <div class="tree-row right" data-paper="5">
+        <div class="node" onclick="openModal(5)">
+            <div class="node-venue">arXiv 2025 · In Review</div>
+            <div class="node-title">An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <!-- ── 2026 ── -->
+    <div class="year-marker"><span class="year-badge">2026</span></div>
+
+    <div class="tree-row left" data-paper="6">
+        <div class="node" onclick="openModal(6)">
+            <div class="node-venue">Cryptologia · Taylor &amp; Francis 2026</div>
+            <div class="node-title">QKD: Bridging Theoretical Security Proofs, Practical Attacks, and Error Correction</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── Modal ── -->
+<div class="modal-overlay" id="modal" onclick="closeOnOverlay(event)">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="modal-venue"  id="m-venue"></div>
+        <div class="modal-title"  id="m-title"></div>
+        <div class="modal-authors" id="m-authors"></div>
+        <div class="modal-abstract" id="m-abstract"></div>
+        <div class="modal-doi"    id="m-doi"></div>
+    </div>
+</div>
+
+<script>
+const papers = [
+    {
+        venue: "SPIE Photonics West 2024 · Quantum Computing, Communication, and Simulation IV, Vol. 12911",
+        title: "Effect of Noise and Topologies on Multi-Photon Quantum Protocols",
+        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        abstract: "This paper investigates how channel and device noise affects multi-photon quantum protocols — specifically Kak's three-stage protocol — in terms of security, transmission distances, and bit rates across ring, star, and torus network topologies. Unlike single-photon protocols, multi-photon approaches do not require ideal single-photon emitters and provide higher security guarantees over longer distances. The results offer practical guidance on repeater placement and topology selection for quantum-augmented networks.",
+        doi: null
+    },
+    {
+        venue: "IEEE International Conference on Quantum Computing and Engineering (QCE) 2024",
+        title: "A ML Based Approach to Quantum Augmented HTTP Protocol",
+        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramanian",
+        abstract: "This paper proposes a modification to the HTTP protocol packet structure to support hybrid quantum-classical payloads in quantum-augmented networks. An NLP-based machine-learning algorithm parses outgoing messages, assigns security levels, and selectively routes sensitive content through quantum encryption channels. The work also introduces optimized bandwidth allocation between quantum and classical channels for high-traffic routes.",
+        doi: "10.1109/QCE60285.2024.10420"
+    },
+    {
+        venue: "Scientific Reports (Nature Portfolio) · Vol. 14, Article 24542 · 2024",
+        title: "Joint Encryption and Error Correction for Secure Quantum Communication",
+        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        abstract: "This paper proposes the first integrated quantum encryption and error correction technique by extending the three-stage QKD protocol with Calderbank-Shor-Steane (CSS) error correction codes. The combined protocol corrects single-bit flip and single-phase flip errors without the overhead of treating encryption and error correction as separate processes. It supports transmission of arbitrary qubits, making the protocol general-purpose for secure quantum communication.",
+        doi: "10.1038/s41598-024-75212-8"
+    },
+    {
+        venue: "SPIE Photonics West 2025 · Quantum Computing, Communication, and Simulation V, Vol. 13391",
+        title: "Towards a Quantum-Classical Augmented Network",
+        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        abstract: "This paper proposes augmenting classical networks with quantum capabilities by modifying HTTP to carry both classical and quantum payloads within a single packet, divided by privacy needs. Machine learning models (logistic regression, CNN, LSTM, BiLSTM) classify the privacy label of outgoing communications, enabling selective quantum encryption only for private content. The approach reduces quantum resource consumption while maintaining strong security for sensitive transmissions.",
+        doi: null
+    },
+    {
+        venue: "Infocommunications Journal · 2025",
+        title: "Multi-Photon QKD for Practical Quantum Networks",
+        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        abstract: "This paper evaluates the practicality of the three-stage QKD, Decoy-state, and E91 protocols across multiple network topologies (direct, line, grid, ring, and torus) under multi-photon burst transmissions. It establishes a mathematical relationship between multi-photon burst size and maximum stable transmission distance, removing the reliance on single-photon emitters. The findings highlight the advantages of multi-photon tolerant protocols for integration into existing classical network infrastructure.",
+        doi: "10.36244/ICJ.2025.2.9"
+    },
+    {
+        venue: "arXiv:2511.12313 · In Review: Frontiers Quantum Science and Technology · 2025",
+        title: "An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks",
+        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        abstract: "This paper proposes an improved Quantum Anonymous Notification (QAN) protocol using rotation operations on shared GHZ states to anonymously notify receivers of incoming quantum communications in an n-user quantum-augmented network. The protocol is evaluated under dephasing noise and demonstrates stronger resilience to false notifications than prior approaches. It is designed to integrate with an ML classifier within a QuANet framework, reducing header-based information leakage at compromised switches.",
+        doi: null
+    },
+    {
+        venue: "Cryptologia · Taylor & Francis · 2026",
+        title: "Quantum Key Distribution: Bridging Theoretical Security Proofs, Practical Attacks, and Error Correction for Quantum-Augmented Networks",
+        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        abstract: "This review critically surveys QKD protocols — categorized into uncertainty principle-based (BB84), hybrid secure direct communication (three-stage), continuous-variable, Twin-field, and Device-Independent schemes — with emphasis on rigorous security proofs and known vulnerabilities. It highlights key experimental breakthroughs and mitigation strategies including Quantum Error Correction Codes (QECCs) to enhance channel fidelity and system robustness. The review connects this landscape to quantum-augmented networks, providing a comprehensive path from theoretical security proofs to experimental validation.",
+        doi: "10.1080/01611194.2025.2596885"
+    }
+];
+
+function openModal(idx) {
+    const p = papers[idx];
+    document.getElementById('m-venue').textContent    = p.venue;
+    document.getElementById('m-title').textContent    = p.title;
+    document.getElementById('m-authors').textContent  = p.authors;
+    document.getElementById('m-abstract').textContent = p.abstract;
+    const doiEl = document.getElementById('m-doi');
+    doiEl.innerHTML = p.doi
+        ? `DOI: <a href="https://doi.org/${p.doi}" target="_blank">${p.doi}</a>`
+        : '';
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function closeOnOverlay(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Starfield
+function createStars() {
+    const c = document.getElementById('stars');
+    for (let i = 0; i < 160; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${Math.random()*2+1}px;height:${s.style.width};animation-delay:${Math.random()*3}s`;
+        c.appendChild(s);
+    }
+}
+createStars();
+</script>
+</body>
+</html>
