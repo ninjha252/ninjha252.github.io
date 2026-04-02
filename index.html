@@ -144,31 +144,31 @@
         .circuit-controls {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
             margin-bottom: 30px;
             flex-wrap: wrap;
+            padding: 0 5px;
         }
 
         .control-btn {
-            padding: 12px 24px;
+            padding: 10px 18px;
             background: rgba(0, 255, 255, 0.1);
             border: 2px solid #00ffff;
             color: #00ffff;
             border-radius: 8px;
             cursor: pointer;
             font-family: 'Courier New', monospace;
-            font-size: 0.95em;
+            font-size: 0.9em;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            white-space: nowrap;
         }
 
-        
         #home img:hover {
             transform: scale(1.05);
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
         }
 
-        
         .control-btn:hover {
             background: rgba(0, 255, 255, 0.3);
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
@@ -181,18 +181,27 @@
             color: #ff00ff;
         }
 
+        /* Circuit wrapper enables horizontal scroll on small screens */
+        .circuit-scroll-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 40px;
+            border-radius: 15px;
+        }
+
         .circuit-container {
             position: relative;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 15px;
             padding: 60px 40px;
-            margin-bottom: 40px;
-            overflow-x: auto;
+            overflow: visible;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(0, 255, 255, 0.2);
             display: grid;
             grid-template-rows: repeat(3, 100px);
             gap: 40px;
+            /* minimum width keeps gates from overlapping */
+            min-width: 700px;
         }
 
         .qubit-line {
@@ -528,32 +537,106 @@
             margin-bottom: 8px;
         }
 
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
+        /* ─── Mobile gate grid (portrait phones only) ──────────── */
+        .mobile-gate-grid {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
 
+        .mobile-gate-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 14px 8px;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            background: rgba(0, 255, 255, 0.07);
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        .mobile-gate-btn:active {
+            background: rgba(0, 255, 255, 0.25);
+            transform: scale(0.96);
+        }
+
+        .mobile-gate-btn .gate-symbol {
+            font-size: 1.5em;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .mobile-gate-btn.color-cyan  { border-color: #00ffff; color: #00ffff; }
+        .mobile-gate-btn.color-rz    { border-color: #ffaa00; color: #ffaa00; }
+        .mobile-gate-btn.color-ry    { border-color: #ff0099; color: #ff0099; }
+        .mobile-gate-btn.color-rx    { border-color: #00ff99; color: #00ff99; }
+        .mobile-gate-btn.color-meas  { border-color: #ff00ff; color: #ff00ff; }
+
+        /* ─── Shared small-screen styles (both orientations) ───── */
+        @media (max-width: 900px) {
+            .container { padding: 12px; }
+
+            .header { padding: 24px 16px; margin-bottom: 24px; }
+            .header h1 { font-size: 1.6em; }
+            .subtitle { font-size: 0.9em; }
+
+            .circuit-controls { gap: 8px; margin-bottom: 16px; }
+            .control-btn { padding: 8px 12px; font-size: 0.78em; }
+
+            .content-panel { padding: 18px 14px; }
+            .content-panel h2 { font-size: 1.2em; }
+            .content-panel h3 { font-size: 1.05em; }
+            .content-panel p, .content-panel li { font-size: 0.92em; }
+
+            #home > div { flex-direction: column-reverse !important; align-items: center !important; }
+            #home > div > div:last-child { flex: 0 0 auto !important; width: 180px !important; margin-bottom: 20px; }
+            #home > div > div:last-child > div { width: 180px !important; height: 180px !important; }
+
+            .legend { padding: 12px 10px; gap: 10px; }
+            .legend-item { font-size: 0.8em; }
+            .social-link { padding: 8px 14px; font-size: 0.88em; }
+            .skill-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* ─── Portrait phone: gate grid, hide circuit ────────── */
+        @media (max-width: 900px) and (orientation: portrait) {
+            .circuit-scroll-wrapper { display: none; }
+            .mobile-gate-grid { display: grid; }
+            .rotate-hint { display: block !important; }
+
+            .wave-visualizer { height: 40px; }
+            @keyframes wave { 0%, 100% { height: 6px; } 50% { height: 34px; } }
+        }
+
+        /* ─── Landscape phone: show circuit, hide gate grid ───── */
+        @media (max-width: 900px) and (orientation: landscape) {
+            .circuit-scroll-wrapper { display: block; }
+            .mobile-gate-grid { display: none; }
+
+            /* Tighten circuit to fit landscape height */
             .circuit-container {
-                padding: 20px 10px;
+                padding: 30px 20px;
+                grid-template-rows: repeat(3, 70px);
+                gap: 20px;
             }
+            .gate { width: 44px; height: 44px; font-size: 0.85em; }
+            .gate-cx-control, .gate-cx-target { width: 44px; height: 44px; }
+            .cx-target-circle { width: 30px; height: 30px; }
+            .measurement { width: 38px; height: 38px; }
+        }
 
-            .qubit-line {
-                height: 60px;
-            }
-
-            .gate {
-                width: 45px;
-                height: 45px;
-                font-size: 0.9em;
-            }
-
-            .content-panel {
-                padding: 20px;
-            }
-
-            .content-panel h2 {
-                font-size: 1.4em;
-            }
+        @media (max-width: 400px) {
+            .skill-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.3em; }
+            .mobile-gate-grid { gap: 8px; }
         }
     </style>
 </head>
@@ -591,120 +674,139 @@
             <button class="control-btn" onclick="showSection('contact')">Contact</button>
         </div>
 
-        <div class="circuit-container" id="circuit">
-            <!-- Qubit 0 -->
-            <div class="qubit-line" data-qubit="0">
-                <div class="qubit-label" title="Qubit 0">|q₀⟩</div>
-                <div class="circuit-track">
-                    <!-- H gate -->
-                    <div class="gate-wrapper" style="left: 8%;">
-                        <div class="gate gate-h-0" data-section="intro" title="Hadamard Gate - Introduction">H</div>
-                    </div>
-                    <!-- Control for CNOT 0->2 -->
-                    <div class="gate-wrapper cx-02-control" style="left: 25%;" id="cx-02-q0">
-                        <div class="gate-cx-control" data-section="research" title="CNOT Gate - Research">
-                            <div class="cx-control-dot"></div>
+        <!-- Mobile-only gate grid (shown instead of the circuit on phones) -->
+        <p style="display:none; text-align:center; color:rgba(0,255,255,0.55); font-size:0.78em; margin-bottom:10px;" class="rotate-hint">
+            ↻ Rotate phone to see the full quantum circuit
+        </p>
+        <div class="mobile-gate-grid">
+            <button class="mobile-gate-btn color-cyan" onclick="showSection('home')">
+                <span class="gate-symbol">H</span>Home
+            </button>
+            <button class="mobile-gate-btn color-cyan" onclick="showSection('intro')">
+                <span class="gate-symbol">H</span>Intro
+            </button>
+            <button class="mobile-gate-btn color-cyan" onclick="showSection('about')">
+                <span class="gate-symbol">H</span>About
+            </button>
+            <button class="mobile-gate-btn color-cyan" onclick="showSection('research')">
+                <span class="gate-symbol">CX</span>Research
+            </button>
+            <button class="mobile-gate-btn color-cyan" onclick="showSection('publications')">
+                <span class="gate-symbol">CX</span>Papers
+            </button>
+            <button class="mobile-gate-btn color-rx" onclick="showSection('education')">
+                <span class="gate-symbol">Rx</span>Education
+            </button>
+            <button class="mobile-gate-btn color-rz" onclick="showSection('skills')">
+                <span class="gate-symbol">Rz</span>Skills
+            </button>
+            <button class="mobile-gate-btn color-ry" onclick="showSection('experience')">
+                <span class="gate-symbol">Ry</span>Experience
+            </button>
+            <button class="mobile-gate-btn color-meas" onclick="showSection('contact')">
+                <span class="gate-symbol">M</span>Contact
+            </button>
+        </div>
+
+        <!-- Scrollable wrapper lets the circuit overflow horizontally on phones -->
+        <div class="circuit-scroll-wrapper">
+            <div class="circuit-container" id="circuit">
+                <!-- Qubit 0 -->
+                <div class="qubit-line" data-qubit="0">
+                    <div class="qubit-label" title="Qubit 0">|q₀⟩</div>
+                    <div class="circuit-track">
+                        <div class="gate-wrapper" style="left: 8%;">
+                            <div class="gate gate-h-0" data-section="intro" title="Hadamard Gate - Introduction">H</div>
                         </div>
-                    </div>
-                    <!-- Rz gate -->
-                    <div class="gate-wrapper" style="left: 50%;">
-                        <div class="gate gate-rz-0" data-section="skills" title="Z-Rotation - Skills">Rz</div>
-                    </div>
-                    <!-- Control for CNOT 0->1 -->
-                    <div class="gate-wrapper cx-01-control" style="left: 72%;" id="cx-01-q0">
-                        <div class="gate-cx-control" data-section="contact" title="CNOT Gate - Contact">
-                            <div class="cx-control-dot"></div>
+                        <div class="gate-wrapper cx-02-control" style="left: 25%;" id="cx-02-q0">
+                            <div class="gate-cx-control" data-section="research" title="CNOT Gate - Research">
+                                <div class="cx-control-dot"></div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Measurement -->
-                    <!-- NEW CODE -->
-                    <div class="gate-wrapper" style="left: 90%;">
-                        <div class="measurement" onclick="measureQubit(0)"></div>
-                        <div class="measurement-result" id="measure-0"></div>
+                        <div class="gate-wrapper" style="left: 50%;">
+                            <div class="gate gate-rz-0" data-section="skills" title="Z-Rotation - Skills">Rz</div>
+                        </div>
+                        <div class="gate-wrapper cx-01-control" style="left: 72%;" id="cx-01-q0">
+                            <div class="gate-cx-control" data-section="contact" title="CNOT Gate - Contact">
+                                <div class="cx-control-dot"></div>
+                            </div>
+                        </div>
+                        <div class="gate-wrapper" style="left: 90%;">
+                            <div class="measurement" onclick="measureQubit(0)"></div>
+                            <div class="measurement-result" id="measure-0"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Qubit 1 -->
-            <div class="qubit-line" data-qubit="1">
-                <div class="qubit-label" title="Qubit 1">|q₁⟩</div>
-                <div class="circuit-track">
-                    <!-- H gate -->
-                    <div class="gate-wrapper" style="left: 8%;">
-                        <div class="gate gate-h-1" data-section="about" title="Hadamard Gate - About">H</div>
-                    </div>
-                    <!-- Control for CNOT 1->2 -->
-                    <div class="gate-wrapper cx-12-control" style="left: 38%;" id="cx-12-q1">
-                        <div class="gate-cx-control" data-section="publications" title="CNOT Gate - Publications">
-                            <div class="cx-control-dot"></div>
+                <!-- Qubit 1 -->
+                <div class="qubit-line" data-qubit="1">
+                    <div class="qubit-label" title="Qubit 1">|q₁⟩</div>
+                    <div class="circuit-track">
+                        <div class="gate-wrapper" style="left: 8%;">
+                            <div class="gate gate-h-1" data-section="about" title="Hadamard Gate - About">H</div>
                         </div>
-                    </div>
-                    <!-- Ry gate -->
-                    <div class="gate-wrapper" style="left: 59%;">
-                        <div class="gate gate-ry-1" data-section="experience" title="Y-Rotation - Experience">Ry</div>
-                    </div>
-                    <!-- Target for CNOT 0->1 -->
-                    <div class="gate-wrapper cx-01-target" style="left: 72%;" id="cx-01-q1">
-                        <div class="gate-cx-target" data-section="contact" title="CNOT Gate - Contact">
-                            <div class="cx-target-circle"></div>
+                        <div class="gate-wrapper cx-12-control" style="left: 38%;" id="cx-12-q1">
+                            <div class="gate-cx-control" data-section="publications" title="CNOT Gate - Publications">
+                                <div class="cx-control-dot"></div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Measurement -->
-                    <!-- NEW CODE -->
-                    <div class="gate-wrapper" style="left: 90%;">
-                        <div class="measurement" onclick="measureQubit(1)"></div>
-                        <div class="measurement-result" id="measure-1"></div>
+                        <div class="gate-wrapper" style="left: 59%;">
+                            <div class="gate gate-ry-1" data-section="experience" title="Y-Rotation - Experience">Ry</div>
+                        </div>
+                        <div class="gate-wrapper cx-01-target" style="left: 72%;" id="cx-01-q1">
+                            <div class="gate-cx-target" data-section="contact" title="CNOT Gate - Contact">
+                                <div class="cx-target-circle"></div>
+                            </div>
+                        </div>
+                        <div class="gate-wrapper" style="left: 90%;">
+                            <div class="measurement" onclick="measureQubit(1)"></div>
+                            <div class="measurement-result" id="measure-1"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Qubit 2 -->
-            <div class="qubit-line" data-qubit="2">
-                <div class="qubit-label" title="Qubit 2">|q₂⟩</div>
-                <div class="circuit-track">
-                    <!-- H gate -->
-                    <div class="gate-wrapper" style="left: 8%;">
-                        <div class="gate gate-h-2" data-section="home" title="Hadamard Gate - Home">H</div>
-                    </div>
-                    <!-- Target for CNOT 0->2 -->
-                    <div class="gate-wrapper cx-02-target" style="left: 25%;" id="cx-02-q2">
-                        <div class="gate-cx-target" data-section="research" title="CNOT Gate - Research">
-                            <div class="cx-target-circle"></div>
+                <!-- Qubit 2 -->
+                <div class="qubit-line" data-qubit="2">
+                    <div class="qubit-label" title="Qubit 2">|q₂⟩</div>
+                    <div class="circuit-track">
+                        <div class="gate-wrapper" style="left: 8%;">
+                            <div class="gate gate-h-2" data-section="home" title="Hadamard Gate - Home">H</div>
                         </div>
-                    </div>
-                    <!-- Target for CNOT 1->2 -->
-                    <div class="gate-wrapper cx-12-target" style="left: 38%;" id="cx-12-q2">
-                        <div class="gate-cx-target" data-section="publications" title="CNOT Gate - Publications">
-                            <div class="cx-target-circle"></div>
+                        <div class="gate-wrapper cx-02-target" style="left: 25%;" id="cx-02-q2">
+                            <div class="gate-cx-target" data-section="research" title="CNOT Gate - Research">
+                                <div class="cx-target-circle"></div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Rx gate -->
-                    <div class="gate-wrapper" style="left: 83%;">
-                        <div class="gate gate-rx-2" data-section="education" title="X-Rotation - Education">Rx</div>
-                    </div>
-                    <!-- Measurement -->
-                    <!-- NEW CODE -->
-                    <div class="gate-wrapper" style="left: 90%;">
-                        <div class="measurement" onclick="measureQubit(2)"></div>
-                        <div class="measurement-result" id="measure-2"></div>
+                        <div class="gate-wrapper cx-12-target" style="left: 38%;" id="cx-12-q2">
+                            <div class="gate-cx-target" data-section="publications" title="CNOT Gate - Publications">
+                                <div class="cx-target-circle"></div>
+                            </div>
+                        </div>
+                        <div class="gate-wrapper" style="left: 83%;">
+                            <div class="gate gate-rx-2" data-section="education" title="X-Rotation - Education">Rx</div>
+                        </div>
+                        <div class="gate-wrapper" style="left: 90%;">
+                            <div class="measurement" onclick="measureQubit(2)"></div>
+                            <div class="measurement-result" id="measure-2"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- CNOT connection lines -->
-            <div class="cnot-line cnot-02" id="cnot-line-02"></div>
-            <div class="cnot-line cnot-12" id="cnot-line-12"></div>
-            <div class="cnot-line cnot-01" id="cnot-line-01"></div>
+                <!-- CNOT connection lines -->
+                <div class="cnot-line cnot-02" id="cnot-line-02"></div>
+                <div class="cnot-line cnot-12" id="cnot-line-12"></div>
+                <div class="cnot-line cnot-01" id="cnot-line-01"></div>
+            </div>
         </div>
 
         <div class="legend">
             <div class="legend-item">
                 <div class="legend-box" style="border-color: #00ffff; background: rgba(0,255,255,0.1); color: #00ffff;">H</div>
-                <span>Hadamard - Home, About & Introduction</span>
+                <span>Hadamard - Home, About &amp; Introduction</span>
             </div>
             <div class="legend-item">
                 <div class="legend-box" style="border-color: #00ffff; background: rgba(0,255,255,0.1); color: #00ffff;">CX</div>
-                <span>CNOT - Research, Publications & Contact</span>
+                <span>CNOT - Research, Publications &amp; Contact</span>
             </div>
             <div class="legend-item">
                 <div class="legend-box" style="border-color: #ffaa00; background: rgba(255,170,0,0.1); color: #ffaa00;">Rz</div>
@@ -724,7 +826,7 @@
         <div id="home" class="content-panel active">
             <h2>🏠 Welcome - H Gate (q₂)</h2>
             <div style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 300px;">
+                <div style="flex: 1; min-width: 260px;">
                     <p>Hello! I'm Nitin Jha, a PhD student at Kennesaw State University in the Department of Computer Science. Welcome to my quantum-inspired portfolio!</p>
                     <p>Like the Hadamard gate that creates superposition, my research explores the intersection of quantum mechanics and computer science, creating new possibilities in quantum networks and secure communications.</p>
                     <p>Navigate through the quantum circuit above to explore my research, publications, and professional journey. Each gate represents a different aspect of my work in quantum computing.</p>
@@ -759,7 +861,7 @@
         <div id="research" class="content-panel">
             <h2>🔬 Research - CNOT Gate (q₀→q₂)</h2>
             <p>The CNOT gate creates entanglement between qubits - a fundamental resource in quantum computing. Similarly, my research creates connections between theoretical quantum mechanics and practical networking protocols.</p>
-            
+
             <h3>Current Research Focus</h3>
             <ul>
                 <li><strong>Quantum Network Protocols</strong> - Developing efficient protocols for quantum information distribution across networks</li>
@@ -781,50 +883,50 @@
         <div id="publications" class="content-panel">
             <h2>📚 Publications - CNOT Gate (q₁→q₂)</h2>
             <p>Like the CNOT gate that correlates qubit states, my publications connect theoretical quantum concepts with practical implementations.</p>
-        
+
             <h3>Journal Publications</h3>
             <ul>
                 <li><strong>Scientific Reports</strong> (2024)<br>
-                    Jha, N., Parakh, A., & Subramaniam, M. (2024). Joint encryption and error correction for secure quantum communication. <em>Scientific Reports</em>, 14(1), 24542.<br>
+                    Jha, N., Parakh, A., &amp; Subramaniam, M. (2024). Joint encryption and error correction for secure quantum communication. <em>Scientific Reports</em>, 14(1), 24542.<br>
                     DOI: <a href="https://doi.org/10.1038/s41598-024-75212-8" target="_blank">10.1038/s41598-024-75212-8</a></li>
-                
+
                 <li><strong>Infocommunications Journal</strong> (2025)<br>
-                    Jha, N., Parakh, A., & Subramaniam, M. (2025). Multi-photon QKD for Practical Quantum Networks. <em>Infocommunications Journal</em>.<br>
+                    Jha, N., Parakh, A., &amp; Subramaniam, M. (2025). Multi-photon QKD for Practical Quantum Networks. <em>Infocommunications Journal</em>.<br>
                     DOI: <a href="https://doi.org/10.1080/01611194.2025.2596885" target="_blank">10.36244/ICJ.2025.2.9</a></li>
 
                 <li><strong>Cryptologia by Taylor and Francis</strong> (2026)<br>
-                     Jha, N., Parakh, A., & Subramaniam, M. (2026). Quantum key distribution: Bridging theoretical security proofs, practical attacks, and error correction for quantum-augmented networks. <em>Cryptologia, 1-58.</em>.<br>
+                     Jha, N., Parakh, A., &amp; Subramaniam, M. (2026). Quantum key distribution: Bridging theoretical security proofs, practical attacks, and error correction for quantum-augmented networks. <em>Cryptologia, 1-58.</em>.<br>
                     DOI: <a href="https://doi.org/10.36244/ICJ.2025.2.9" target="_blank">10.1080/01611194.2025.2596885</a></li>
             </ul>
-        
+
             <h3>Pre-Prints and In-review</h3>
             <ul>
-                <li>Jha, N., & Parakh, A. (2026). Are quantum voting protocols practical?.<em>In Review at ACM Ubiquity</em></li>
-                <li>Jha, N., & Parakh, A. (2026). Quantum Error Correction: A solution to all of our quantum worries! <em>arXiv preprint arXiv:2505.23603</em><em>In Review at IEEE Potentials Magazine</em>.</li>
-                <li>Jha, N., Parakh, A., & Subramaniam, M. (2025). An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks. <em>arXiv preprint arXiv:2511.12313</em>. <em>In-review: Frontiers Quantum Science and Technology.</em></li>
+                <li>Jha, N., &amp; Parakh, A. (2026). Are quantum voting protocols practical?.<em>In Review at ACM Ubiquity</em></li>
+                <li>Jha, N., &amp; Parakh, A. (2026). Quantum Error Correction: A solution to all of our quantum worries! <em>arXiv preprint arXiv:2505.23603</em><em>In Review at IEEE Potentials Magazine</em>.</li>
+                <li>Jha, N., Parakh, A., &amp; Subramaniam, M. (2025). An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks. <em>arXiv preprint arXiv:2511.12313</em>. <em>In-review: Frontiers Quantum Science and Technology.</em></li>
             </ul>
             <h3>General Audience Articles</h3>
             <ul>
-                <li>Jha, N., & Parakh, A. (2025). Towards A Global Quantum Internet: A Review of Challenges Facing Aerial Quantum Networks <em>in IEEE Potentials, vol. 44, no. 4, pp. 6-12, July-Aug. 2025</em>  DOI: <a href="https://doi.org/10.1080/01611194.2025.2596885" target="_blank">10.1080/01611194.2025.2596885</a></li></li>
-                </ul>
-            
-        
+                <li>Jha, N., &amp; Parakh, A. (2025). Towards A Global Quantum Internet: A Review of Challenges Facing Aerial Quantum Networks <em>in IEEE Potentials, vol. 44, no. 4, pp. 6-12, July-Aug. 2025</em>  DOI: <a href="https://doi.org/10.1080/01611194.2025.2596885" target="_blank">10.1080/01611194.2025.2596885</a></li>
+            </ul>
+
             <h3>Conference Presentations</h3>
             <ul>
                 <li><strong>SPIE Photonics West 2024</strong><br>
-                    Jha, N., Parakh, A., & Subramaniam, M. (2024, March). Effect of noise and topologies on multi-photon quantum protocols. In <em>Quantum computing, communication, and simulation IV</em> (Vol. 12911, pp. 147-160). SPIE.</li>
-                
+                    Jha, N., Parakh, A., &amp; Subramaniam, M. (2024, March). Effect of noise and topologies on multi-photon quantum protocols. In <em>Quantum computing, communication, and simulation IV</em> (Vol. 12911, pp. 147-160). SPIE.</li>
+
                 <li><strong>SPIE Photonics West 2025</strong><br>
-                    Jha, N., Parakh, A., & Subramaniam, M. (2025, March). Towards a quantum-classical augmented network. In <em>Quantum Computing, Communication, and Simulation V</em> (Vol. 13391, pp. 72-86). SPIE.</li>
-                
+                    Jha, N., Parakh, A., &amp; Subramaniam, M. (2025, March). Towards a quantum-classical augmented network. In <em>Quantum Computing, Communication, and Simulation V</em> (Vol. 13391, pp. 72-86). SPIE.</li>
+
                 <li><strong>IEEE QCE 2024</strong><br>
-                    Jha, N., Parakh, A., & Subramanian, M. (2024, September). A ml based approach to quantum augmented http protocol. In <em>2024 IEEE International Conference on Quantum Computing and Engineering (QCE)</em> (Vol. 2, pp. 591-592). IEEE.</li>
+                    Jha, N., Parakh, A., &amp; Subramanian, M. (2024, September). A ml based approach to quantum augmented http protocol. In <em>2024 IEEE International Conference on Quantum Computing and Engineering (QCE)</em> (Vol. 2, pp. 591-592). IEEE.</li>
             </ul>
-        
+
             <p style="margin-top: 20px;">
                 <a href="https://scholar.google.com/citations?user=u0OLK6cAAAAJ&hl=en" target="_blank" class="social-link">📖 View Full Publication List on Google Scholar</a>
             </p>
         </div>
+
         <div id="education" class="content-panel">
             <h2>🎓 Education - Rx Gate</h2>
             <p>The Rx gate represents rotation in quantum state space. My educational journey has continuously rotated my perspective, adding new dimensions to my understanding.</p>
@@ -835,7 +937,7 @@
                     Kennesaw State University, Marietta, GA, USA<br>
                     Focus: Quantum Networks and Communication Protocols<br>
                     Advisor: Dr. Abhishek Parakh</li>
-                
+
                 <li><strong>BSc (Hons) Physics</strong> (August 2020 - May 2023)<br>
                     Ashoka University, Sonipat, Haryana, India<br>
                     Graduated: Cum Laude<br>
@@ -846,7 +948,7 @@
             <ul>
                 <li><strong>IEEE Computer Science Student Society Grant</strong> IEEE QCE 2024</li>
                 <li><strong>College of Computer Science and Software Engineering Travel Grant</strong> 2024, 2025, 2026</li>
-                <li><strong>NSF-BEACON Labs Travel Grant for Workshop</strong>Boise State University 2026</li>
+                <li><strong>NSF-BEACON Labs Travel Grant for Workshop</strong> Boise State University 2026</li>
             </ul>
         </div>
 
@@ -917,7 +1019,7 @@
                     • Investigating effects of noise and network topology on multiphoton quantum systems<br>
                     • Creating quantum-classical hybrid network architectures, also termed as Quantum Augmented Networks<br>
                     • Publishing research in peer-reviewed journals and presenting at international conferences</li>
-                
+
                 <li><strong>Research Assistant - Spintronics</strong><br>
                     Ashoka University | June 2022 - May 2023<br>
                     • Conducted permalloy micromagnetic simulations using MuMax3<br>
@@ -925,7 +1027,6 @@
                     • Contributed to research on spintronic device optimization</li>
             </ul>
 
-            
             <h3>Professional Service</h3>
             <ul>
                 <li><strong>Peer Reviewer</strong> - Reviewing manuscripts for quantum computing and networking journals:
@@ -955,7 +1056,7 @@
             </div>
 
             <h3>Connect Online</h3>
-            <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 15px;">
+            <div class="social-links-row" style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 15px;">
                 <a href="https://scholar.google.com/citations?user=u0OLK6cAAAAJ&hl=en" target="_blank" class="social-link">
                     📖 Google Scholar
                 </a>
@@ -991,7 +1092,7 @@
         function createStars() {
             const starsContainer = document.getElementById('stars');
             const numStars = 200;
-            
+
             for (let i = 0; i < numStars; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
@@ -1008,59 +1109,59 @@
         function initCNOTLines() {
             const circuit = document.querySelector('.circuit-container');
             if (!circuit) return;
-            
+
             // CNOT 0->2 line
             const cx02Control = document.getElementById('cx-02-q0');
             const cx02Target = document.getElementById('cx-02-q2');
             const cx02Line = document.getElementById('cnot-line-02');
-            
+
             if (cx02Control && cx02Target && cx02Line) {
                 const controlRect = cx02Control.getBoundingClientRect();
                 const targetRect = cx02Target.getBoundingClientRect();
                 const circuitRect = circuit.getBoundingClientRect();
-                
+
                 const top = controlRect.top - circuitRect.top + controlRect.height / 2;
                 const height = targetRect.top - controlRect.top;
                 const left = controlRect.left - circuitRect.left + controlRect.width / 2;
-                
+
                 cx02Line.style.top = top + 'px';
                 cx02Line.style.height = height + 'px';
                 cx02Line.style.left = left + 'px';
             }
-            
+
             // CNOT 1->2 line
             const cx12Control = document.getElementById('cx-12-q1');
             const cx12Target = document.getElementById('cx-12-q2');
             const cx12Line = document.getElementById('cnot-line-12');
-            
+
             if (cx12Control && cx12Target && cx12Line) {
                 const controlRect = cx12Control.getBoundingClientRect();
                 const targetRect = cx12Target.getBoundingClientRect();
                 const circuitRect = circuit.getBoundingClientRect();
-                
+
                 const top = controlRect.top - circuitRect.top + controlRect.height / 2;
                 const height = targetRect.top - controlRect.top;
                 const left = controlRect.left - circuitRect.left + controlRect.width / 2;
-                
+
                 cx12Line.style.top = top + 'px';
                 cx12Line.style.height = height + 'px';
                 cx12Line.style.left = left + 'px';
             }
-            
+
             // CNOT 0->1 line
             const cx01Control = document.getElementById('cx-01-q0');
             const cx01Target = document.getElementById('cx-01-q1');
             const cx01Line = document.getElementById('cnot-line-01');
-            
+
             if (cx01Control && cx01Target && cx01Line) {
                 const controlRect = cx01Control.getBoundingClientRect();
                 const targetRect = cx01Target.getBoundingClientRect();
                 const circuitRect = circuit.getBoundingClientRect();
-                
+
                 const top = controlRect.top - circuitRect.top + controlRect.height / 2;
                 const height = targetRect.top - controlRect.top;
                 const left = controlRect.left - circuitRect.left + controlRect.width / 2;
-                
+
                 cx01Line.style.top = top + 'px';
                 cx01Line.style.height = height + 'px';
                 cx01Line.style.left = left + 'px';
@@ -1069,17 +1170,14 @@
 
         // Show section function
         function showSection(sectionId) {
-            // Hide all panels
             const panels = document.querySelectorAll('.content-panel');
             panels.forEach(panel => panel.classList.remove('active'));
-            
-            // Show selected panel
+
             const selectedPanel = document.getElementById(sectionId);
             if (selectedPanel) {
                 selectedPanel.classList.add('active');
             }
-            
-            // Update button states
+
             const buttons = document.querySelectorAll('.control-btn');
             buttons.forEach(btn => {
                 btn.classList.remove('active');
@@ -1087,8 +1185,7 @@
                     btn.classList.add('active');
                 }
             });
-            
-            // Scroll to content
+
             selectedPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
@@ -1097,12 +1194,11 @@
             const resultElement = document.getElementById(`measure-${qubitNum}`);
             const outcomes = ['0', '1'];
             const result = outcomes[Math.floor(Math.random() * outcomes.length)];
-            
-            // Animate measurement
+
             resultElement.style.transform = 'scale(1.3)';
             resultElement.style.color = result === '0' ? '#00ffff' : '#ff00ff';
             resultElement.textContent = result;
-            
+
             setTimeout(() => {
                 resultElement.style.transform = 'scale(1)';
             }, 300);
@@ -1137,47 +1233,34 @@
         function sortPublications() {
             const publicationsPanel = document.getElementById('publications');
             if (!publicationsPanel) return;
-            
-            // Get all publication list sections
+
             const sections = publicationsPanel.querySelectorAll('h3');
-            
+
             sections.forEach(section => {
                 const ul = section.nextElementSibling;
                 if (!ul || ul.tagName !== 'UL') return;
-                
-                // Get all list items
+
                 const items = Array.from(ul.querySelectorAll('li'));
-                
-                // Sort items by year (descending)
+
                 items.sort((a, b) => {
-                    // Extract year from the text - looks for (YYYY) or YYYY
                     const yearA = extractYear(a.textContent);
                     const yearB = extractYear(b.textContent);
-                    
-                    // Sort descending (newest first)
                     return yearB - yearA;
                 });
-                
-                // Clear the list and re-append in sorted order
+
                 ul.innerHTML = '';
                 items.forEach(item => ul.appendChild(item));
             });
         }
-        
-        // Helper function to extract year from publication text
+
         function extractYear(text) {
-            // Look for (2024) or (2025) pattern
             const match = text.match(/\((\d{4})\)/);
             if (match) return parseInt(match[1]);
-            
-            // Look for standalone year like "2024" or "2025"
             const yearMatch = text.match(/\b(20\d{2})\b/);
             if (yearMatch) return parseInt(yearMatch[1]);
-            
-            return 0; // Default if no year found
+            return 0;
         }
-        
-        // Initialize on load
+
         window.addEventListener('load', () => {
             createStars();
             setTimeout(initCNOTLines, 100);
