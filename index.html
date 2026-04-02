@@ -10,7 +10,10 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-0YR64TBD6K');
+      const _allowed = ['nitinjha.github.io', 'localhost', '127.0.0.1'];
+      if (_allowed.some(h => location.hostname === h || location.hostname.endsWith('.' + h))) {
+        gtag('config', 'G-0YR64TBD6K');
+      }
     </script>
     <style>
         * {
@@ -660,6 +663,14 @@
                 <div class="wave-bar"></div>
                 <div class="wave-bar"></div>
             </div>
+        </div>
+
+        <div style="text-align:center; margin-bottom: 16px;">
+            <a href="projects.html" style="display:inline-block; padding: 11px 28px; border: 2px solid #ff00ff; border-radius: 8px; background: rgba(255,0,255,0.08); color: #ff00ff; font-family: 'Courier New', monospace; font-size: 0.95em; text-decoration: none; transition: all .3s ease;"
+               onmouseover="this.style.background='rgba(255,0,255,0.22)';this.style.boxShadow='0 0 20px rgba(255,0,255,0.4)'"
+               onmouseout="this.style.background='rgba(255,0,255,0.08)';this.style.boxShadow='none'">
+                🌿 View Research Tree
+            </a>
         </div>
 
         <div class="circuit-controls">
