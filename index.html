@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nitin Jha | Quantum Portfolio</title>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0YR64TBD6K"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      const _allowed = ['nitinjha.github.io', 'localhost', '127.0.0.1'];
-      if (_allowed.some(h => location.hostname === h || location.hostname.endsWith('.' + h))) {
-        gtag('config', 'G-0YR64TBD6K');
-      }
+      (function() {
+        const _id = [71,45,48,89,82,54,52,84,66,68,54,75].map(n=>String.fromCharCode(n)).join('');
+        const _allowed = ['nitinjha.github.io', 'localhost', '127.0.0.1'];
+        if (!_allowed.some(h => location.hostname === h || location.hostname.endsWith('.' + h))) return;
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', _id);
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + _id;
+        document.head.appendChild(s);
+      })();
     </script>
     <style>
         * {
@@ -1062,12 +1067,16 @@
             <p>The CNOT gate creates quantum entanglement. Let's create connections in the classical world! Feel free to reach out for collaborations, research discussions, or any questions about my work.</p>
 
             <h3>Get in Touch</h3>
-            <p>I'm always interested in discussing quantum networking/communication research, potential collaborations, and new opportunities in quantum technology. Best way to contact me is through my email listed here!</p>
+            <p>I'm always interested in discussing quantum networking/communication research, potential collaborations, and new opportunities in quantum technology. Send me a message directly using the button below!</p>
 
-            <div style="margin-top: 30px;">
-                <p><strong>Email:</strong> <span id="obf-email"></span></p>
+            <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
                 <p><strong>Location:</strong> Georgia, USA</p>
-                <a href="resume.pdf" download class="social-link" style="margin-top: 10px; display: inline-block;">
+            </div>
+            <div style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px;">
+                <button onclick="openContactModal()" class="social-link" style="border: none; cursor: pointer; font-family: 'Courier New', monospace; font-size: 1em;">
+                    ✉️ Send Me a Message
+                </button>
+                <a href="resume.pdf" download class="social-link">
                     📄 Download Resume
                 </a>
             </div>
@@ -1101,6 +1110,48 @@
             <p style="margin-top: 30px; padding: 20px; background: rgba(0,255,255,0.05); border-left: 4px solid #00ffff; border-radius: 5px;">
                 <strong>Note:</strong> This portfolio is designed as a quantum circuit where each gate click reveals different aspects of my work. Try clicking on the quantum gates above to navigate, or use the measurement operators to see random outcomes! The circuit metaphor represents how my different research areas are interconnected, much like entangled qubits in a quantum system.
             </p>
+        </div>
+    </div>
+
+    <!-- ── Contact Modal ── -->
+    <div id="contact-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.78); z-index:200; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(4px);" onclick="closeContactOnOverlay(event)">
+        <div style="background:#0e0e22; border:2px solid #00ffff; border-radius:14px; max-width:520px; width:100%; padding:30px; position:relative; box-shadow:0 0 40px rgba(0,255,255,0.2); max-height:90vh; overflow-y:auto;">
+            <button onclick="closeContactModal()" style="position:absolute; top:14px; right:16px; background:none; border:none; color:#00ffff; font-size:1.4em; cursor:pointer; line-height:1;">✕</button>
+            <h3 style="color:#00ffff; margin-bottom:6px; font-size:1.2em;">✉️ Send a Message</h3>
+            <p style="color:rgba(224,224,255,0.6); font-size:0.8em; margin-bottom:20px;">Your message goes directly to my inbox — no email address needed.</p>
+
+            <form id="contact-form" style="display:flex; flex-direction:column; gap:14px;">
+                <div>
+                    <label style="color:#ff00ff; font-size:0.8em; display:block; margin-bottom:5px;">Your Name</label>
+                    <input type="text" name="name" required placeholder="Jane Smith"
+                        style="width:100%; padding:10px 12px; background:rgba(0,255,255,0.05); border:1px solid rgba(0,255,255,0.3); border-radius:7px; color:#e0e0ff; font-family:'Courier New',monospace; font-size:0.9em; outline:none;"
+                        onfocus="this.style.borderColor='#00ffff'" onblur="this.style.borderColor='rgba(0,255,255,0.3)'">
+                </div>
+                <div>
+                    <label style="color:#ff00ff; font-size:0.8em; display:block; margin-bottom:5px;">Your Email</label>
+                    <input type="email" name="email" required placeholder="you@example.com"
+                        style="width:100%; padding:10px 12px; background:rgba(0,255,255,0.05); border:1px solid rgba(0,255,255,0.3); border-radius:7px; color:#e0e0ff; font-family:'Courier New',monospace; font-size:0.9em; outline:none;"
+                        onfocus="this.style.borderColor='#00ffff'" onblur="this.style.borderColor='rgba(0,255,255,0.3)'">
+                </div>
+                <div>
+                    <label style="color:#ff00ff; font-size:0.8em; display:block; margin-bottom:5px;">Subject</label>
+                    <input type="text" name="subject" placeholder="Research collaboration, question..."
+                        style="width:100%; padding:10px 12px; background:rgba(0,255,255,0.05); border:1px solid rgba(0,255,255,0.3); border-radius:7px; color:#e0e0ff; font-family:'Courier New',monospace; font-size:0.9em; outline:none;"
+                        onfocus="this.style.borderColor='#00ffff'" onblur="this.style.borderColor='rgba(0,255,255,0.3)'">
+                </div>
+                <div>
+                    <label style="color:#ff00ff; font-size:0.8em; display:block; margin-bottom:5px;">Message</label>
+                    <textarea name="message" required rows="5" placeholder="Your message here..."
+                        style="width:100%; padding:10px 12px; background:rgba(0,255,255,0.05); border:1px solid rgba(0,255,255,0.3); border-radius:7px; color:#e0e0ff; font-family:'Courier New',monospace; font-size:0.9em; outline:none; resize:vertical;"
+                        onfocus="this.style.borderColor='#00ffff'" onblur="this.style.borderColor='rgba(0,255,255,0.3)'"></textarea>
+                </div>
+                <button type="submit" id="contact-submit"
+                    style="padding:11px; background:rgba(0,255,255,0.12); border:2px solid #00ffff; border-radius:8px; color:#00ffff; font-family:'Courier New',monospace; font-size:0.95em; cursor:pointer; transition:all .3s;"
+                    onmouseover="this.style.background='rgba(0,255,255,0.25)'" onmouseout="this.style.background='rgba(0,255,255,0.12)'">
+                    Send Message →
+                </button>
+                <p id="contact-status" style="text-align:center; font-size:0.85em; display:none;"></p>
+            </form>
         </div>
     </div>
 
@@ -1270,6 +1321,60 @@
             });
         }
 
+        // ── Contact modal ──────────────────────────────────────
+        function openContactModal() {
+            const m = document.getElementById('contact-modal');
+            m.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            // reset form
+            document.getElementById('contact-form').reset();
+            const s = document.getElementById('contact-status');
+            s.style.display = 'none';
+            document.getElementById('contact-submit').disabled = false;
+            document.getElementById('contact-submit').textContent = 'Send Message →';
+        }
+
+        function closeContactModal() {
+            document.getElementById('contact-modal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function closeContactOnOverlay(e) {
+            if (e.target === document.getElementById('contact-modal')) closeContactModal();
+        }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeContactModal(); });
+
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('contact-submit');
+            const status = document.getElementById('contact-status');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            try {
+                const res = await fetch(window._contactEndpoint, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: new FormData(this)
+                });
+                if (res.ok) {
+                    status.textContent = '✅ Message sent! I\'ll get back to you soon.';
+                    status.style.color = '#00ffff';
+                    status.style.display = 'block';
+                    this.reset();
+                    btn.textContent = 'Sent!';
+                } else {
+                    throw new Error('failed');
+                }
+            } catch {
+                status.textContent = '❌ Something went wrong. Please try again.';
+                status.style.color = '#ff00ff';
+                status.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Send Message →';
+            }
+        });
+
         function extractYear(text) {
             const match = text.match(/\((\d{4})\)/);
             if (match) return parseInt(match[1]);
@@ -1282,12 +1387,12 @@
             createStars();
             setTimeout(initCNOTLines, 100);
             sortPublications();
-            // Email obfuscation — assembled at runtime so bots can't scrape it
+            // Contact modal
             (function() {
-                const c = [110,106,104,97,49,64,115,116,117,100,101,110,116,115,46,107,101,110,110,101,115,97,119,46,101,100,117];
-                const e = c.map(n => String.fromCharCode(n)).join('');
-                const el = document.getElementById('obf-email');
-                if (el) el.innerHTML = '<a href="mailto:' + e + '">' + e + '</a>';
+                // Formspree endpoint — replace YOUR_FORM_ID after signing up at formspree.io
+                const _ep = [104,116,116,112,115,58,47,47,102,111,114,109,115,112,114,101,101,46,105,111,47,102,47,109,100,97,112,119,101,108,113]
+                             .map(n=>String.fromCharCode(n)).join('');
+                window._contactEndpoint = _ep;
             })();
         });
     </script>
