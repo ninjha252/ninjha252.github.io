@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CSS Error Correction — Explained</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1A2A4A;
+    font-family: 'Trebuchet MS', sans-serif;
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* ── Header ── */
+  #header {
+    text-align: center;
+    margin-bottom: 28px;
+    transition: opacity 0.4s;
+  }
+  #header .label {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: #F0A500;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  #header h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  /* ── Main canvas ── */
+  #canvas {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 48px;
+    width: 100%;
+    max-width: 1100px;
+    padding: 0 40px;
+  }
+
+  /* ── Grid ── */
+  #grid-wrap { display: flex; flex-direction: column; align-items: center; }
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(4, 80px);
+    grid-template-rows: repeat(4, 80px);
+    gap: 6px;
+    position: relative;
+  }
+  .cell {
+    width: 80px; height: 80px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: bold;
+    transition: background 0.45s, color 0.45s, transform 0.35s, box-shadow 0.45s, opacity 0.45s;
+    cursor: default;
+    position: relative;
+  }
+  .cell .cell-label {
+    position: absolute;
+    top: 5px; left: 8px;
+    font-size: 9px;
+    font-weight: normal;
+    opacity: 0.55;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Cell types */
+  .data    { background: #243454; color: #C8DCFC; }
+  .parity  { background: #013848; color: #C8DCFC; opacity: 0; }
+  .corner  { background: #013848; color: #C8DCFC; opacity: 0; }
+  .divider { background: transparent; opacity: 0; pointer-events: none; }
+
+  /* States */
+  .cell.visible   { opacity: 1 !important; }
+  .cell.highlight { background: #028090 !important; color: #fff !important; box-shadow: 0 0 18px #028090aa; transform: scale(1.08); }
+  .cell.gold-hi   { background: #F0A500 !important; color: #1A2A4A !important; box-shadow: 0 0 18px #F0A500aa; transform: scale(1.08); }
+  .cell.error     { background: #C0392B !important; color: #fff !important; box-shadow: 0 0 22px #C0392Bcc; transform: scale(1.12); animation: pulse-err 0.9s ease-in-out 2; }
+  .cell.fail      { background: #7B1A0F !important; color: #ff8888 !important; box-shadow: 0 0 16px #C0392B88; }
+  .cell.fixed     { background: #1A7A4A !important; color: #fff !important; box-shadow: 0 0 18px #1A7A4Aaa; transform: scale(1.12); animation: pulse-ok 0.6s ease-in-out; }
+
+  @keyframes pulse-err {
+    0%,100% { transform: scale(1.12); }
+    50%      { transform: scale(1.22); }
+  }
+  @keyframes pulse-ok {
+    0%   { transform: scale(1.25); }
+    100% { transform: scale(1.08); }
+  }
+
+  /* Divider lines */
+  #div-col { position: absolute; left: calc(3*80px + 3*6px + 3px); top: 0; width: 3px; height: calc(3*80px + 2*6px); background: #F0A500; border-radius: 2px; opacity: 0; transition: opacity 0.4s; }
+  #div-row { position: absolute; top: calc(3*80px + 3*6px + 3px); left: 0; height: 3px; width: calc(3*80px + 2*6px); background: #F0A500; border-radius: 2px; opacity: 0; transition: opacity 0.4s; }
+
+  .dividers-visible #div-col,
+  .dividers-visible #div-row { opacity: 1; }
+
+  /* Check badges */
+  .check-badge {
+    position: absolute;
+    right: -26px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 0.35s;
+    pointer-events: none;
+  }
+  .check-badge.visible { opacity: 1; }
+
+  /* Grid labels */
+  .grid-legend {
+    display: flex; gap: 20px; margin-top: 14px;
+    font-size: 12px; color: #8899BB;
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .grid-legend.visible { opacity: 1; }
+  .legend-dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: middle; }
+
+  /* ── Explanation panel ── */
+  #panel {
+    flex: 1;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 4px;
+  }
+  .bubble {
+    background: #243454;
+    border-left: 4px solid #028090;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #C8DCFC;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  .bubble.visible { opacity: 1; transform: translateY(0); }
+  .bubble.gold { border-color: #F0A500; }
+  .bubble.red  { border-color: #C0392B; background: #2A1A1A; }
+  .bubble.green{ border-color: #1A7A4A; }
+  .bubble strong { color: #fff; }
+  .bubble .tag {
+    display: inline-block;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: #F0A500; font-weight: bold; margin-bottom: 6px;
+  }
+
+  /* ── Step indicator ── */
+  #steps-bar {
+    display: flex; gap: 8px; margin-top: 28px;
+  }
+  .step-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #243454;
+    border: 2px solid #3A5080;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .step-dot.active   { background: #F0A500; border-color: #F0A500; }
+  .step-dot.done     { background: #028090; border-color: #028090; }
+
+  /* ── Nav ── */
+  #nav {
+    position: fixed; bottom: 28px; right: 36px;
+    display: flex; gap: 12px;
+  }
+  .nav-btn {
+    background: #243454; border: 1.5px solid #3A5080;
+    color: #C8DCFC; font-size: 14px;
+    padding: 10px 22px; border-radius: 8px;
+    cursor: pointer; transition: background 0.2s, border-color 0.2s;
+  }
+  .nav-btn:hover { background: #028090; border-color: #028090; color: #fff; }
+  .nav-btn.primary { background: #028090; border-color: #028090; color: #fff; }
+  .nav-btn.primary:hover { background: #03A8BD; }
+
+  #hint {
+    position: fixed; bottom: 34px; left: 36px;
+    font-size: 12px; color: #3A5080; letter-spacing: 1px;
+  }
+
+  /* ── Two-layer slide ── */
+  #two-layers {
+    display: none;
+    gap: 32px;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    max-width: 900px;
+  }
+  .layer-card {
+    flex: 1; background: #243454; border-radius: 14px;
+    padding: 24px 28px; border-top: 4px solid #028090;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .layer-card.visible { opacity: 1; transform: translateY(0); }
+  .layer-card.gold-card { border-color: #F0A500; }
+  .layer-card h3 { font-size: 18px; margin-bottom: 10px; }
+  .layer-card p  { font-size: 14px; line-height: 1.6; color: #8899BB; }
+  .layer-card .icon { font-size: 36px; margin-bottom: 12px; }
+
+  /* ── JEEC slide ── */
+  #jeec-slide {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    width: 100%;
+    max-width: 860px;
+  }
+  .jeec-flow {
+    display: flex; align-items: center; gap: 0; width: 100%;
+  }
+  .jeec-stage {
+    flex: 1; background: #243454; border-radius: 14px;
+    padding: 22px 16px; text-align: center;
+    border-top: 4px solid #028090;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  .jeec-stage.visible { opacity: 1; transform: translateY(0); }
+  .jeec-stage .stage-icon { font-size: 30px; margin-bottom: 8px; }
+  .jeec-stage h4 { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 6px; }
+  .jeec-stage p  { font-size: 11px; color: #8899BB; line-height: 1.5; }
+  .jeec-stage .css-badge {
+    margin-top: 12px; display: inline-block;
+    background: #1A7A4A; color: #fff;
+    font-size: 10px; padding: 3px 10px; border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .jeec-arrow {
+    font-size: 24px; color: #3A5080; padding: 0 6px;
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .jeec-arrow.visible { opacity: 1; }
+  .jeec-tagline {
+    font-size: 20px; color: #C8DCFC; text-align: center;
+    opacity: 0; transition: opacity 0.5s;
+    line-height: 1.6;
+  }
+  .jeec-tagline.visible { opacity: 1; }
+  .jeec-tagline strong { color: #F0A500; }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="label">JEEC Protocol — CSS Error Correction</div>
+  <h1 id="main-title">Protecting Quantum Messages Without Reading Them</h1>
+</div>
+
+<!-- MAIN GRID + PANEL (steps 0–6) -->
+<div id="canvas">
+  <div id="grid-wrap">
+    <div id="grid">
+      <!-- Data cells (3×3) -->
+      <div class="cell data" id="c00"><span class="cell-label">qubit</span><span class="val">1</span></div>
+      <div class="cell data" id="c01"><span class="cell-label">qubit</span><span class="val">0</span></div>
+      <div class="cell data" id="c02"><span class="cell-label">qubit</span><span class="val">1</span></div>
+      <!-- Row 0 parity -->
+      <div class="cell parity" id="p0"><span class="cell-label">check</span><span class="val">0</span></div>
+
+      <div class="cell data" id="c10"><span class="cell-label">qubit</span><span class="val">0</span></div>
+      <div class="cell data" id="c11"><span class="cell-label">qubit</span><span class="val">1</span></div>
+      <div class="cell data" id="c12"><span class="cell-label">qubit</span><span class="val">0</span></div>
+      <!-- Row 1 parity -->
+      <div class="cell parity" id="p1"><span class="cell-label">check</span><span class="val">1</span></div>
+
+      <div class="cell data" id="c20"><span class="cell-label">qubit</span><span class="val">1</span></div>
+      <div class="cell data" id="c21"><span class="cell-label">qubit</span><span class="val">1</span></div>
+      <div class="cell data" id="c22"><span class="cell-label">qubit</span><span class="val">0</span></div>
+      <!-- Row 2 parity -->
+      <div class="cell parity" id="p2"><span class="cell-label">check</span><span class="val">0</span></div>
+
+      <!-- Col parities -->
+      <div class="cell parity" id="q0"><span class="cell-label">check</span><span class="val">0</span></div>
+      <div class="cell parity" id="q1"><span class="cell-label">check</span><span class="val">0</span></div>
+      <div class="cell parity" id="q2"><span class="cell-label">check</span><span class="val">1</span></div>
+      <!-- Corner -->
+      <div class="cell corner" id="corner"><span class="val">1</span></div>
+
+      <!-- Divider lines -->
+      <div id="div-col"></div>
+      <div id="div-row"></div>
+
+      <!-- Check badges -->
+      <div class="check-badge" id="badge0" style="top:28px">✓</div>
+      <div class="check-badge" id="badge1" style="top:114px">✓</div>
+      <div class="check-badge" id="badge2" style="top:200px">✓</div>
+    </div>
+
+    <div class="grid-legend" id="legend">
+      <span><span class="legend-dot" style="background:#243454;border:2px solid #3A5080"></span>Data qubit</span>
+      <span><span class="legend-dot" style="background:#013848;border:2px solid #028090"></span>Check cell</span>
+    </div>
+  </div>
+
+  <div id="panel"></div>
+</div>
+
+<!-- TWO LAYERS (step 7) -->
+<div id="two-layers">
+  <div class="layer-card" id="layer1">
+    <div class="icon">⟨0|1⟩</div>
+    <h3 style="color:#028090">Layer 1 — Bit-Flip Checks</h3>
+    <p>Catches classical-style errors: a qubit that should be <strong style="color:#fff">0</strong> accidentally becomes <strong style="color:#fff">1</strong>.<br><br>These are the row checks — the same ones we just saw in the Sudoku grid.</p>
+  </div>
+  <div class="layer-card gold-card" id="layer2">
+    <div class="icon">⟨+|−⟩</div>
+    <h3 style="color:#F0A500">Layer 2 — Phase-Flip Checks</h3>
+    <p>Catches purely <em>quantum</em> errors: a qubit's <strong style="color:#fff">phase</strong> flips — invisible in the classical world, but fatal for quantum communication.<br><br>These are the column checks — a second identical grid, rotated 90°.</p>
+  </div>
+</div>
+
+<!-- JEEC SLIDE (step 8) -->
+<div id="jeec-slide">
+  <div class="jeec-flow">
+    <div class="jeec-stage" id="js1">
+      <div class="stage-icon">🔐</div>
+      <h4>Stage 1</h4>
+      <p>Alice locks the quantum message with her operator</p>
+      <span class="css-badge">CSS active</span>
+    </div>
+    <div class="jeec-arrow" id="ja1">→</div>
+    <div class="jeec-stage" id="js2">
+      <div class="stage-icon">🔒</div>
+      <h4>Stage 2</h4>
+      <p>Bob adds his own lock and sends it back</p>
+      <span class="css-badge">CSS active</span>
+    </div>
+    <div class="jeec-arrow" id="ja2">→</div>
+    <div class="jeec-stage" id="js3">
+      <div class="stage-icon">📬</div>
+      <h4>Stage 3</h4>
+      <p>Both locks removed — message delivered</p>
+      <span class="css-badge">CSS active</span>
+    </div>
+  </div>
+  <p class="jeec-tagline" id="jt">
+    At <strong>every stage</strong>, CSS error correction runs automatically —<br>
+    detecting and fixing both bit-flips and phase-flips<br>
+    <strong>without ever reading the message.</strong>
+  </p>
+</div>
+
+<!-- Nav -->
+<div id="nav">
+  <button class="nav-btn" id="btn-prev" onclick="go(-1)">← Back</button>
+  <button class="nav-btn primary" id="btn-next" onclick="go(1)">Next →</button>
+</div>
+<div id="hint">Press → or click Next to advance</div>
+<div id="steps-bar"></div>
+
+<script>
+const TOTAL = 9;
+let step = 0;
+
+// ── Step definitions ──────────────────────────────────────────────────────────
+const steps = [
+  // 0 — intro: show data cells
+  () => {
+    setTitle("Protecting Quantum Messages Without Reading Them");
+    showCanvas(true);
+    resetGrid();
+    showPanel([
+      { tag: "The Challenge", text: "Quantum states are fragile. Even tiny vibrations, temperature changes, or stray electromagnetic fields can corrupt a qubit mid-transmission." },
+      { tag: "The Constraint", text: "Unlike classical data, you <strong>can't copy</strong> a quantum state to check it, and <strong>measuring it directly destroys</strong> the information inside.", cls: "gold" },
+    ]);
+  },
+  // 1 — show the data grid highlighted
+  () => {
+    setTitle("Your message is spread across multiple qubits");
+    showCanvas(true);
+    resetGrid();
+    highlightCells(['c00','c01','c02','c10','c11','c12','c20','c21','c22'], 'highlight');
+    showPanel([
+      { tag: "Step 1 — Encoding", text: "CSS codes <strong>spread your quantum message</strong> across multiple physical qubits — like hiding a word across different letters of a sentence." },
+      { tag: "", text: "Each coloured cell is a <strong>data qubit</strong>. Together they carry your secret. No single cell contains the full message.", cls: "gold" },
+    ]);
+  },
+  // 2 — show parity cells
+  () => {
+    setTitle("CSS adds 'check cells' that monitor without reading");
+    showCanvas(true);
+    resetGrid();
+    showParities(true);
+    showDividers(true);
+    showLegend(true);
+    highlightCells(['p0','p1','p2','q0','q1','q2','corner'], 'gold-hi');
+    showPanel([
+      { tag: "Step 2 — Check Cells", text: "CSS adds <strong>extra 'check cells'</strong> along the edges. They don't carry your message — they exist purely to watch over the data qubits.", cls: "gold" },
+      { tag: "", text: "Each check cell holds the <strong>XOR sum</strong> of its row or column — like a Sudoku row that must always balance. If it stops balancing, something went wrong." },
+    ]);
+  },
+  // 3 — explain the rule
+  () => {
+    setTitle("The rule: every row and column must 'balance'");
+    showCanvas(true);
+    resetGrid();
+    showParities(true);
+    showDividers(true);
+    showLegend(true);
+    showBadges(true);
+    showPanel([
+      { tag: "The Invariant", text: "Every row: <strong>data qubits ⊕ check cell = 0</strong><br>Every column: <strong>data qubits ⊕ check cell = 0</strong>", cls: "gold" },
+      { tag: "", text: "The ✓ badges show that all checks currently pass. The system is healthy — no errors have occurred yet." },
+      { tag: "Key Insight", text: "CSS can verify these checks <strong>without ever measuring the actual data</strong>. The checks are blind to the message content — they only see the pattern.", cls: "green" },
+    ]);
+  },
+  // 4 — inject error
+  () => {
+    setTitle("Noise strikes — a qubit gets corrupted");
+    showCanvas(true);
+    resetGrid();
+    showParities(true);
+    showDividers(true);
+    showLegend(true);
+    showBadges(false);
+    // Flip cell c12: 0 → 1
+    document.querySelector('#c12 .val').textContent = '1';
+    highlightCells(['c12'], 'error');
+    showPanel([
+      { tag: "Step 3 — Error!", text: "A noise event corrupts one qubit. Cell [row 1, col 2] flips from <strong>0 → 1</strong>. This is an X (bit-flip) error.", cls: "red" },
+      { tag: "", text: "This could happen because of fibre attenuation, interference from a classical channel, or thermal noise in the detector.", cls: "red" },
+      { tag: "", text: "Neither Alice nor Bob can simply 'look' at the qubit to check — measuring it would collapse the quantum state." },
+    ]);
+  },
+  // 5 — failing checks
+  () => {
+    setTitle("The check cells fire — error located, message untouched");
+    showCanvas(true);
+    resetGrid();
+    showParities(true);
+    showDividers(true);
+    showLegend(true);
+    showBadges(false);
+    document.querySelector('#c12 .val').textContent = '1';
+    // Update failing parities
+    document.querySelector('#p1 .val').textContent = '0'; // was 1, now fails
+    document.querySelector('#q2 .val').textContent = '0'; // was 1, now fails
+    highlightCells(['c12'], 'error');
+    highlightCells(['p1', 'q2'], 'fail');
+    // Badges: row 0 and 2 pass, row 1 fails
+    document.querySelectorAll('.check-badge').forEach(b => b.classList.remove('visible'));
+    document.getElementById('badge0').textContent = '✓';
+    document.getElementById('badge0').classList.add('visible');
+    document.getElementById('badge2').textContent = '✓';
+    document.getElementById('badge2').classList.add('visible');
+    showPanel([
+      { tag: "Step 4 — Detection", text: "<strong>Row 1 check fails</strong> ✗ — the balance is broken.<br><strong>Column 2 check fails</strong> ✗ — the balance is broken.", cls: "red" },
+      { tag: "", text: "The error is at the <strong>intersection of the failing row and column</strong>: cell [row 1, col 2].<br>Found — without reading a single data qubit.", cls: "gold" },
+      { tag: "Crucially", text: "Row 0 ✓ and Row 2 ✓ still pass. CSS knows <em>exactly</em> which qubit is wrong and which are fine.", cls: "green" },
+    ]);
+  },
+  // 6 — fix
+  () => {
+    setTitle("CSS corrects the error — message fully restored");
+    showCanvas(true);
+    resetGrid();
+    showParities(true);
+    showDividers(true);
+    showLegend(true);
+    showBadges(true);
+    showPanel([
+      { tag: "Step 5 — Correction", text: "CSS applies a <strong>correction operator</strong> to cell [1,2], flipping it back to 0. No measurement of the actual message was needed.", cls: "green" },
+      { tag: "", text: "All check cells return to balance. The ✓ badges light up. The quantum message is <strong>intact and uncorrupted</strong>.", cls: "green" },
+      { tag: "The Result", text: "Error detected, located, and corrected — <strong>automatically</strong>, during transmission, without exposing any quantum information.", cls: "gold" },
+    ]);
+  },
+  // 7 — two layers
+  () => {
+    setTitle("But quantum has two types of errors — CSS handles both");
+    showCanvas(false);
+    document.getElementById('two-layers').style.display = 'flex';
+    document.getElementById('jeec-slide').style.display = 'none';
+    setTimeout(() => {
+      document.getElementById('layer1').classList.add('visible');
+      setTimeout(() => document.getElementById('layer2').classList.add('visible'), 250);
+    }, 80);
+    showPanel([]);
+  },
+  // 8 — JEEC
+  () => {
+    setTitle("In JEEC — CSS runs at every stage of the protocol");
+    showCanvas(false);
+    document.getElementById('two-layers').style.display = 'none';
+    document.getElementById('jeec-slide').style.display = 'flex';
+    const els = ['js1','ja1','js2','ja2','js3'];
+    els.forEach((id, i) => setTimeout(() => document.getElementById(id).classList.add('visible'), i * 180));
+    setTimeout(() => document.getElementById('jt').classList.add('visible'), els.length * 180 + 100);
+    showPanel([]);
+  },
+];
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function setTitle(t) { document.getElementById('main-title').textContent = t; }
+
+function showCanvas(show) {
+  document.getElementById('canvas').style.display = show ? 'flex' : 'none';
+  if (!show) {
+    document.getElementById('two-layers').style.display = 'none';
+    document.getElementById('jeec-slide').style.display = 'none';
+  }
+}
+
+function resetGrid() {
+  // Reset all data cells
+  const dataVals = { c00:1,c01:0,c02:1,c10:0,c11:1,c12:0,c20:1,c21:1,c22:0 };
+  Object.entries(dataVals).forEach(([id, v]) => {
+    const el = document.getElementById(id);
+    el.querySelector('.val').textContent = v;
+    el.className = 'cell data';
+  });
+  // Reset parity cells
+  const parVals = { p0:0,p1:1,p2:0,q0:0,q1:0,q2:1 };
+  Object.entries(parVals).forEach(([id,v]) => {
+    const el = document.getElementById(id);
+    el.querySelector('.val').textContent = v;
+    el.className = 'cell parity';
+  });
+  document.getElementById('corner').className = 'cell corner';
+  showDividers(false);
+  showParities(false);
+  showBadges(false);
+  showLegend(false);
+}
+
+function highlightCells(ids, cls) {
+  ids.forEach(id => document.getElementById(id).classList.add(cls));
+}
+
+function showParities(show) {
+  ['p0','p1','p2','q0','q1','q2','corner'].forEach(id => {
+    const el = document.getElementById(id);
+    if (show) el.classList.add('visible');
+    else el.classList.remove('visible');
+  });
+}
+
+function showDividers(show) {
+  document.getElementById('grid').classList.toggle('dividers-visible', show);
+}
+
+function showBadges(show) {
+  document.querySelectorAll('.check-badge').forEach(b => {
+    b.textContent = '✓';
+    b.style.color = '#1A7A4A';
+    if (show) b.classList.add('visible');
+    else b.classList.remove('visible');
+  });
+}
+
+function showLegend(show) {
+  document.getElementById('legend').classList.toggle('visible', show);
+}
+
+function showPanel(items) {
+  const panel = document.getElementById('panel');
+  panel.innerHTML = '';
+  const clsMap = { gold: 'bubble gold', red: 'bubble red', green: 'bubble green', '': 'bubble' };
+  items.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = clsMap[item.cls || ''] || 'bubble';
+    div.innerHTML = (item.tag ? `<div class="tag">${item.tag}</div>` : '') + `<p>${item.text}</p>`;
+    panel.appendChild(div);
+    setTimeout(() => div.classList.add('visible'), i * 120 + 60);
+  });
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function buildDots() {
+  const bar = document.getElementById('steps-bar');
+  bar.innerHTML = '';
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'step-dot' + (i < step ? ' done' : i === step ? ' active' : '');
+    bar.appendChild(d);
+  }
+  // Position below canvas
+  bar.style.position = 'fixed';
+  bar.style.bottom = '70px';
+  bar.style.left = '50%';
+  bar.style.transform = 'translateX(-50%)';
+}
+
+function go(dir) {
+  step = Math.max(0, Math.min(TOTAL - 1, step + dir));
+  render();
+}
+
+function render() {
+  // Reset two-layer and JEEC visibility
+  document.querySelectorAll('.layer-card').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('.jeec-stage, .jeec-arrow, .jeec-tagline').forEach(e => e.classList.remove('visible'));
+  steps[step]();
+  buildDots();
+  document.getElementById('btn-prev').style.opacity = step === 0 ? '0.3' : '1';
+  document.getElementById('btn-next').textContent = step === TOTAL - 1 ? 'Done ✓' : 'Next →';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); go(-1); }
+});
+
+render();
+</script>
+</body>
+</html>
