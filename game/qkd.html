@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QKD — General Setup</title>
+  <style>
+    :root {
+      --bg:    #101e35;
+      --card:  #162240;
+      --teal:  #028090;
+      --gold:  #F0A500;
+      --white: #F5F7FA;
+      --light: #C8DCFC;
+      --alice: #0DCAD8;
+      --bob:   #34d399;
+      --eve:   #f87171;
+      --qchan: #60a5fa;
+      --cchan: #f87171;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Trebuchet MS', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 22px 16px 14px;
+    }
+    .proto-label {
+      font-size: 0.72em;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .step-title {
+      font-size: 1.55em;
+      font-weight: bold;
+      color: var(--white);
+      text-align: center;
+      margin-bottom: 16px;
+      min-height: 2em;
+      max-width: 900px;
+    }
+    .svg-wrap {
+      width: 100%;
+      max-width: 900px;
+      background: var(--card);
+      border: 1px solid rgba(2,128,144,0.3);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .panel {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      min-height: 78px;
+      margin-bottom: 16px;
+    }
+    .bubble {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border-left: 4px solid var(--teal);
+      background: rgba(2,128,144,0.1);
+      font-size: 0.87em;
+      line-height: 1.65;
+      color: var(--light);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.35s, transform 0.35s;
+    }
+    .bubble.visible { opacity: 1; transform: none; }
+    .bubble.gold  { border-color: var(--gold); background: rgba(240,165,0,0.08); }
+    .bubble.red   { border-color: var(--eve);  background: rgba(248,113,113,0.08); }
+    .bubble.green { border-color: #34d399;     background: rgba(52,211,153,0.07); }
+    .nav { display: flex; align-items: center; gap: 14px; }
+    .dots { display: flex; gap: 8px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(200,220,252,0.2); transition: background 0.3s; }
+    .dot.active { background: var(--gold); }
+    .btn {
+      padding: 9px 22px; border-radius: 8px;
+      border: 2px solid var(--teal);
+      background: rgba(2,128,144,0.12);
+      color: var(--white);
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 0.9em; cursor: pointer;
+      transition: background 0.25s;
+    }
+    .btn:hover:not(:disabled) { background: rgba(2,128,144,0.3); }
+    .btn:disabled { opacity: 0.3; cursor: default; }
+    .hint { font-size: 0.68em; color: rgba(200,220,252,0.35); margin-top: 9px; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="proto-label">QUANTUM KEY DISTRIBUTION — GENERAL SETUP</div>
+<div class="step-title" id="step-title"></div>
+
+<div class="svg-wrap">
+<svg id="main-svg" viewBox="0 0 900 390" xmlns="http://www.w3.org/2000/svg"
+     style="width:100%;display:block;">
+  <defs>
+    <filter id="glow-q" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-a" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-e" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Fiber gradient -->
+    <linearGradient id="fiber-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#0DCAD8" stop-opacity="0.9"/>
+      <stop offset="50%"  stop-color="#60a5fa" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="classical-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#f87171"/>
+      <stop offset="100%" stop-color="#fb923c"/>
+    </linearGradient>
+    <!-- Wire 3-D gradient (top-lit) -->
+    <linearGradient id="wire-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#fca5a5" stop-opacity="1"/>
+      <stop offset="28%"  stop-color="#f87171" stop-opacity="1"/>
+      <stop offset="65%"  stop-color="#b91c1c" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#7f1d1d" stop-opacity="1"/>
+    </linearGradient>
+    <!-- Wire highlight -->
+    <linearGradient id="wire-shine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Fiber tube effect -->
+    <filter id="fiber-glow" x="-5%" y="-80%" width="110%" height="260%">
+      <feGaussianBlur stdDeviation="2.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- ══════════════════════════════════════════════
+       QUANTUM CHANNEL — blue optical fiber arc
+       Path: M158,205 C290,32 610,32 742,205
+       ══════════════════════════════════════════════ -->
+  <!-- Thick glow backing -->
+  <path d="M158,205 C290,32 610,32 742,205"
+        fill="none" stroke="#60a5fa" stroke-width="14"
+        stroke-linecap="round" opacity="0.08"/>
+  <!-- Inner fiber tube -->
+  <path d="M158,205 C290,32 610,32 742,205"
+        fill="none" stroke="url(#fiber-grad)" stroke-width="4"
+        stroke-linecap="round" filter="url(#fiber-glow)" opacity="0.85"
+        id="q-fiber"/>
+  <!-- Label -->
+  <text id="q-chan-lbl" x="450" y="24" text-anchor="middle"
+        fill="rgba(96,165,250,0.75)" font-size="10.5"
+        font-family="Trebuchet MS" letter-spacing="1.2">
+    QUANTUM CHANNEL (UNAUTHENTICATED)
+  </text>
+  <!-- |ψ⟩ label that appears during photon travel -->
+  <text id="lbl-psi" x="450" y="52" text-anchor="middle"
+        fill="rgba(96,165,250,0.9)" font-size="12"
+        font-family="Trebuchet MS" font-style="italic" opacity="0">Quantum States |ψ⟩</text>
+
+  <!-- ══════════════════════════════════════════════
+       CLASSICAL CHANNEL — rectangular wire
+       Centered at y=338, height=14 → y=331..345
+       ══════════════════════════════════════════════ -->
+  <g id="c-line">
+    <!-- Shadow/depth -->
+    <rect x="158" y="333" width="584" height="14" rx="3.5"
+          fill="#450a0a" opacity="0.55"/>
+    <!-- Wire body -->
+    <rect x="158" y="331" width="584" height="14" rx="3.5"
+          fill="url(#wire-grad)" opacity="0.88"/>
+    <!-- Specular highlight strip -->
+    <rect x="160" y="332" width="580" height="5" rx="2.5"
+          fill="url(#wire-shine)"/>
+    <!-- Left end cap -->
+    <rect x="155" y="329" width="8" height="18" rx="2"
+          fill="#b91c1c" opacity="0.9"/>
+    <!-- Right end cap -->
+    <rect x="737" y="329" width="8" height="18" rx="2"
+          fill="#b91c1c" opacity="0.9"/>
+  </g>
+  <!-- Arrowheads for classical channel (shown when active) -->
+  <polygon id="c-arr-r" points="724,332 742,338 724,344" fill="#fca5a5" opacity="0"/>
+  <polygon id="c-arr-l" points="176,332 158,338 176,344" fill="#fca5a5" opacity="0"/>
+  <text id="c-chan-lbl" x="450" y="356" text-anchor="middle"
+        fill="rgba(248,113,113,0.72)" font-size="10"
+        font-family="Trebuchet MS" letter-spacing="1">
+    CLASSICAL CHANNEL (AUTHENTICATED, PUBLIC)
+  </text>
+  <text id="c-post-lbl" x="450" y="372" text-anchor="middle"
+        fill="rgba(248,113,113,0.55)" font-size="9"
+        font-family="Trebuchet MS" opacity="0">
+    Basis Exchange · Error Estimation · Privacy Amplification
+  </text>
+
+  <!-- ══════════════════════════════════════════════
+       ALICE BOX
+       ══════════════════════════════════════════════ -->
+  <g id="alice-g">
+    <rect x="12" y="118" width="132" height="210" rx="12"
+          fill="#162240" stroke="#0DCAD8" stroke-width="2" id="alice-rect"/>
+    <!-- Name -->
+    <text x="78" y="146" text-anchor="middle" fill="#0DCAD8"
+          font-size="14" font-weight="bold" font-family="Trebuchet MS">Alice</text>
+    <text x="78" y="161" text-anchor="middle" fill="rgba(200,220,252,0.55)"
+          font-size="9.5" font-family="Trebuchet MS">(Sender)</text>
+    <!-- Avatar -->
+    <text x="78" y="200" text-anchor="middle" font-size="26">👩</text>
+    <!-- Sub-labels -->
+    <rect x="24" y="216" width="108" height="30" rx="5"
+          fill="rgba(13,202,216,0.1)" stroke="rgba(13,202,216,0.3)" stroke-width="1"/>
+    <text x="78" y="229" text-anchor="middle" fill="rgba(200,220,252,0.8)"
+          font-size="9" font-family="Trebuchet MS">Quantum</text>
+    <text x="78" y="241" text-anchor="middle" fill="rgba(200,220,252,0.8)"
+          font-size="9" font-family="Trebuchet MS">State Prep</text>
+    <rect x="24" y="255" width="108" height="30" rx="5"
+          fill="rgba(13,202,216,0.1)" stroke="rgba(13,202,216,0.3)" stroke-width="1"/>
+    <text x="78" y="268" text-anchor="middle" fill="rgba(200,220,252,0.8)"
+          font-size="9" font-family="Trebuchet MS">Classical</text>
+    <text x="78" y="280" text-anchor="middle" fill="rgba(200,220,252,0.8)"
+          font-size="9" font-family="Trebuchet MS">Post-Processing</text>
+    <!-- Connection dots -->
+    <circle cx="158" cy="205" r="4.5" fill="#60a5fa"/>
+    <circle cx="158" cy="338" r="4.5" fill="#f87171"/>
+    <!-- Key icon (final step) -->
+    <text id="key-a" x="78" y="112" text-anchor="middle" font-size="22" opacity="0">🔑</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════
+       BOB BOX
+       ══════════════════════════════════════════════ -->
+  <g id="bob-g">
+    <rect x="756" y="118" width="132" height="210" rx="12"
+          fill="#162240" stroke="#34d399" stroke-width="2" id="bob-rect"/>
+    <text x="822" y="146" text-anchor="middle" fill="#34d399"
+          font-size="14" font-weight="bold" font-family="Trebuchet MS">Bob</text>
+    <text x="822" y="161" text-anchor="middle" fill="rgba(200,220,252,0.55)"
+          font-size="9.5" font-family="Trebuchet MS">(Receiver)</text>
+    <text x="822" y="200" text-anchor="middle" font-size="26">👨</text>
+    <rect x="768" y="216" width="108" height="30" rx="5"
+          fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.3)" stroke-width="1"/>
+    <text x="822" y="229" text-anchor="middle" fill="rgba(200,220,252,0.8)"
+          font-size="9" font-family="Trebuchet MS">Quantum</text>
+    <text x="822" y="241" text-anchor="middle" fill="rgba(200,220,252,0.8)"
+          font-size="9" font-family="Trebuchet MS">Measurement</text>
+    <rect x="768" y="255" width="108" height="30" rx="5"
+          fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.3)" stroke-width="1"/>
+    <text x="822" y="268" text-anchor="middle" fill="rgba(200,220,252,0.8)"
+          font-size="9" font-family="Trebuchet MS">Classical</text>
+    <text x="822" y="280" text-anchor="middle" fill="rgba(200,220,252,0.8)"
+          font-size="9" font-family="Trebuchet MS">Post-Processing</text>
+    <circle cx="742" cy="205" r="4.5" fill="#60a5fa"/>
+    <circle cx="742" cy="338" r="4.5" fill="#f87171"/>
+    <text id="key-b" x="822" y="112" text-anchor="middle" font-size="22" opacity="0">🔑</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════
+       EVE BOX (center)
+       ══════════════════════════════════════════════ -->
+  <g id="eve-g" opacity="0.25">
+    <rect x="360" y="212" width="180" height="118" rx="12"
+          fill="#1c0a0a" stroke="#f87171" stroke-width="2" id="eve-rect"/>
+    <text x="450" y="238" text-anchor="middle" fill="#f87171"
+          font-size="14" font-weight="bold" font-family="Trebuchet MS">Eve</text>
+    <text x="450" y="253" text-anchor="middle" fill="rgba(248,113,113,0.65)"
+          font-size="9.5" font-family="Trebuchet MS">(Eavesdropper)</text>
+    <text x="450" y="306" text-anchor="middle" font-size="30">🕵️</text>
+    <!-- Steal line: mid-arc down to Eve -->
+    <line id="steal-line" x1="450" y1="88" x2="450" y2="212"
+          stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,4" opacity="0"/>
+    <text id="lbl-steal" x="405" y="168" text-anchor="middle"
+          fill="#f87171" font-size="9.5" font-family="Trebuchet MS"
+          font-style="italic" opacity="0">Stealing qubits</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════
+       PHOTON PARTICLES (animated in JS)
+       ══════════════════════════════════════════════ -->
+  <circle id="ph0" r="5.5" fill="#60a5fa" opacity="0" filter="url(#glow-q)"/>
+  <circle id="ph1" r="5.5" fill="#60a5fa" opacity="0" filter="url(#glow-q)"/>
+  <circle id="ph2" r="5"   fill="#60a5fa" opacity="0" filter="url(#glow-q)"/>
+  <!-- Eve's intercepted photon -->
+  <circle id="ph3" r="5"   fill="#f87171" opacity="0" filter="url(#glow-e)"/>
+
+  <!-- ══════════════════════════════════════════════
+       CLASSICAL CHANNEL PACKETS (animated in JS)
+       ══════════════════════════════════════════════ -->
+  <rect id="cm0" width="14" height="10" rx="2" fill="#f87171" opacity="0"/>
+  <rect id="cm1" width="14" height="10" rx="2" fill="#fb923c" opacity="0"/>
+</svg>
+</div>
+
+<div class="panel" id="panel"></div>
+<div class="nav">
+  <button class="btn" id="btn-prev" onclick="go(-1)">← Back</button>
+  <div class="dots" id="dots"></div>
+  <button class="btn" id="btn-next" onclick="go(1)">Next →</button>
+</div>
+<div class="hint">Press → or Space to advance &nbsp;|&nbsp; ← to go back</div>
+
+<script>
+// ── Cubic Bezier (quantum channel arc) ──────────────────────────
+// M158,205 C290,32 610,32 742,205
+const QP = { p0:{x:158,y:205}, p1:{x:290,y:32}, p2:{x:610,y:32}, p3:{x:742,y:205} };
+
+function bez(t, p) {
+  const mt = 1 - t;
+  return {
+    x: mt*mt*mt*p.p0.x + 3*mt*mt*t*p.p1.x + 3*mt*t*t*p.p2.x + t*t*t*p.p3.x,
+    y: mt*mt*mt*p.p0.y + 3*mt*mt*t*p.p1.y + 3*mt*t*t*p.p2.y + t*t*t*p.p3.y,
+  };
+}
+
+// ── Animation control ────────────────────────────────────────────
+let rafs = [];
+let animOn = false;
+
+function killAnims() {
+  animOn = false;
+  rafs.forEach(cancelAnimationFrame);
+  rafs = [];
+  ['ph0','ph1','ph2','ph3'].forEach(id => el(id).setAttribute('opacity','0'));
+  ['cm0','cm1'].forEach(id => el(id).setAttribute('opacity','0'));
+}
+
+function runQuantum(withEve) {
+  animOn = true;
+  const SPEED = 0.00022;
+  const offsets = [0, 0.34, 0.67];
+  // Eve branch: at t≈0.45 of arc, photon index 1 goes to Eve
+  const EVE_T  = 0.45;
+  const EVE_PT = bez(EVE_T, QP); // point on arc where Eve taps
+  const EVE    = {x: 450, y: 212};
+
+  let t0 = null;
+  function frame(ts) {
+    if (!animOn) return;
+    if (!t0) t0 = ts;
+    const dt = ts - t0;
+
+    offsets.forEach((off, i) => {
+      const t = ((dt * SPEED + off) % 1.0);
+      const ph = el('ph' + i);
+
+      if (withEve && i === 1) {
+        if (t >= EVE_T - 0.01 && t <= EVE_T + 0.28) {
+          // Photon diverted toward Eve
+          const frac = Math.min(1, (t - EVE_T + 0.01) / 0.28);
+          ph.setAttribute('cx', EVE_PT.x + (EVE.x - EVE_PT.x) * frac);
+          ph.setAttribute('cy', EVE_PT.y + (EVE.y - EVE_PT.y) * frac);
+          ph.setAttribute('fill', '#f87171');
+          ph.setAttribute('opacity', '0.9');
+        } else if (t > EVE_T + 0.28) {
+          // Fades at Eve
+          ph.setAttribute('opacity', '0');
+        } else {
+          // Before interception: normal travel
+          const pt = bez(t, QP);
+          ph.setAttribute('cx', pt.x); ph.setAttribute('cy', pt.y);
+          ph.setAttribute('fill', '#60a5fa');
+          ph.setAttribute('opacity', t < 0.02 || t > 0.96 ? '0' : '0.95');
+        }
+      } else {
+        const pt = bez(t, QP);
+        ph.setAttribute('cx', pt.x); ph.setAttribute('cy', pt.y);
+        ph.setAttribute('fill', '#60a5fa');
+        ph.setAttribute('opacity', t < 0.02 || t > 0.96 ? '0' : '0.95');
+      }
+    });
+
+    rafs.push(requestAnimationFrame(frame));
+  }
+  rafs.push(requestAnimationFrame(frame));
+}
+
+function runClassical() {
+  animOn = true;
+  const SPEED = 0.00028;
+  const X0 = 158, X1 = 742, Y = 333;
+  let t0 = null;
+  function frame(ts) {
+    if (!animOn) return;
+    if (!t0) t0 = ts;
+    const dt = ts - t0;
+    // cm0 left→right
+    { const t = ((dt * SPEED + 0.05) % 1.0);
+      const x = X0 + (X1 - X0) * t - 7;
+      el('cm0').setAttribute('x', x); el('cm0').setAttribute('y', Y);
+      el('cm0').setAttribute('opacity', t > 0.02 && t < 0.96 ? '0.85' : '0'); }
+    // cm1 right→left
+    { const t = ((dt * SPEED + 0.55) % 1.0);
+      const x = X1 - (X1 - X0) * t - 7;
+      el('cm1').setAttribute('x', x); el('cm1').setAttribute('y', Y);
+      el('cm1').setAttribute('opacity', t > 0.02 && t < 0.96 ? '0.85' : '0'); }
+    rafs.push(requestAnimationFrame(frame));
+  }
+  rafs.push(requestAnimationFrame(frame));
+}
+
+// ── Helpers ──────────────────────────────────────────────────────
+function el(id) { return document.getElementById(id); }
+function sv(id, val) { el(id).setAttribute('opacity', val); }
+function hilite(grpId, rectId, color, on) {
+  const g = el(grpId);
+  el(rectId).setAttribute('stroke-width', on ? '3.5' : '2');
+  if (on) g.setAttribute('filter', 'url(#glow-a)');
+  else    g.removeAttribute('filter');
+}
+function hiliteEve(on) {
+  el('eve-g').setAttribute('opacity', on ? '1' : '0.25');
+  if (on) el('eve-g').setAttribute('filter', 'url(#glow-e)');
+  else    el('eve-g').removeAttribute('filter');
+}
+
+// ── Steps ────────────────────────────────────────────────────────
+const TOTAL = 9;
+let step = 0;
+
+const steps = [
+  // 0: Overview
+  () => {
+    T("Quantum Key Distribution — How It Works");
+    killAnims();
+    hilite('alice-g','alice-rect','#0DCAD8',false);
+    hilite('bob-g',  'bob-rect',  '#34d399',false);
+    hiliteEve(false);
+    sv('lbl-psi',0); sv('steal-line',0); sv('lbl-steal',0);
+    sv('c-arr-r',0); sv('c-arr-l',0); sv('c-post-lbl',0);
+    sv('key-a',0); sv('key-b',0);
+    panel([
+      {t:"Alice and Bob want to share a secret cryptographic key. The quantum channel (blue fiber arc) carries quantum states. The classical channel (red dashed) is used for public discussion.",c:''},
+      {t:"Security comes from quantum physics itself — any eavesdropper disturbs the quantum states and gets detected.",c:'teal'},
+    ]);
+  },
+  // 1: Alice prepares
+  () => {
+    T("Alice prepares random quantum states");
+    killAnims();
+    hilite('alice-g','alice-rect','#0DCAD8',true);
+    hilite('bob-g','bob-rect','#34d399',false);
+    hiliteEve(false);
+    sv('lbl-psi',0); sv('steal-line',0); sv('lbl-steal',0);
+    sv('c-arr-r',0); sv('c-arr-l',0); sv('c-post-lbl',0); sv('key-a',0); sv('key-b',0);
+    panel([
+      {t:"Alice generates random bits and encodes each as a quantum state |ψ⟩ using a randomly chosen basis — rectilinear (|0⟩/|1⟩) or diagonal (|+⟩/|−⟩).",c:'teal'},
+      {t:"Her basis choices are kept secret. Only the encoded qubits travel over the fiber.",c:''},
+    ]);
+  },
+  // 2: Quantum states travel
+  () => {
+    T("Qubits travel through the optical fiber");
+    killAnims();
+    hilite('alice-g','alice-rect','#0DCAD8',false);
+    hilite('bob-g','bob-rect','#34d399',false);
+    hiliteEve(false);
+    sv('lbl-psi',0.9); sv('steal-line',0); sv('lbl-steal',0);
+    sv('c-arr-r',0); sv('c-arr-l',0); sv('c-post-lbl',0); sv('key-a',0); sv('key-b',0);
+    runQuantum(false);
+    panel([
+      {t:"Alice fires single photons (qubits) one by one through the blue optical fiber toward Bob.",c:''},
+      {t:"No-Cloning Theorem: quantum states cannot be perfectly copied. Any interception inevitably disturbs them.",c:'teal'},
+    ]);
+  },
+  // 3: Eve intercepts
+  () => {
+    T("Eve intercepts — but leaves a trace");
+    killAnims();
+    hiliteEve(true);
+    sv('lbl-psi',0.6); sv('steal-line',0.85); sv('lbl-steal',0.9);
+    sv('c-arr-r',0); sv('c-arr-l',0); sv('c-post-lbl',0); sv('key-a',0); sv('key-b',0);
+    runQuantum(true);
+    panel([
+      {t:"Eve taps the fiber and measures some qubits. But measuring a quantum state collapses it — she cannot copy it without disturbing it.",c:'red'},
+      {t:"When she re-sends the qubits to Bob, the states are altered. This introduces errors Alice and Bob can detect.",c:''},
+    ]);
+  },
+  // 4: Bob measures
+  () => {
+    T("Bob measures the incoming photons");
+    killAnims();
+    hilite('alice-g','alice-rect','#0DCAD8',false);
+    hilite('bob-g','bob-rect','#34d399',true);
+    hiliteEve(false);
+    sv('lbl-psi',0.5); sv('steal-line',0); sv('lbl-steal',0);
+    sv('c-arr-r',0); sv('c-arr-l',0); sv('c-post-lbl',0); sv('key-a',0); sv('key-b',0);
+    runQuantum(false);
+    panel([
+      {t:"Bob measures each incoming qubit using a randomly chosen basis. He records the outcome for each photon.",c:'green'},
+      {t:"When Bob's basis matches Alice's, the result is perfectly correlated. This happens ~50% of the time.",c:''},
+    ]);
+  },
+  // 5: Basis sifting
+  () => {
+    T("Basis sifting over the classical channel");
+    killAnims();
+    hilite('alice-g','alice-rect','#0DCAD8',false);
+    hilite('bob-g','bob-rect','#34d399',false);
+    hiliteEve(false);
+    sv('lbl-psi',0); sv('steal-line',0); sv('lbl-steal',0);
+    sv('c-arr-r',0.9); sv('c-arr-l',0.9); sv('c-post-lbl',0.75); sv('key-a',0); sv('key-b',0);
+    runClassical();
+    panel([
+      {t:"Over the public classical channel, Alice and Bob announce which basis they used for each qubit — but NOT their bit values.",c:'gold'},
+      {t:"They discard bits where their bases didn't match, keeping ~50% as the sifted key.",c:''},
+    ]);
+  },
+  // 6: Error estimation
+  () => {
+    T("Error estimation — detecting Eve's presence");
+    killAnims();
+    hiliteEve(true);
+    sv('lbl-psi',0); sv('steal-line',0); sv('lbl-steal',0);
+    sv('c-arr-r',0.9); sv('c-arr-l',0.9); sv('c-post-lbl',0.8); sv('key-a',0); sv('key-b',0);
+    runClassical();
+    panel([
+      {t:"They publicly compare a random subset of their sifted bits. If Eve intercepted, errors appear above the expected threshold.",c:'red'},
+      {t:"High error rate → Eve detected → protocol aborted. No information is leaked. They restart on a new channel.",c:''},
+    ]);
+  },
+  // 7: Privacy amplification
+  () => {
+    T("Error correction and privacy amplification");
+    killAnims();
+    hilite('alice-g','alice-rect','#0DCAD8',false);
+    hilite('bob-g','bob-rect','#34d399',false);
+    hiliteEve(false);
+    sv('lbl-psi',0); sv('steal-line',0); sv('lbl-steal',0);
+    sv('c-arr-r',0.9); sv('c-arr-l',0.9); sv('c-post-lbl',0.9); sv('key-a',0); sv('key-b',0);
+    runClassical();
+    panel([
+      {t:"Error correction: they reconcile remaining bit disagreements using classical codes over the public channel.",c:'gold'},
+      {t:"Privacy amplification: a hash function compresses the key, eliminating any partial information Eve might have gained.",c:''},
+    ]);
+  },
+  // 8: Secure key
+  () => {
+    T("Secure key established — guaranteed by physics");
+    killAnims();
+    hilite('alice-g','alice-rect','#0DCAD8',false);
+    hilite('bob-g','bob-rect','#34d399',false);
+    hiliteEve(false);
+    sv('lbl-psi',0); sv('steal-line',0); sv('lbl-steal',0);
+    sv('c-arr-r',0); sv('c-arr-l',0); sv('c-post-lbl',0);
+    sv('key-a',1); sv('key-b',1);
+    panel([
+      {t:"Alice and Bob now share an identical secret key — provably secure against any eavesdropper, including quantum computers.",c:'green'},
+      {t:"Security is guaranteed by the laws of quantum mechanics, not by computational assumptions.",c:'teal'},
+    ]);
+  },
+];
+
+// ── Render / nav ─────────────────────────────────────────────────
+function T(t) { el('step-title').textContent = t; }
+
+function panel(items) {
+  const p = el('panel');
+  p.innerHTML = '';
+  items.forEach((item, i) => {
+    const b = document.createElement('div');
+    b.className = 'bubble ' + (item.c || '');
+    b.textContent = item.t;
+    p.appendChild(b);
+    setTimeout(() => b.classList.add('visible'), i * 150);
+  });
+}
+
+function buildDots() {
+  const d = el('dots');
+  d.innerHTML = '';
+  for (let i = 0; i < TOTAL; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === step ? ' active' : '');
+    d.appendChild(dot);
+  }
+}
+
+function render() {
+  steps[step]();
+  buildDots();
+  el('btn-prev').disabled = step === 0;
+  const btn = el('btn-next');
+  btn.textContent = step === TOTAL - 1 ? 'Done ✓' : 'Next →';
+  btn.disabled    = step === TOTAL - 1;
+}
+
+function go(dir) {
+  step = Math.max(0, Math.min(TOTAL - 1, step + dir));
+  render();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1);  }
+  if (e.key === 'ArrowLeft')                    { e.preventDefault(); go(-1); }
+});
+
+render();
+</script>
+</body>
+</html>
