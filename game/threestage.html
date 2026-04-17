@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three-Stage Protocol</title>
+  <style>
+    :root {
+      --navy:  #1A2A4A;
+      --teal:  #028090;
+      --gold:  #F0A500;
+      --white: #F5F7FA;
+      --light: #C8DCFC;
+      --bg:    #101e35;
+      --card:  #162240;
+      --alice: #0DCAD8;
+      --bob:   #F0A500;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Trebuchet MS', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 20px 20px;
+    }
+
+    /* ── Header ── */
+    .proto-label {
+      font-size: 0.72em;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .step-title {
+      font-size: 1.65em;
+      font-weight: bold;
+      color: var(--white);
+      text-align: center;
+      margin-bottom: 22px;
+      min-height: 2.2em;
+      max-width: 860px;
+    }
+
+    /* ── Stage ── */
+    .stage {
+      width: 100%;
+      max-width: 860px;
+      background: var(--card);
+      border: 1px solid rgba(2,128,144,0.35);
+      border-radius: 18px;
+      padding: 28px 24px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 20px;
+      position: relative;
+      min-height: 200px;
+    }
+
+    /* ── Characters ── */
+    .character {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100px;
+      flex-shrink: 0;
+      z-index: 2;
+    }
+    .char-avatar {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      border: 3px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.9em;
+    }
+    .alice .char-avatar { border-color: var(--alice); background: rgba(13,202,216,0.12); }
+    .bob   .char-avatar { border-color: var(--bob);   background: rgba(240,165,0,0.12);  }
+
+    .char-name { font-weight: bold; font-size: 1em; }
+    .alice .char-name { color: var(--alice); }
+    .bob   .char-name { color: var(--bob);   }
+
+    .char-state {
+      font-size: 0.72em;
+      text-align: center;
+      color: rgba(200,220,252,0.6);
+      min-height: 1.4em;
+      transition: color 0.3s;
+    }
+
+    /* ── Channel ── */
+    .channel {
+      flex: 1;
+      position: relative;
+      height: 160px;
+      display: flex;
+      align-items: center;
+    }
+    .track-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, var(--alice), rgba(255,255,255,0.08), var(--bob));
+      opacity: 0.35;
+      top: 50%;
+    }
+
+    /* Direction arrows */
+    .dir-arrow {
+      position: absolute;
+      top: 50%;
+      font-size: 1.4em;
+      transform: translateY(-50%);
+      opacity: 0;
+      color: rgba(200,220,252,0.45);
+      transition: opacity 0.4s;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .dir-arrow.visible { opacity: 1; }
+    .arr-r { right: 22%; animation: br 1s ease-in-out infinite; }
+    .arr-l { left:  22%; animation: bl 1s ease-in-out infinite; }
+    @keyframes br { 0%,100%{ transform:translateY(-50%) translateX(0) } 50%{ transform:translateY(-50%) translateX(6px) } }
+    @keyframes bl { 0%,100%{ transform:translateY(-50%) translateX(0) } 50%{ transform:translateY(-50%) translateX(-6px) } }
+
+    /* ── Travelling Box ── */
+    .box-wrap {
+      position: absolute;
+      left: 15%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      z-index: 3;
+      transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Locks shown above the box */
+    .locks-row {
+      display: flex;
+      gap: 10px;
+      height: 44px;
+      align-items: flex-end;
+    }
+    .lock-svg {
+      opacity: 0;
+      transform: scale(0.3) translateY(-12px);
+      transition: opacity 0.4s, transform 0.4s;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+    }
+    .lock-svg.visible { opacity: 1; transform: scale(1) translateY(0); }
+
+    /* The box itself */
+    .box {
+      width: 94px;
+      height: 76px;
+      border: 3px solid rgba(200,220,252,0.25);
+      border-radius: 10px;
+      background: #1b2f50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: border-color 0.5s, box-shadow 0.5s;
+      overflow: visible;
+    }
+    .box.s-alice { border-color: var(--alice); box-shadow: 0 0 14px rgba(13,202,216,0.3); }
+    .box.s-bob   { border-color: var(--bob);   box-shadow: 0 0 14px rgba(240,165,0,0.3);  }
+    .box.s-both  {
+      border-color: var(--bob);
+      box-shadow: 0 0 0 3px var(--alice), 0 0 18px rgba(13,202,216,0.25);
+    }
+    .box.s-open  { border-color: rgba(200,220,252,0.2); box-shadow: none; }
+
+    /* Envelope inside box */
+    .envelope {
+      font-size: 2.1em;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 0.45s, transform 0.45s;
+    }
+    .envelope.visible { opacity: 1; transform: scale(1); }
+
+    /* ── Explanation Panel ── */
+    .panel {
+      width: 100%;
+      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 90px;
+      margin-bottom: 18px;
+    }
+    .bubble {
+      padding: 11px 16px;
+      border-radius: 8px;
+      border-left: 4px solid var(--teal);
+      background: rgba(2,128,144,0.1);
+      font-size: 0.87em;
+      line-height: 1.65;
+      color: var(--light);
+      opacity: 0;
+      transform: translateY(7px);
+      transition: opacity 0.35s, transform 0.35s;
+    }
+    .bubble.visible { opacity: 1; transform: none; }
+    .bubble.gold    { border-color: var(--gold);  background: rgba(240,165,0,0.08);  }
+    .bubble.teal    { border-color: var(--teal);  background: rgba(2,128,144,0.1);   }
+    .bubble.green   { border-color: #2ecc71;      background: rgba(46,204,113,0.07); }
+
+    /* ── Navigation ── */
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .dots { display: flex; gap: 8px; }
+    .dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: rgba(200,220,252,0.2);
+      transition: background 0.3s;
+    }
+    .dot.active { background: var(--gold); }
+    .btn {
+      padding: 9px 22px;
+      border-radius: 8px;
+      border: 2px solid var(--teal);
+      background: rgba(2,128,144,0.12);
+      color: var(--white);
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .btn:hover:not(:disabled) { background: rgba(2,128,144,0.3); }
+    .btn:disabled { opacity: 0.3; cursor: default; }
+
+    /* Keyboard hint */
+    .hint {
+      font-size: 0.68em;
+      color: rgba(200,220,252,0.35);
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="proto-label">THREE-STAGE PROTOCOL — KAK'S SCHEME</div>
+<div class="step-title" id="step-title"></div>
+
+<div class="stage">
+  <!-- Alice -->
+  <div class="character alice">
+    <div class="char-avatar">👩</div>
+    <div class="char-name">Alice</div>
+    <div class="char-state" id="alice-state"></div>
+  </div>
+
+  <!-- Channel -->
+  <div class="channel">
+    <div class="track-line"></div>
+    <div class="dir-arrow arr-r" id="arr-r">→</div>
+    <div class="dir-arrow arr-l" id="arr-l">←</div>
+
+    <div class="box-wrap" id="box-wrap">
+      <!-- Locks float above the box -->
+      <div class="locks-row">
+        <!-- Alice's lock: teal -->
+        <svg class="lock-svg" id="lock-a" width="36" height="46" viewBox="0 0 36 46">
+          <rect x="4" y="20" width="28" height="22" rx="5" fill="#0DCAD8"/>
+          <path d="M10 20V14C10 6 26 6 26 14V20"
+                fill="none" stroke="#0DCAD8" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="18" cy="31" r="3.5" fill="white" fill-opacity="0.55"/>
+          <text x="18" y="14.5" text-anchor="middle" fill="white"
+                font-size="6" font-family="Trebuchet MS" font-weight="bold">A</text>
+        </svg>
+        <!-- Bob's lock: gold -->
+        <svg class="lock-svg" id="lock-b" width="36" height="46" viewBox="0 0 36 46">
+          <rect x="4" y="20" width="28" height="22" rx="5" fill="#F0A500"/>
+          <path d="M10 20V14C10 6 26 6 26 14V20"
+                fill="none" stroke="#F0A500" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="18" cy="31" r="3.5" fill="white" fill-opacity="0.55"/>
+          <text x="18" y="14.5" text-anchor="middle" fill="white"
+                font-size="6" font-family="Trebuchet MS" font-weight="bold">B</text>
+        </svg>
+      </div>
+
+      <!-- The box -->
+      <div class="box s-open" id="box">
+        <div class="envelope" id="envelope">✉️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bob -->
+  <div class="character bob">
+    <div class="char-avatar">👨</div>
+    <div class="char-name">Bob</div>
+    <div class="char-state" id="bob-state"></div>
+  </div>
+</div>
+
+<!-- Explanation -->
+<div class="panel" id="panel"></div>
+
+<!-- Nav -->
+<div class="nav">
+  <button class="btn" id="btn-prev" onclick="go(-1)">← Back</button>
+  <div class="dots" id="dots"></div>
+  <button class="btn" id="btn-next" onclick="go(1)">Next →</button>
+</div>
+<div class="hint">Press → or Space to advance &nbsp;|&nbsp; ← to go back</div>
+
+<script>
+const TOTAL = 9;
+let step = 0;
+
+const P = { alice: '15%', mid: '50%', bob: '85%' };
+
+const steps = [
+  // 0 — Alice composes
+  () => {
+    T("Alice writes a secret message");
+    pos('alice'); B('open'); L(0,0); E(1); A(0);
+    S("Composing...", "Waiting for Alice");
+    panel([
+      { t:"Alice wants to send Bob a confidential message — without ever sharing an encryption key.", c:'' },
+      { t:"She places the ✉️ envelope inside an open box. Once locked, nobody can peek inside.", c:'teal' },
+    ]);
+  },
+  // 1 — Alice locks
+  () => {
+    T("Alice locks the box with her teal lock (A)");
+    pos('alice'); B('alice'); L(1,0); E(0); A(0);
+    S("Box locked 🔒", "Waiting...");
+    panel([
+      { t:"Alice seals the envelope inside and clips her teal padlock (A) onto the box. Only she holds this key.", c:'teal' },
+      { t:"Bob cannot open it — but that's fine. He doesn't need to yet.", c:'' },
+    ]);
+  },
+  // 2 — Alice → Bob
+  () => {
+    T("Alice sends the locked box to Bob  →");
+    pos('bob'); B('alice'); L(1,0); E(0); A(1);
+    S("Sent →", "Receiving...");
+    panel([
+      { t:"The box travels across the channel. Even if an eavesdropper intercepts it, Alice's lock holds firm.", c:'' },
+      { t:"Stage 1 of 3 complete.", c:'teal' },
+    ]);
+  },
+  // 3 — Bob adds lock
+  () => {
+    T("Bob adds his own gold lock (B) on top");
+    pos('bob'); B('both'); L(1,1); E(0); A(0);
+    S("Waiting...", "Double-locked 🔐");
+    panel([
+      { t:"Bob clips his gold padlock (B) alongside Alice's. Two independent locks now secure the box.", c:'gold' },
+      { t:"Neither person can open the other's lock. The box is doubly protected.", c:'' },
+    ]);
+  },
+  // 4 — Bob → Alice
+  () => {
+    T("Bob sends the double-locked box back  ←");
+    pos('alice'); B('both'); L(1,1); E(0); A(-1);
+    S("Receiving...", "Sent ←");
+    panel([
+      { t:"The doubly-locked box travels back to Alice. An eavesdropper sees two unbreakable locks.", c:'' },
+      { t:"Stage 2 of 3 complete.", c:'gold' },
+    ]);
+  },
+  // 5 — Alice removes her lock
+  () => {
+    T("Alice removes her lock — Bob's gold lock remains");
+    pos('alice'); B('bob'); L(0,1); E(0); A(0);
+    S("Lock removed ✓", "Waiting...");
+    panel([
+      { t:"Alice uses her key to remove the teal lock (A). Only Bob's gold lock (B) now protects the box.", c:'teal' },
+      { t:"No keys were ever shared between Alice and Bob. The protocol works without key exchange!", c:'' },
+    ]);
+  },
+  // 6 — Alice → Bob
+  () => {
+    T("Alice sends the box back to Bob  →");
+    pos('bob'); B('bob'); L(0,1); E(0); A(1);
+    S("Sent →", "Receiving...");
+    panel([
+      { t:"Only Bob's lock remains. The box makes its final journey to Bob.", c:'' },
+      { t:"Stage 3 of 3 complete.", c:'gold' },
+    ]);
+  },
+  // 7 — Bob opens
+  () => {
+    T("Bob removes his lock and opens the box  ✉️");
+    pos('bob'); B('open'); L(0,0); E(1); A(0);
+    S("✓ Done!", "Message received! 🎉");
+    panel([
+      { t:"Bob removes his gold lock (B) and opens the box. The envelope is inside — untouched, unread by anyone else.", c:'green' },
+      { t:"Three stages. Two locks. Zero key exchange. The message arrived securely.", c:'' },
+    ]);
+  },
+  // 8 — Summary
+  () => {
+    T("Three stages. Two locks. Zero key exchange.");
+    pos('mid'); B('open'); L(0,0); E(1); A(0);
+    S("🔒 Secure", "🔒 Secure");
+    panel([
+      { t:"① Alice → Bob :  box  +  🔒 Alice's lock (A)", c:'teal' },
+      { t:"② Bob → Alice :  box  +  🔒 Alice's lock (A)  +  🔐 Bob's lock (B)", c:'gold' },
+      { t:"③ Alice → Bob :  box  +  🔐 Bob's lock (B) only  →  Bob opens freely", c:'green' },
+    ]);
+  },
+];
+
+// ── Helpers ────────────────────────────────────────────────────────
+function T(t) { document.getElementById('step-title').textContent = t; }
+
+function pos(p) { document.getElementById('box-wrap').style.left = P[p]; }
+
+function B(state) {
+  const b = document.getElementById('box');
+  b.className = 'box s-' + state;
+}
+
+function L(a, b) {
+  document.getElementById('lock-a').classList.toggle('visible', !!a);
+  document.getElementById('lock-b').classList.toggle('visible', !!b);
+}
+
+function E(show) {
+  document.getElementById('envelope').classList.toggle('visible', !!show);
+}
+
+function A(dir) {
+  document.getElementById('arr-r').classList.toggle('visible', dir  > 0);
+  document.getElementById('arr-l').classList.toggle('visible', dir  < 0);
+}
+
+function S(a, b) {
+  document.getElementById('alice-state').textContent = a;
+  document.getElementById('bob-state').textContent   = b;
+}
+
+function panel(items) {
+  const el = document.getElementById('panel');
+  el.innerHTML = '';
+  items.forEach((item, i) => {
+    const b = document.createElement('div');
+    b.className = 'bubble ' + (item.c || '');
+    b.textContent = item.t;
+    el.appendChild(b);
+    setTimeout(() => b.classList.add('visible'), i * 150);
+  });
+}
+
+function buildDots() {
+  const d = document.getElementById('dots');
+  d.innerHTML = '';
+  for (let i = 0; i < TOTAL; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === step ? ' active' : '');
+    d.appendChild(dot);
+  }
+}
+
+function render() {
+  steps[step]();
+  buildDots();
+  document.getElementById('btn-prev').disabled = step === 0;
+  const btn = document.getElementById('btn-next');
+  btn.textContent = step === TOTAL - 1 ? 'Done ✓' : 'Next →';
+  btn.disabled    = step === TOTAL - 1;
+}
+
+function go(dir) {
+  step = Math.max(0, Math.min(TOTAL - 1, step + dir));
+  render();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1);  }
+  if (e.key === 'ArrowLeft')                    { e.preventDefault(); go(-1); }
+});
+
+render();
+</script>
+</body>
+</html>
