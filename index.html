@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nitin Jha | Interactive Portfolio</title>
+    <title>Nitin Jha | Quantum Portfolio</title>
     <script>
       (function() {
         const _id = [71,45,48,89,82,54,52,84,66,68,54,75].map(n=>String.fromCharCode(n)).join('');
@@ -34,6 +34,1781 @@
             overflow-x: hidden;
             min-height: 100vh;
         }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            animation: gradient-shift 3s ease infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            color: #00ffff;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .wave-visualizer {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            margin-top: 20px;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: linear-gradient(to top, #00ffff, #ff00ff);
+            border-radius: 2px;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        .wave-bar:nth-child(1) { animation-delay: 0s; }
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+        .wave-bar:nth-child(6) { animation-delay: 0.5s; }
+        .wave-bar:nth-child(7) { animation-delay: 0.6s; }
+        .wave-bar:nth-child(8) { animation-delay: 0.5s; }
+        .wave-bar:nth-child(9) { animation-delay: 0.4s; }
+        .wave-bar:nth-child(10) { animation-delay: 0.3s; }
+
+        @keyframes wave {
+            0%, 100% { height: 10px; }
+            50% { height: 50px; }
+        }
+
+        .circuit-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            padding: 0 5px;
+        }
+
+        .control-btn {
+            padding: 10px 18px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+
+        #home img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .control-btn.active {
+            background: rgba(255, 0, 255, 0.3);
+            border-color: #ff00ff;
+            color: #ff00ff;
+        }
+
+        /* Circuit wrapper enables horizontal scroll on small screens */
+        .circuit-scroll-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 40px;
+            border-radius: 15px;
+        }
+
+        .circuit-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 60px 40px;
+            overflow: visible;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            display: grid;
+            grid-template-rows: repeat(3, 100px);
+            gap: 40px;
+            /* minimum width keeps gates from overlapping */
+            min-width: 860px;
+        }
+
+        .qubit-line {
+            position: relative;
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .qubit-label {
+            font-size: 1.2em;
+            color: #00ffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .qubit-label:hover {
+            color: #ff00ff;
+            transform: scale(1.1);
+        }
+
+        .circuit-track {
+            position: relative;
+            height: 2px;
+            background: #00ffff;
+            display: flex;
+            align-items: center;
+        }
+
+        .gate-wrapper {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .gate {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            border: 3px solid;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            background: rgba(10, 10, 26, 0.9);
+        }
+
+        .gate:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        .gate-h-0, .gate-h-1, .gate-h-2 {
+            border-color: #00ffff;
+            color: #00ffff;
+        }
+
+        .gate-cx-control {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #00ffff;
+            border-radius: 8px;
+            background: rgba(10, 10, 26, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gate-cx-target {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #00ffff;
+            border-radius: 8px;
+            background: rgba(10, 10, 26, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gate-rz-0 {
+            border-color: #ffaa00;
+            color: #ffaa00;
+        }
+
+        .gate-ry-1 {
+            border-color: #ff0099;
+            color: #ff0099;
+        }
+
+        .gate-rx-2 {
+            border-color: #00ff99;
+            color: #00ff99;
+        }
+
+        /* ── Grover's X (Pauli-X) gate ────────────────────────── */
+        .gate-x {
+            border-color: #ff6600;
+            color: #ff6600;
+        }
+
+        /* ── Circuit + description panel side-by-side ─────────── */
+        .circuit-and-panel-wrapper {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+        .circuit-and-panel-wrapper .circuit-scroll-wrapper {
+            flex: 1;
+            min-width: 0;
+            margin-bottom: 0;
+        }
+        .grover-panel {
+            width: 220px;
+            flex-shrink: 0;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(0,255,255,0.18);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 0.8em;
+            line-height: 1.6;
+            color: #b0b0dd;
+        }
+        .grover-panel h3 {
+            color: #00ffff;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+        .grover-panel .grover-target {
+            color: #ff00ff;
+            margin-bottom: 14px;
+            font-size: 0.9em;
+        }
+        .grover-panel code {
+            background: rgba(0,255,255,0.1);
+            padding: 1px 5px;
+            border-radius: 3px;
+            color: #00ffff;
+        }
+        .grover-panel .g-step { margin-bottom: 12px; }
+        .grover-panel .g-label {
+            color: #ffaa00;
+            font-size: 0.82em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        .grover-panel .g-desc { color: #9090cc; }
+        .grover-panel .g-divider {
+            border: none;
+            border-top: 1px solid rgba(0,255,255,0.12);
+            margin: 12px 0;
+        }
+        .grover-panel .g-speedup { color: #9090cc; font-size: 0.88em; }
+        .grover-panel .g-speedup strong { color: #00ff99; }
+        @media (max-width: 900px) {
+            .circuit-and-panel-wrapper { flex-direction: column; }
+            .grover-panel { width: 100%; }
+        }
+
+        .cx-control-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00ffff;
+        }
+
+        .cx-target-circle {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #00ffff;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .cx-target-circle::before, .cx-target-circle::after {
+            content: '';
+            position: absolute;
+            background: #00ffff;
+        }
+
+        .cx-target-circle::before {
+            width: 100%;
+            height: 3px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .cx-target-circle::after {
+            width: 3px;
+            height: 100%;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+        }
+
+        .cnot-line {
+            position: absolute;
+            width: 3px;
+            background: #00ffff;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+
+        .measurement {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #ff00ff;
+            border-radius: 50% 50% 0 0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 0, 255, 0.05);
+        }
+
+        .measurement::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            height: 70%;
+            background: #ff00ff;
+            transform: translateX(-50%) rotate(45deg);
+            transform-origin: bottom center;
+            transition: transform 0.3s ease;
+        }
+
+        .measurement:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        .measurement:hover::before {
+            transform: translateX(-50%) rotate(-45deg);
+        }
+
+        .measurement-result {
+            min-width: 40px;
+            text-align: center;
+            color: #ff00ff;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-left: 15px;
+            position: relative;
+        }
+
+        .content-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            display: none;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-panel h2 {
+            color: #00ffff;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .content-panel h3 {
+            color: #ff00ff;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .content-panel p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #d0d0ff;
+        }
+
+        .content-panel ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .content-panel li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            color: #d0d0ff;
+        }
+
+        .content-panel a {
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .content-panel a:hover {
+            color: #ff00ff;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+
+        .legend-box {
+            width: 35px;
+            height: 35px;
+            border: 2px solid;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .social-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .skill-item {
+            padding: 15px;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: rgba(0, 255, 255, 0.15);
+            border-color: #00ffff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .skill-category {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        /* ─── Mobile gate grid (portrait phones only) ──────────── */
+        .mobile-gate-grid {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .mobile-gate-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 14px 8px;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            background: rgba(0, 255, 255, 0.07);
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        .mobile-gate-btn:active {
+            background: rgba(0, 255, 255, 0.25);
+            transform: scale(0.96);
+        }
+
+        .mobile-gate-btn .gate-symbol {
+            font-size: 1.5em;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .mobile-gate-btn.color-cyan  { border-color: #00ffff; color: #00ffff; }
+        .mobile-gate-btn.color-rz    { border-color: #ffaa00; color: #ffaa00; }
+        .mobile-gate-btn.color-ry    { border-color: #ff0099; color: #ff0099; }
+        .mobile-gate-btn.color-rx    { border-color: #00ff99; color: #00ff99; }
+        .mobile-gate-btn.color-meas  { border-color: #ff00ff; color: #ff00ff; }
+
+        /* ─── Shared small-screen styles (both orientations) ───── */
+        @media (max-width: 900px) {
+            .container { padding: 12px; }
+
+            .header { padding: 24px 16px; margin-bottom: 24px; }
+            .header h1 { font-size: 1.6em; }
+            .subtitle { font-size: 0.9em; }
+
+            .circuit-controls { gap: 8px; margin-bottom: 16px; }
+            .control-btn { padding: 8px 12px; font-size: 0.78em; }
+
+            .content-panel { padding: 18px 14px; }
+            .content-panel h2 { font-size: 1.2em; }
+            .content-panel h3 { font-size: 1.05em; }
+            .content-panel p, .content-panel li { font-size: 0.92em; }
+
+            #home > div { flex-direction: column-reverse !important; align-items: center !important; }
+            #home > div > div:last-child { flex: 0 0 auto !important; width: 180px !important; margin-bottom: 20px; }
+            #home > div > div:last-child > div { width: 180px !important; height: 180px !important; }
+
+            .legend { padding: 12px 10px; gap: 10px; }
+            .legend-item { font-size: 0.8em; }
+            .social-link { padding: 8px 14px; font-size: 0.88em; }
+            .skill-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* ─── Portrait phone: gate grid, hide circuit ────────── */
+        @media (max-width: 900px) and (orientation: portrait) {
+            .circuit-scroll-wrapper { display: none; }
+            .mobile-gate-grid { display: grid; }
+            .rotate-hint { display: block !important; }
+
+            .wave-visualizer { height: 40px; }
+            @keyframes wave { 0%, 100% { height: 6px; } 50% { height: 34px; } }
+        }
+
+        /* ─── Landscape phone: show circuit, hide gate grid ───── */
+        @media (max-width: 900px) and (orientation: landscape) {
+            .circuit-scroll-wrapper { display: block; }
+            .mobile-gate-grid { display: none; }
+
+            /* Tighten circuit to fit landscape height */
+            .circuit-container {
+                padding: 30px 20px;
+                grid-template-rows: repeat(3, 70px);
+                gap: 20px;
+            }
+            .gate { width: 44px; height: 44px; font-size: 0.85em; }
+            .gate-cx-control, .gate-cx-target { width: 44px; height: 44px; }
+            .cx-target-circle { width: 30px; height: 30px; }
+            .measurement { width: 38px; height: 38px; }
+        }
+
+        @media (max-width: 400px) {
+            .skill-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.3em; }
+            .mobile-gate-grid { gap: 8px; }
+        }
+
+        /* ─── Mode toggle button ──────────────────────────────── */
+        .mode-toggle {
+            position: fixed;
+            top: 18px;
+            right: 22px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 13px;
+            border-radius: 30px;
+            border: 1.5px solid rgba(0,255,255,0.5);
+            background: rgba(10,10,26,0.7);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.78em;
+            color: #00ffff;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .mode-toggle:hover { border-color: #00ffff; background: rgba(0,255,255,0.1); }
+
+        .toggle-track {
+            width: 38px; height: 20px;
+            background: rgba(0,255,255,0.15);
+            border: 1.5px solid #00ffff;
+            border-radius: 10px;
+            position: relative;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .toggle-knob {
+            position: absolute;
+            width: 14px; height: 14px;
+            background: #00ffff;
+            border-radius: 50%;
+            top: 2px; left: 2px;
+            transition: left 0.3s, background 0.3s;
+        }
+
+        /* ─── Formal/light mode overrides ────────────────────── */
+        body.formal { background: #f4f4f4; color: #111; }
+
+        body.formal .mode-toggle {
+            background: rgba(255,255,255,0.92);
+            border-color: #555;
+            color: #333;
+        }
+        body.formal .mode-toggle:hover { background: #e8e8e8; }
+        body.formal .toggle-track { background: rgba(0,0,0,0.08); border-color: #555; }
+        body.formal .toggle-knob { background: #333; left: 20px; }
+
+        body.formal .stars { display: none; }
+
+        body.formal .header {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        body.formal .header::before { display: none; }
+        body.formal .header h1 {
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: #111;
+            animation: none;
+            font-size: 2.4em;
+        }
+        body.formal .subtitle { color: #444; }
+        body.formal .wave-bar { background: linear-gradient(to top, #555, #999); }
+
+        body.formal .circuit-controls { }
+        body.formal .control-btn {
+            background: #fff;
+            border-color: #555;
+            color: #333;
+            backdrop-filter: none;
+        }
+        body.formal .control-btn:hover {
+            background: #eee;
+            box-shadow: none;
+            transform: none;
+        }
+        body.formal .control-btn.active {
+            background: #111;
+            border-color: #111;
+            color: #fff;
+        }
+
+        /* Circuit — formal publication look */
+        body.formal .circuit-container {
+            background: #fff;
+            border: 1px solid #bbb;
+            backdrop-filter: none;
+        }
+        body.formal .circuit-track { background: #111; }
+        body.formal .qubit-label { color: #111; }
+        body.formal .qubit-label:hover { color: #555; transform: none; }
+
+        body.formal .gate {
+            background: #fff !important;
+            border-color: #111 !important;
+            color: #111 !important;
+            box-shadow: none !important;
+            backdrop-filter: none;
+        }
+        body.formal .gate:hover {
+            transform: none !important;
+            box-shadow: 2px 2px 0 #111 !important;
+        }
+        body.formal .gate-cx-control,
+        body.formal .gate-cx-target {
+            background: #fff;
+            border-color: #111;
+        }
+        body.formal .cx-control-dot { background: #111; }
+        body.formal .cx-target-circle { border-color: #111; }
+        body.formal .cx-target-circle::before,
+        body.formal .cx-target-circle::after { background: #111; }
+        body.formal .cnot-line { background: #111; }
+
+        body.formal .measurement {
+            border-color: #111;
+            background: #fff;
+        }
+        body.formal .measurement::before { background: #111; }
+        body.formal .measurement-result { color: #111; }
+
+        /* Legend */
+        body.formal .legend { background: #efefef; }
+        body.formal .legend-item { color: #333; }
+        body.formal .legend-box {
+            border-color: #333 !important;
+            background: #fff !important;
+            color: #333 !important;
+        }
+
+        /* Content panels */
+        body.formal .content-panel {
+            background: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+            backdrop-filter: none;
+        }
+        body.formal .content-panel h2 { color: #111; }
+        body.formal .content-panel h3 { color: #444; }
+        body.formal .content-panel p,
+        body.formal .content-panel li { color: #333; }
+        body.formal .content-panel a { color: #111; text-decoration: underline; }
+        body.formal .content-panel a:hover { color: #555; text-shadow: none; }
+
+        body.formal .social-link {
+            background: #fff;
+            border-color: #555;
+            color: #333;
+        }
+        body.formal .social-link:hover {
+            background: #eee;
+            box-shadow: none;
+            transform: none;
+        }
+
+        body.formal .skill-item {
+            background: #fff;
+            border-color: #ccc;
+        }
+        body.formal .skill-item:hover {
+            background: #f5f5f5;
+            border-color: #888;
+            box-shadow: none;
+            transform: none;
+        }
+        body.formal .skill-category { color: #222; }
+
+        /* Mobile gate buttons */
+        body.formal .mobile-gate-btn {
+            background: #fff !important;
+            border-color: #555 !important;
+            color: #333 !important;
+        }
+        body.formal .rotate-hint { color: #777 !important; }
+
+        /* Research tree link */
+        body.formal a[href="projects.html"] {
+            background: rgba(0,0,0,0.04) !important;
+            border-color: #555 !important;
+            color: #333 !important;
+        }
+
+        /* X gate in formal mode */
+        body.formal .gate-x {
+            border-color: #c2410c !important;
+            color: #c2410c !important;
+        }
+
+        /* Grover panel in formal mode */
+        body.formal .grover-panel {
+            background: #fff;
+            border-color: #ddd;
+        }
+        body.formal .grover-panel h3 { color: #0369a1; }
+        body.formal .grover-panel .grover-target { color: #7c3aed; }
+        body.formal .grover-panel code { background: rgba(3,105,161,0.08); color: #0369a1; }
+        body.formal .grover-panel .g-label { color: #d97706; }
+        body.formal .grover-panel .g-desc { color: #475569; }
+        body.formal .grover-panel .g-divider { border-color: #e2e8f0; }
+        body.formal .grover-panel .g-speedup { color: #475569; }
+        body.formal .grover-panel .g-speedup strong { color: #16a34a; }
+    </style>
+</head>
+<body>
+    <!-- Mode toggle -->
+    <button class="mode-toggle" onclick="toggleMode()" title="Switch between quantum and formal mode">
+        <span>🌙 Dark</span>
+        <div class="toggle-track"><div class="toggle-knob"></div></div>
+        <span>☀️ Light</span>
+    </button>
+
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>NITIN JHA</h1>
+            <div class="subtitle">PhD Student | Quantum Networks and Communication Researcher</div>
+            <div class="subtitle">Kennesaw State University</div>
+            <div class="wave-visualizer">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-bottom: 16px;">
+            <a href="projects.html" style="display:inline-block; padding: 11px 28px; border: 2px solid #ff00ff; border-radius: 8px; background: rgba(255,0,255,0.08); color: #ff00ff; font-family: 'Courier New', monospace; font-size: 0.95em; text-decoration: none; transition: all .3s ease;"
+               onmouseover="this.style.background='rgba(255,0,255,0.22)';this.style.boxShadow='0 0 20px rgba(255,0,255,0.4)'"
+               onmouseout="this.style.background='rgba(255,0,255,0.08)';this.style.boxShadow='none'">
+                🌿 View Research Tree
+            </a>
+        </div>
+
+        <div class="circuit-controls">
+            <button class="control-btn active" onclick="showSection('home')">Home</button>
+            <button class="control-btn" onclick="showSection('intro')">Introduction</button>
+            <button class="control-btn" onclick="showSection('about')">About</button>
+            <button class="control-btn" onclick="showSection('research')">Research</button>
+            <button class="control-btn" onclick="showSection('publications')">Publications</button>
+            <button class="control-btn" onclick="showSection('education')">Education</button>
+            <button class="control-btn" onclick="showSection('skills')">Skills</button>
+            <button class="control-btn" onclick="showSection('experience')">Experience</button>
+            <button class="control-btn" onclick="showSection('contact')">Contact</button>
+        </div>
+
+        <!-- Mobile-only gate grid (shown instead of the circuit on phones) -->
+        <p style="display:none; text-align:center; color:rgba(0,255,255,0.55); font-size:0.78em; margin-bottom:10px;" class="rotate-hint">
+            ↻ Rotate phone to see the full quantum circuit
+        </p>
+        <div class="mobile-gate-grid">
+            <button class="mobile-gate-btn color-cyan" onclick="showSection('home')">
+                <span class="gate-symbol">H</span>Home
+            </button>
+            <button class="mobile-gate-btn color-cyan" onclick="showSection('about')">
+                <span class="gate-symbol">H</span>About
+            </button>
+            <button class="mobile-gate-btn color-cyan" onclick="showSection('research')">
+                <span class="gate-symbol">H</span>Research
+            </button>
+            <button class="mobile-gate-btn color-rz" onclick="showSection('publications')" style="border-color:#ff6600;color:#ff6600;">
+                <span class="gate-symbol">X</span>Papers
+            </button>
+            <button class="mobile-gate-btn color-cyan" onclick="showSection('skills')">
+                <span class="gate-symbol">CCX</span>Skills
+            </button>
+            <button class="mobile-gate-btn color-rx" onclick="showSection('education')">
+                <span class="gate-symbol">H</span>Education
+            </button>
+            <button class="mobile-gate-btn color-cyan" onclick="showSection('experience')">
+                <span class="gate-symbol">H</span>Experience
+            </button>
+            <button class="mobile-gate-btn color-meas" onclick="showSection('contact')">
+                <span class="gate-symbol">M</span>Contact
+            </button>
+        </div>
+
+        <!-- Circuit + Grover description panel side by side -->
+        <div class="circuit-and-panel-wrapper">
+
+        <!-- Scrollable wrapper lets the circuit overflow horizontally on phones -->
+        <div class="circuit-scroll-wrapper">
+            <div class="circuit-container" id="circuit">
+
+                <!-- ═══════════════════════════════════════════════════
+                     Grover's Search Algorithm — target |101⟩
+                     Init → Oracle (X+CCX+X) → Diffusion (H+X+CCX+X+H) → Measure
+                     ═══════════════════════════════════════════════════ -->
+
+                <!-- Qubit 0 -->
+                <div class="qubit-line" data-qubit="0">
+                    <div class="qubit-label" title="Qubit 0 — Init superposition">|q₀⟩</div>
+                    <div class="circuit-track">
+                        <!-- Init H -->
+                        <div class="gate-wrapper" style="left:6%">
+                            <div class="gate gate-h-0" data-section="home" title="Hadamard — Home">H</div>
+                        </div>
+                        <!-- Oracle CCX: control on q0 -->
+                        <div class="gate-wrapper" style="left:28%" id="ccx-oracle-q0">
+                            <div class="gate gate-cx-control" data-section="skills" title="Toffoli (CCX) Oracle — Skills">
+                                <div class="cx-control-dot"></div>
+                            </div>
+                        </div>
+                        <!-- Diffusion H -->
+                        <div class="gate-wrapper" style="left:50%">
+                            <div class="gate gate-h-0" data-section="experience" title="Hadamard — Experience (Diffusion)">H</div>
+                        </div>
+                        <!-- Diffusion X -->
+                        <div class="gate-wrapper" style="left:61%">
+                            <div class="gate gate-x" title="Pauli-X — Diffusion flip">X</div>
+                        </div>
+                        <!-- Diffusion CCX: control on q0 -->
+                        <div class="gate-wrapper" style="left:72%" id="ccx-diff-q0">
+                            <div class="gate gate-cx-control" data-section="contact" title="Toffoli (CCX) Diffusion — Contact">
+                                <div class="cx-control-dot"></div>
+                            </div>
+                        </div>
+                        <!-- Diffusion X restore -->
+                        <div class="gate-wrapper" style="left:82%">
+                            <div class="gate gate-x" title="Pauli-X — Diffusion restore">X</div>
+                        </div>
+                        <!-- Measure -->
+                        <div class="gate-wrapper" style="left:91%">
+                            <div class="measurement" onclick="measureQubit(0)"></div>
+                            <div class="measurement-result" id="measure-0"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qubit 1 -->
+                <div class="qubit-line" data-qubit="1">
+                    <div class="qubit-label" title="Qubit 1 — Oracle target bit">|q₁⟩</div>
+                    <div class="circuit-track">
+                        <!-- Init H -->
+                        <div class="gate-wrapper" style="left:6%">
+                            <div class="gate gate-h-1" data-section="about" title="Hadamard — About">H</div>
+                        </div>
+                        <!-- Oracle X: flips q1 (target |101⟩ has 0 at q1) -->
+                        <div class="gate-wrapper" style="left:17%">
+                            <div class="gate gate-x" data-section="publications" title="Pauli-X — Publications (Oracle marks |101⟩)">X</div>
+                        </div>
+                        <!-- Oracle CCX: second control on q1 -->
+                        <div class="gate-wrapper" style="left:28%" id="ccx-oracle-q1">
+                            <div class="gate gate-cx-control" title="Toffoli (CCX) — second control qubit">
+                                <div class="cx-control-dot"></div>
+                            </div>
+                        </div>
+                        <!-- Oracle X cleanup -->
+                        <div class="gate-wrapper" style="left:39%">
+                            <div class="gate gate-x" title="Pauli-X — Oracle cleanup (restores q1)">X</div>
+                        </div>
+                        <!-- Diffusion H -->
+                        <div class="gate-wrapper" style="left:50%">
+                            <div class="gate gate-h-1" title="Hadamard — Diffusion">H</div>
+                        </div>
+                        <!-- Diffusion X -->
+                        <div class="gate-wrapper" style="left:61%">
+                            <div class="gate gate-x" title="Pauli-X — Diffusion flip">X</div>
+                        </div>
+                        <!-- Diffusion CCX: second control on q1 -->
+                        <div class="gate-wrapper" style="left:72%" id="ccx-diff-q1">
+                            <div class="gate gate-cx-control" title="Toffoli (CCX) — second control qubit">
+                                <div class="cx-control-dot"></div>
+                            </div>
+                        </div>
+                        <!-- Diffusion X restore -->
+                        <div class="gate-wrapper" style="left:82%">
+                            <div class="gate gate-x" title="Pauli-X — Diffusion restore">X</div>
+                        </div>
+                        <!-- Measure -->
+                        <div class="gate-wrapper" style="left:91%">
+                            <div class="measurement" onclick="measureQubit(1)"></div>
+                            <div class="measurement-result" id="measure-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qubit 2 -->
+                <div class="qubit-line" data-qubit="2">
+                    <div class="qubit-label" title="Qubit 2 — CCX target">|q₂⟩</div>
+                    <div class="circuit-track">
+                        <!-- Init H -->
+                        <div class="gate-wrapper" style="left:6%">
+                            <div class="gate gate-h-2" data-section="research" title="Hadamard — Research">H</div>
+                        </div>
+                        <!-- Oracle CCX: target on q2 -->
+                        <div class="gate-wrapper" style="left:28%" id="ccx-oracle-q2">
+                            <div class="gate gate-cx-target" title="Toffoli (CCX) target — phase kickback">
+                                <div class="cx-target-circle"></div>
+                            </div>
+                        </div>
+                        <!-- Diffusion H -->
+                        <div class="gate-wrapper" style="left:50%">
+                            <div class="gate gate-h-2" title="Hadamard — Diffusion">H</div>
+                        </div>
+                        <!-- Diffusion X -->
+                        <div class="gate-wrapper" style="left:61%">
+                            <div class="gate gate-x" title="Pauli-X — Diffusion flip">X</div>
+                        </div>
+                        <!-- Diffusion CCX: target on q2 -->
+                        <div class="gate-wrapper" style="left:72%" id="ccx-diff-q2">
+                            <div class="gate gate-cx-target" title="Toffoli (CCX) target — Diffusion oracle">
+                                <div class="cx-target-circle"></div>
+                            </div>
+                        </div>
+                        <!-- Diffusion X restore -->
+                        <div class="gate-wrapper" style="left:82%">
+                            <div class="gate gate-x" title="Pauli-X — Diffusion restore">X</div>
+                        </div>
+                        <!-- Measure -->
+                        <div class="gate-wrapper" style="left:91%">
+                            <div class="measurement" onclick="measureQubit(2)"></div>
+                            <div class="measurement-result" id="measure-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CCX (Toffoli) vertical connection lines -->
+                <div class="cnot-line" id="ccx-line-oracle"></div>
+                <div class="cnot-line" id="ccx-line-diff"></div>
+            </div>
+        </div>
+
+        <!-- Grover's algorithm description panel -->
+        <div class="grover-panel">
+            <h3>⚛ Grover's Search</h3>
+            <div class="grover-target">Target: <code>|101⟩</code></div>
+
+            <div class="g-step">
+                <div class="g-label">① Init</div>
+                <div class="g-desc">H gates put all 3 qubits in equal superposition — 8 states simultaneously</div>
+            </div>
+            <div class="g-step">
+                <div class="g-label">② Oracle</div>
+                <div class="g-desc">X flips q₁, Toffoli phase-kicks <code>|101⟩</code>, X restores — target marked without measuring</div>
+            </div>
+            <div class="g-step">
+                <div class="g-label">③ Diffusion</div>
+                <div class="g-desc">H + X + Toffoli + X + H amplifies |101⟩ and cancels all others</div>
+            </div>
+
+            <hr class="g-divider">
+
+            <div class="g-speedup">
+                1 iteration →&nbsp;<strong>P(|101⟩) ≈ 78%</strong><br><br>
+                Classical: ~4 queries avg<br>
+                Grover's: <strong>√N = 2</strong> queries<br>
+                Speedup: <strong>quadratic</strong>
+            </div>
+        </div>
+
+        </div><!-- end .circuit-and-panel-wrapper -->
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box" style="border-color:#00ffff;background:rgba(0,255,255,0.1);color:#00ffff;">H</div>
+                <span>Hadamard — Home, About, Research &amp; Experience</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="border-color:#ff6600;background:rgba(255,102,0,0.1);color:#ff6600;">X</div>
+                <span>Pauli-X — Oracle marks target &amp; Diffusion flip</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="border-color:#00ffff;background:rgba(0,255,255,0.1);display:flex;align-items:center;justify-content:center;">
+                    <div style="width:10px;height:10px;border-radius:50%;background:#00ffff;"></div>
+                </div>
+                <span>Toffoli (CCX) — Skills (Oracle) &amp; Contact (Diffusion)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="border-color:#ff00ff;background:rgba(255,0,255,0.05);color:#ff00ff;font-size:1.1em;">M</div>
+                <span>Measurement — Collapse &amp; read result</span>
+            </div>
+        </div>
+
+        <!-- Content Panels -->
+        <div id="home" class="content-panel active">
+            <h2>🏠 Welcome — H Gate (q₀) | Grover's Init</h2>
+            <div style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 260px;">
+                    <p>Hello! I'm Nitin Jha, a PhD student at Kennesaw State University in the Department of Computer Science. Welcome to my quantum-inspired portfolio!</p>
+                    <p>Like the Hadamard gate that creates superposition, my research explores the intersection of quantum mechanics and computer science, creating new possibilities in quantum networks and secure communications.</p>
+                    <p>Navigate through the quantum circuit above to explore my research, publications, and professional journey. Each gate represents a different aspect of my work in quantum computing.</p>
+                    <a href="resume.pdf" download class="social-link" style="margin-top: 10px; display: inline-block;">
+                        📄 Download Resume
+                    </a>
+                </div>
+                <div style="flex: 0 0 250px; text-align: center;">
+                    <div style="width: 250px; height: 250px; border-radius: 15px; border: 3px solid #00ffff; box-shadow: 0 0 20px rgba(0, 255, 255, 0.3); overflow: hidden; transition: all 0.3s ease;">
+                        <img src="pic.jpeg" alt="Nitin Jha" style="width: 100%; height: 100%; object-fit: cover; object-position: center 30%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="intro" class="content-panel">
+            <h2>🌟 Introduction - H Gate (q₀)</h2>
+            <p>My research interests lie at the cutting edge of quantum technology, focusing on:</p>
+            <ul>
+                <li><strong>Quantum Networks</strong> - Building the infrastructure for quantum internet</li>
+                <li><strong>Quantum Communications</strong> - Enabling secure information transfer through quantum channels</li>
+                <li><strong>Quantum Secure Direct Communication Protocols</strong> - Developing novel approaches to quantum-secured messaging</li>
+            </ul>
+            <p>Just as the Hadamard gate puts qubits into superposition, my work explores multiple approaches to solving the challenges of quantum networking and communication.</p>
+        </div>
+
+        <div id="about" class="content-panel">
+            <h2>👤 About Me — H Gate (q₁) | Grover's Init</h2>
+            <p>I'm currently pursuing my PhD in Computer Science at Kennesaw State University in Georgia, USA, where I work as a Graduate Research Assistant focusing on quantum network and communication protocols.</p>
+            <p>My journey in physics and quantum computing began at Ashoka University in India, where I earned my BSc (Hons) in Physics with Cum Laude distinction. This strong foundation in physics, combined with my computer science expertise, allows me to bridge theory and practical implementation in quantum systems.</p>
+            <h3>Research Philosophy</h3>
+            <p>I believe in the transformative potential of quantum technologies to revolutionize secure communications and networking. My approach combines rigorous theoretical understanding with practical protocol development, always keeping real-world implementation challenges in mind.</p>
+        </div>
+
+        <div id="research" class="content-panel">
+            <h2>🔬 Research — H Gate (q₂) | Grover's Init</h2>
+            <p>The Hadamard gate puts q₂ into superposition — just as my research explores quantum states across multiple dimensions, from quantum network protocols to error correction schemes.</p>
+
+            <h3>Current Research Focus</h3>
+            <ul>
+                <li><strong>Quantum Network Protocols</strong> - Developing efficient protocols for quantum information distribution across networks</li>
+                <li><strong>Noise and Topology Effects</strong> - Analyzing how different network structures and environmental noise affect multiphoton quantum protocols</li>
+                <li><strong>Quantum-Classical Hybrid Networks</strong> - Bridging classical and quantum communication systems for practical deployment</li>
+                <li><strong>Machine Learning for Quantum Protocols</strong> - Applying ML techniques to optimize quantum communication protocols</li>
+                <li><strong>Quantum Security</strong> - Investigating attacks and developing security measures for quantum networks</li>
+            </ul>
+
+            <h3>Research Experience</h3>
+            <ul>
+                <li><strong>Graduate Research Assistant</strong> - Kennesaw State University (August 2023 - Present)<br>
+                    Working on quantum network and communication protocols, including quantum anonymous notification and error correction schemes</li>
+                <li><strong>Research Assistant</strong> - Ashoka University (June 2022 - August 2022)<br>
+                    Worked on permalloy simulations using MuMax3 for spintronics applications</li>
+            </ul>
+
+            <h3>Interactive Demos</h3>
+            <p>Step-by-step animations that explain core concepts from my research — no equations required.</p>
+            <div style="margin-top: 14px; display: flex; flex-wrap: wrap; gap: 14px;">
+
+                <!-- CSS Error Correction -->
+                <a href="game/index.html" target="_blank"
+                   style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px;
+                          background: rgba(0,255,255,0.05); border: 2px solid rgba(0,255,255,0.35);
+                          border-radius: 12px; text-decoration: none; transition: all .3s ease;
+                          max-width: 460px;"
+                   onmouseover="this.style.background='rgba(0,255,255,0.13)';this.style.borderColor='#00ffff';this.style.boxShadow='0 0 22px rgba(0,255,255,0.3)';this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='rgba(0,255,255,0.05)';this.style.borderColor='rgba(0,255,255,0.35)';this.style.boxShadow='none';this.style.transform='none'">
+                    <span style="font-size: 2em; line-height: 1;">🔐</span>
+                    <div>
+                        <div style="color: #00ffff; font-size: 0.95em; font-weight: bold; margin-bottom: 5px;">
+                            CSS Quantum Error Correction — Sudoku Explainer
+                        </div>
+                        <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
+                            An interactive 9-step animation showing how CSS codes detect and fix errors in quantum states — without ever measuring the data. Based on the JEEC protocol (Scientific Reports, 2024).
+                        </div>
+                        <div style="color: #ff00ff; font-size: 0.72em; margin-top: 8px; letter-spacing: 0.5px;">
+                            LAUNCH DEMO →
+                        </div>
+                    </div>
+                </a>
+
+                <!-- QKD General Setup -->
+                <a href="game/qkd.html" target="_blank"
+                   style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px;
+                          background: rgba(96,165,250,0.05); border: 2px solid rgba(96,165,250,0.35);
+                          border-radius: 12px; text-decoration: none; transition: all .3s ease;
+                          max-width: 460px;"
+                   onmouseover="this.style.background='rgba(96,165,250,0.13)';this.style.borderColor='#60a5fa';this.style.boxShadow='0 0 22px rgba(96,165,250,0.3)';this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='rgba(96,165,250,0.05)';this.style.borderColor='rgba(96,165,250,0.35)';this.style.boxShadow='none';this.style.transform='none'">
+                    <span style="font-size: 2em; line-height: 1;">🔭</span>
+                    <div>
+                        <div style="color: #60a5fa; font-size: 0.95em; font-weight: bold; margin-bottom: 5px;">
+                            Quantum Key Distribution — General Setup
+                        </div>
+                        <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
+                            A 9-step walkthrough of how Alice and Bob share a secret key over a quantum optical fiber channel — including Eve's eavesdropping attempt and how quantum mechanics exposes her.
+                        </div>
+                        <div style="color: #ff00ff; font-size: 0.72em; margin-top: 8px; letter-spacing: 0.5px;">
+                            LAUNCH DEMO →
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Three-Stage Protocol -->
+                <a href="game/threestage.html" target="_blank"
+                   style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px;
+                          background: rgba(52,211,153,0.05); border: 2px solid rgba(52,211,153,0.35);
+                          border-radius: 12px; text-decoration: none; transition: all .3s ease;
+                          max-width: 460px;"
+                   onmouseover="this.style.background='rgba(52,211,153,0.13)';this.style.borderColor='#34d399';this.style.boxShadow='0 0 22px rgba(52,211,153,0.3)';this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='rgba(52,211,153,0.05)';this.style.borderColor='rgba(52,211,153,0.35)';this.style.boxShadow='none';this.style.transform='none'">
+                    <span style="font-size: 2em; line-height: 1;">🔒</span>
+                    <div>
+                        <div style="color: #34d399; font-size: 0.95em; font-weight: bold; margin-bottom: 5px;">
+                            Three-Stage Protocol — Kak's Scheme
+                        </div>
+                        <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
+                            An animated 9-step demo of Kak's three-stage quantum key exchange — Alice and Bob each lock and unlock a shared box without ever exchanging keys, using commutative encryption.
+                        </div>
+                        <div style="color: #ff00ff; font-size: 0.72em; margin-top: 8px; letter-spacing: 0.5px;">
+                            LAUNCH DEMO →
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+        <div id="publications" class="content-panel">
+            <h2>📚 Publications — X Gate (q₁) | Grover's Oracle</h2>
+            <p>The Pauli-X gate marks the target state in Grover's oracle — just as each publication marks a contribution, identifying and pinpointing results from the search space of open research problems.</p>
+
+            <h3>Journal Publications</h3>
+            <ul>
+                <li><strong>Scientific Reports</strong> (2024)<br>
+                    Jha, N., Parakh, A., &amp; Subramaniam, M. (2024). Joint encryption and error correction for secure quantum communication. <em>Scientific Reports</em>, 14(1), 24542.<br>
+                    DOI: <a href="https://doi.org/10.1038/s41598-024-75212-8" target="_blank">10.1038/s41598-024-75212-8</a></li>
+
+                <li><strong>Infocommunications Journal</strong> (2025)<br>
+                    Jha, N., Parakh, A., &amp; Subramaniam, M. (2025). Multi-photon QKD for Practical Quantum Networks. <em>Infocommunications Journal</em>.<br>
+                    DOI: <a href="https://doi.org/10.1080/01611194.2025.2596885" target="_blank">10.36244/ICJ.2025.2.9</a></li>
+
+                <li><strong>Cryptologia by Taylor and Francis</strong> (2026)<br>
+                     Jha, N., Parakh, A., &amp; Subramaniam, M. (2026). Quantum key distribution: Bridging theoretical security proofs, practical attacks, and error correction for quantum-augmented networks. <em>Cryptologia, 1-58.</em>.<br>
+                    DOI: <a href="https://doi.org/10.36244/ICJ.2025.2.9" target="_blank">10.1080/01611194.2025.2596885</a></li>
+            </ul>
+
+            <h3>Pre-Prints and In-review</h3>
+            <ul>
+                <li>Jha, N., &amp; Parakh, A. (2026). Are quantum voting protocols practical?.<em>In Review at ACM Ubiquity</em></li>
+                <li>Jha, N., &amp; Parakh, A. (2026). Quantum Error Correction: A solution to all of our quantum worries! <em>arXiv preprint arXiv:2505.23603</em><em>In Review at IEEE Potentials Magazine</em>.</li>
+                <li>Jha, N., Parakh, A., &amp; Subramaniam, M. (2025). An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks. <em>arXiv preprint arXiv:2511.12313</em>. <em>In-review: Frontiers Quantum Science and Technology.</em></li>
+            </ul>
+            <h3>General Audience Articles</h3>
+            <ul>
+                <li>Jha, N., &amp; Parakh, A. (2025). Towards A Global Quantum Internet: A Review of Challenges Facing Aerial Quantum Networks <em>in IEEE Potentials, vol. 44, no. 4, pp. 6-12, July-Aug. 2025</em>  DOI: <a href="https://doi.org/10.1080/01611194.2025.2596885" target="_blank">10.1080/01611194.2025.2596885</a></li>
+            </ul>
+
+            <h3>Conference Presentations</h3>
+            <ul>
+                <li><strong>SPIE Photonics West 2024</strong><br>
+                    Jha, N., Parakh, A., &amp; Subramaniam, M. (2024, March). Effect of noise and topologies on multi-photon quantum protocols. In <em>Quantum computing, communication, and simulation IV</em> (Vol. 12911, pp. 147-160). SPIE.</li>
+
+                <li><strong>SPIE Photonics West 2025</strong><br>
+                    Jha, N., Parakh, A., &amp; Subramaniam, M. (2025, March). Towards a quantum-classical augmented network. In <em>Quantum Computing, Communication, and Simulation V</em> (Vol. 13391, pp. 72-86). SPIE.</li>
+
+                <li><strong>IEEE QCE 2024</strong><br>
+                    Jha, N., Parakh, A., &amp; Subramanian, M. (2024, September). A ml based approach to quantum augmented http protocol. In <em>2024 IEEE International Conference on Quantum Computing and Engineering (QCE)</em> (Vol. 2, pp. 591-592). IEEE.</li>
+            </ul>
+
+            <p style="margin-top: 20px;">
+                <a href="https://scholar.google.com/citations?user=u0OLK6cAAAAJ&hl=en" target="_blank" class="social-link">📖 View Full Publication List on Google Scholar</a>
+            </p>
+        </div>
+
+        <div id="education" class="content-panel">
+            <h2>🎓 Education - Rx Gate</h2>
+            <p>The Rx gate represents rotation in quantum state space. My educational journey has continuously rotated my perspective, adding new dimensions to my understanding.</p>
+
+            <h3>Academic Background</h3>
+            <ul>
+                <li><strong>PhD in Computer Science</strong> (August 2023 - Present)<br>
+                    Kennesaw State University, Marietta, GA, USA<br>
+                    Focus: Quantum Networks and Communication Protocols<br>
+                    Advisor: Dr. Abhishek Parakh</li>
+
+                <li><strong>BSc (Hons) Physics</strong> (August 2020 - May 2023)<br>
+                    Ashoka University, Sonipat, Haryana, India<br>
+                    Graduated: (Honors) Cum Laude<br>
+                    Relevant Coursework: Quantum Mechanics, Electromagnetic Theory, Computational Physics, Statistical Mechanics</li>
+            </ul>
+
+            <h3>Grants</h3>
+            <ul>
+                <li><strong>IEEE Computer Science Student Society Grant</strong> IEEE QCE 2024</li>
+                <li><strong>College of Computer Science and Software Engineering Travel Grant</strong> 2024, 2025, 2026</li>
+                <li><strong>NSF-BEACON Labs Travel Grant for Workshop</strong> Boise State University 2026</li>
+            </ul>
+        </div>
+
+        <div id="skills" class="content-panel">
+            <h2>⚡ Skills — Toffoli (CCX) | Grover's Oracle</h2>
+            <p>The Toffoli gate is the most complex gate in the circuit — a 3-qubit operation that encodes the oracle's logic. Similarly, my skills span across quantum computing, classical CS, and the tools needed to bridge both worlds.</p>
+
+            <div class="skill-grid">
+                <div class="skill-item">
+                    <div class="skill-category">Quantum Computing</div>
+                    <p>Quantum Circuits, Quantum Algorithms, Quantum Cryptography, QKD Protocols, QSDC Protocols</p>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-category">Quantum Software</div>
+                    <p>Qiskit, Quantum Network Simulators, Pennylane</p>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-category">Programming</div>
+                    <p>Python, MATLAB</p>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-category">Machine Learning</div>
+                    <p>TensorFlow, PyTorch, Scikit-learn, Neural Networks, Quantum Machine Learning</p>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-category">Simulation Tools</div>
+                    <p>MuMax3, Mathematica, MATLAB Simulink</p>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-category">Data Analysis</div>
+                    <p>NumPy, Pandas, Matplotlib, SciPy, Data Visualization</p>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-category">Networking</div>
+                    <p>Network Protocols, Network Simulation, Network Security</p>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-category">Research Skills</div>
+                    <p>Scientific Writing, LaTeX, Technical Presentations, Literature Review, Experimental Design</p>
+                </div>
+            </div>
+
+            <h3>Technical Expertise</h3>
+            <ul>
+                <li><strong>Quantum Protocol Development</strong> - Design and analysis of quantum communication protocols</li>
+                <li><strong>Network Simulation</strong> - Large-scale quantum network simulations</li>
+                <li><strong>Error Analysis</strong> - Quantum error correction and noise characterization</li>
+                <li><strong>Security Analysis</strong> - Cryptographic protocol analysis and attack modeling</li>
+            </ul>
+        </div>
+
+        <div id="experience" class="content-panel">
+            <h2>💼 Experience — H Gate (q₀) | Grover's Diffusion</h2>
+            <p>The Hadamard in the diffusion operator reinitializes the superposition, amplifying what matters. Each experience in my journey has similarly amplified the direction of my research and broadened my perspective.</p>
+
+            <h3>Research Positions</h3>
+            <ul>
+                <li><strong>Graduate Research Assistant</strong><br>
+                    Kennesaw State University | August 2023 - Present<br>
+                    • Developing novel quantum network protocols for secure communication<br>
+                    • Investigating effects of noise and network topology on multiphoton quantum systems<br>
+                    • Creating quantum-classical hybrid network architectures, also termed as Quantum Augmented Networks<br>
+                    • Publishing research in peer-reviewed journals and presenting at international conferences</li>
+
+                <li><strong>Research Assistant - Spintronics</strong><br>
+                    Ashoka University | June 2022 - May 2023<br>
+                    • Conducted permalloy micromagnetic simulations using MuMax3<br>
+                    • Analyzed magnetic domain dynamics and spin wave propagation<br>
+                    • Contributed to research on spintronic device optimization</li>
+            </ul>
+
+            <h3>Professional Service</h3>
+            <ul>
+                <li><strong>Peer Reviewer</strong> - Reviewing manuscripts for quantum computing and networking journals:
+                    <ul style="margin-top: 8px;">
+                        <li>IEEE Transactions on Mobile Computing</li>
+                        <li>Scientific Reports</li>
+                        <li>IEEE Access</li>
+                        <li>Advanced Quantum Technologies (QUTE)</li>
+                        <li>ACM Transactions</li>
+                        <li>Infocommunication Journal (ICJ)</li>
+                    </ul>
+                </li>
+                <li><strong>Student Organizations</strong> - Active member of Ph.D. student research groups</li>
+            </ul>
+        </div>
+
+        <div id="contact" class="content-panel">
+            <h2>📬 Contact — Toffoli (CCX) | Grover's Diffusion</h2>
+            <p>The Toffoli gate in the diffusion step is the final amplifier — collapsing probability towards the right answer. Let's make the right connection! Feel free to reach out for collaborations, research discussions, or any questions about my work.</p>
+
+            <h3>Get in Touch</h3>
+            <p>I'm always interested in discussing quantum networking/communication research, potential collaborations, and new opportunities in quantum technology. Send me a message directly using the button below!</p>
+
+            <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                <p><strong>Location:</strong> Georgia, USA</p>
+            </div>
+            <div style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px;">
+                <button onclick="openContactModal()" class="social-link" style="border: none; cursor: pointer; font-family: 'Courier New', monospace; font-size: 1em;">
+                    ✉️ Send Me a Message
+                </button>
+                <a href="resume.pdf" download class="social-link">
+                    📄 Download Resume
+                </a>
+            </div>
+
+            <h3>Connect Online</h3>
+            <div class="social-links-row" style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 15px;">
+                <a href="https://scholar.google.com/citations?user=u0OLK6cAAAAJ&hl=en" target="_blank" class="social-link">
+                    📖 Google Scholar
+                </a>
+                <a href="https://www.linkedin.com/in/nitin-jha-524357192/" target="_blank" class="social-link">
+                    💼 LinkedIn
+                </a>
+                <a href="https://github.com/ninjha252" target="_blank" class="social-link">
+                    💻 GitHub
+                </a>
+                <a href="https://orcid.org/0009-0006-3768-4292" target="_blank" class="social-link">
+                    🔬 ORCID
+                </a>
+            </div>
+
+            <h3>Research Interests for Collaboration</h3>
+            <ul>
+                <li>Quantum network protocol development</li>
+                <li>Quantum cryptography and security</li>
+                <li>Quantum-classical hybrid systems</li>
+                <li>Machine learning for quantum systems</li>
+                <li>Quantum error correction</li>
+                <li>Quantum internet architecture</li>
+            </ul>
+
+            <p style="margin-top: 30px; padding: 20px; background: rgba(0,255,255,0.05); border-left: 4px solid #00ffff; border-radius: 5px;">
+                <strong>Note:</strong> This portfolio is designed as a quantum circuit where each gate click reveals different aspects of my work. Try clicking on the quantum gates above to navigate, or use the measurement operators to see random outcomes! The circuit metaphor represents how my different research areas are interconnected, much like entangled qubits in a quantum system.
+            </p>
+        </div>
+    </div>
+
+    <!-- ── Contact Modal ── -->
+    <div id="contact-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.78); z-index:200; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(4px);" onclick="closeContactOnOverlay(event)">
+        <div style="background:#0e0e22; border:2px solid #00ffff; border-radius:14px; max-width:520px; width:100%; padding:30px; position:relative; box-shadow:0 0 40px rgba(0,255,255,0.2); max-height:90vh; overflow-y:auto;">
+            <button onclick="closeContactModal()" style="position:absolute; top:14px; right:16px; background:none; border:none; color:#00ffff; font-size:1.4em; cursor:pointer; line-height:1;">✕</button>
+            <h3 style="color:#00ffff; margin-bottom:6px; font-size:1.2em;">✉️ Send a Message</h3>
+            <p style="color:rgba(224,224,255,0.6); font-size:0.8em; margin-bottom:20px;">Your message goes directly to my inbox — no email address needed.</p>
+
+            <form id="contact-form" style="display:flex; flex-direction:column; gap:14px;">
+                <div>
+                    <label style="color:#ff00ff; font-size:0.8em; display:block; margin-bottom:5px;">Your Name</label>
+                    <input type="text" name="name" required placeholder="Jane Smith"
+                        style="width:100%; padding:10px 12px; background:rgba(0,255,255,0.05); border:1px solid rgba(0,255,255,0.3); border-radius:7px; color:#e0e0ff; font-family:'Courier New',monospace; font-size:0.9em; outline:none;"
+                        onfocus="this.style.borderColor='#00ffff'" onblur="this.style.borderColor='rgba(0,255,255,0.3)'">
+                </div>
+                <div>
+                    <label style="color:#ff00ff; font-size:0.8em; display:block; margin-bottom:5px;">Your Email</label>
+                    <input type="email" name="email" required placeholder="you@example.com"
+                        style="width:100%; padding:10px 12px; background:rgba(0,255,255,0.05); border:1px solid rgba(0,255,255,0.3); border-radius:7px; color:#e0e0ff; font-family:'Courier New',monospace; font-size:0.9em; outline:none;"
+                        onfocus="this.style.borderColor='#00ffff'" onblur="this.style.borderColor='rgba(0,255,255,0.3)'">
+                </div>
+                <div>
+                    <label style="color:#ff00ff; font-size:0.8em; display:block; margin-bottom:5px;">Subject</label>
+                    <input type="text" name="subject" placeholder="Research collaboration, question..."
+                        style="width:100%; padding:10px 12px; background:rgba(0,255,255,0.05); border:1px solid rgba(0,255,255,0.3); border-radius:7px; color:#e0e0ff; font-family:'Courier New',monospace; font-size:0.9em; outline:none;"
+                        onfocus="this.style.borderColor='#00ffff'" onblur="this.style.borderColor='rgba(0,255,255,0.3)'">
+                </div>
+                <div>
+                    <label style="color:#ff00ff; font-size:0.8em; display:block; margin-bottom:5px;">Message</label>
+                    <textarea name="message" required rows="5" placeholder="Your message here..."
+                        style="width:100%; padding:10px 12px; background:rgba(0,255,255,0.05); border:1px solid rgba(0,255,255,0.3); border-radius:7px; color:#e0e0ff; font-family:'Courier New',monospace; font-size:0.9em; outline:none; resize:vertical;"
+                        onfocus="this.style.borderColor='#00ffff'" onblur="this.style.borderColor='rgba(0,255,255,0.3)'"></textarea>
+                </div>
+                <button type="submit" id="contact-submit"
+                    style="padding:11px; background:rgba(0,255,255,0.12); border:2px solid #00ffff; border-radius:8px; color:#00ffff; font-family:'Courier New',monospace; font-size:0.95em; cursor:pointer; transition:all .3s;"
+                    onmouseover="this.style.background='rgba(0,255,255,0.25)'" onmouseout="this.style.background='rgba(0,255,255,0.12)'">
+                    Send Message →
+                </button>
+                <p id="contact-status" style="text-align:center; font-size:0.85em; display:none;"></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Create starfield
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 200;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = (Math.random() * 2 + 1) + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Position a vertical Toffoli/CCX line from topEl to botEl
+        function positionCCXLine(topId, botId, lineId) {
+            const circuit = document.querySelector('.circuit-container');
+            if (!circuit) return;
+            const topEl  = document.getElementById(topId);
+            const botEl  = document.getElementById(botId);
+            const lineEl = document.getElementById(lineId);
+            if (!topEl || !botEl || !lineEl) return;
+            const topRect    = topEl.getBoundingClientRect();
+            const botRect    = botEl.getBoundingClientRect();
+            const circuitRect = circuit.getBoundingClientRect();
+            lineEl.style.top    = (topRect.top - circuitRect.top + topRect.height / 2) + 'px';
+            lineEl.style.height = (botRect.top - topRect.top) + 'px';
+            lineEl.style.left   = (topRect.left - circuitRect.left + topRect.width / 2) + 'px';
+        }
+
+        // Initialize CCX (Toffoli) connection lines
+        function initCNOTLines() {
+            // Oracle CCX: top control (q0) → bottom target (q2)
+            positionCCXLine('ccx-oracle-q0', 'ccx-oracle-q2', 'ccx-line-oracle');
+            // Diffusion CCX: top control (q0) → bottom target (q2)
+            positionCCXLine('ccx-diff-q0',   'ccx-diff-q2',   'ccx-line-diff');
+        }
+
+        // Show section function
+        function showSection(sectionId) {
+            const panels = document.querySelectorAll('.content-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+
+            const selectedPanel = document.getElementById(sectionId);
+            if (selectedPanel) {
+                selectedPanel.classList.add('active');
+            }
+
+            const buttons = document.querySelectorAll('.control-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().replace(/\s+/g, '') === sectionId.toLowerCase()) {
+                    btn.classList.add('active');
+                }
+            });
+
+            selectedPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Measure qubit function
+        function measureQubit(qubitNum) {
+            const resultElement = document.getElementById(`measure-${qubitNum}`);
+            const outcomes = ['0', '1'];
+            const result = outcomes[Math.floor(Math.random() * outcomes.length)];
+
+            resultElement.style.transform = 'scale(1.3)';
+            resultElement.style.color = result === '0' ? '#00ffff' : '#ff00ff';
+            resultElement.textContent = result;
+
+            setTimeout(() => {
+                resultElement.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        // Add click handlers to gates
+        document.querySelectorAll('.gate, .gate-cx-control, .gate-cx-target').forEach(gate => {
+            gate.addEventListener('click', function() {
+                const wrapper = this.closest('.gate-wrapper');
+                const gateElement = wrapper ? wrapper.querySelector('[data-section]') : this;
+                const section = gateElement.getAttribute('data-section');
+                if (section) {
+                    showSection(section);
+                }
+            });
+        });
+
+        // Add click handlers to qubit labels
+        document.querySelectorAll('.qubit-label').forEach(label => {
+            label.addEventListener('click', function() {
+                const qubitNum = this.closest('.qubit-line').getAttribute('data-qubit');
+                alert(`Qubit |q${qubitNum}⟩ is in superposition!\n\nState: α|0⟩ + β|1⟩\n\nClick the measurement operator to collapse the state.`);
+            });
+        });
+
+        // Reinitialize CNOT lines on resize
+        window.addEventListener('resize', () => {
+            setTimeout(initCNOTLines, 100);
+        });
+
+        // Auto-sort publications in reverse chronological order
+        function sortPublications() {
+            const publicationsPanel = document.getElementById('publications');
+            if (!publicationsPanel) return;
+
+            const sections = publicationsPanel.querySelectorAll('h3');
+
+            sections.forEach(section => {
+                const ul = section.nextElementSibling;
+                if (!ul || ul.tagName !== 'UL') return;
+
+                const items = Array.from(ul.querySelectorAll('li'));
+
+                items.sort((a, b) => {
+                    const yearA = extractYear(a.textContent);
+                    const yearB = extractYear(b.textContent);
+                    return yearB - yearA;
+                });
+
+                ul.innerHTML = '';
+                items.forEach(item => ul.appendChild(item));
+            });
+        }
+
+        // ── Contact modal ──────────────────────────────────────
+        function openContactModal() {
+            const m = document.getElementById('contact-modal');
+            m.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            // reset form
+            document.getElementById('contact-form').reset();
+            const s = document.getElementById('contact-status');
+            s.style.display = 'none';
+            document.getElementById('contact-submit').disabled = false;
+            document.getElementById('contact-submit').textContent = 'Send Message →';
+        }
+
+        function closeContactModal() {
+            document.getElementById('contact-modal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function closeContactOnOverlay(e) {
+            if (e.target === document.getElementById('contact-modal')) closeContactModal();
+        }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeContactModal(); });
+
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('contact-submit');
+            const status = document.getElementById('contact-status');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            try {
+                const res = await fetch(window._contactEndpoint, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: new FormData(this)
+                });
+                if (res.ok) {
+                    status.textContent = '✅ Message sent! I\'ll get back to you soon.';
+                    status.style.color = '#00ffff';
+                    status.style.display = 'block';
+                    this.reset();
+                    btn.textContent = 'Sent!';
+                } else {
+                    throw new Error('failed');
+                }
+            } catch {
+                status.textContent = '❌ Something went wrong. Please try again.';
+                status.style.color = '#ff00ff';
+                status.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Send Message →';
+            }
+        });
+
+        function extractYear(text) {
+            const match = text.match(/\((\d{4})\)/);
+            if (match) return parseInt(match[1]);
+            const yearMatch = text.match(/\b(20\d{2})\b/);
+            if (yearMatch) return parseInt(yearMatch[1]);
+            return 0;
+        }
+
+        // ── Mode toggle ────────────────────────────────────────
+        function toggleMode() {
+            const isFormal = document.body.classList.toggle('formal');
+            localStorage.setItem('portfolioMode', isFormal ? 'formal' : 'quantum');
+            // Reinit CNOT lines since layout may shift
+            setTimeout(initCNOTLines, 50);
+        }
+
+        // Restore saved preference on load
+        (function() {
+            if (localStorage.getItem('portfolioMode') === 'formal') {
+                document.body.classList.add('formal');
+            }
+        })();
+
+        window.addEventListener('load', () => {
+            createStars();
+            setTimeout(initCNOTLines, 100);
+            sortPublications();
+            // Contact modal
+            (function() {
+                // Formspree endpoint — replace YOUR_FORM_ID after signing up at formspree.io
+                const _ep = [104,116,116,112,115,58,47,47,102,111,114,109,115,112,114,101,101,46,105,111,47,102,47,109,100,97,112,119,101,108,113]
+                             .map(n=>String.fromCharCode(n)).join('');
+                window._contactEndpoint = _ep;
+            })();
+        });
+    </script>
+</body>
+</html>
 
         .stars {
             position: fixed;
