@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QKD — General Setup</title>
+  <title>Quantum Key Distribution (QKD) Setup</title>
   <style>
     :root {
       --bg:    #101e35;
@@ -96,9 +96,129 @@
     .btn:hover:not(:disabled) { background: rgba(2,128,144,0.3); }
     .btn:disabled { opacity: 0.3; cursor: default; }
     .hint { font-size: 0.68em; color: rgba(200,220,252,0.35); margin-top: 9px; text-align: center; }
+
+    /* ── Mode toggle ── */
+    .mode-toggle {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      border-radius: 30px;
+      border: 1.5px solid rgba(0,255,255,0.5);
+      background: rgba(10,10,26,0.7);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 0.78em;
+      color: var(--alice);
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .mode-toggle:hover { border-color: var(--alice); background: rgba(13,202,216,0.1); }
+
+    .toggle-track {
+      width: 38px; height: 20px;
+      background: rgba(13,202,216,0.15);
+      border: 1.5px solid var(--alice);
+      border-radius: 10px;
+      position: relative;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .toggle-knob {
+      position: absolute;
+      width: 14px; height: 14px;
+      background: var(--alice);
+      border-radius: 50%;
+      top: 2px; left: 2px;
+      transition: left 0.3s, background 0.3s;
+    }
+
+    /* ── Formal / light mode overrides ── */
+    body.formal {
+      --bg:    #ffffff;
+      --card:  #f0f6ff;
+      --teal:  #0369a1;
+      --gold:  #d97706;
+      --white: #1a2a4a;
+      --light: #334155;
+      --alice: #0284c7;
+      --bob:   #16a34a;
+      --eve:   #dc2626;
+      --qchan: #2563eb;
+      --cchan: #dc2626;
+      background: #ffffff;
+      color: #1a2a4a;
+    }
+
+    body.formal .mode-toggle {
+      background: rgba(255,255,255,0.92);
+      border-color: #555;
+      color: #333;
+      backdrop-filter: none;
+    }
+    body.formal .mode-toggle:hover { background: #e8e8e8; }
+    body.formal .toggle-track { background: rgba(0,0,0,0.08); border-color: #555; }
+    body.formal .toggle-knob { background: #333; left: 20px; }
+
+    body.formal .svg-wrap {
+      border-color: rgba(3,105,161,0.25);
+    }
+    body.formal .bubble {
+      border-left-width: 5px;
+      font-size: 1.2em;
+      line-height: 1.7;
+    }
+    body.formal .bubble:not(.gold):not(.red):not(.green) {
+      border-color: var(--teal);
+      background: rgba(3,105,161,0.07);
+      color: var(--light);
+    }
+    body.formal .bubble.gold {
+      border-color: var(--gold);
+      background: rgba(217,119,6,0.06);
+      color: var(--light);
+    }
+    body.formal .bubble.red {
+      border-color: var(--eve);
+      background: rgba(220,38,38,0.06);
+      color: var(--light);
+    }
+    body.formal .bubble.green {
+      border-color: #34d399;
+      background: rgba(22,101,52,0.06);
+      color: var(--light);
+    }
+    body.formal .dot { background: #e2e8f0; }
+    body.formal .dot.active { background: #d97706; }
+    body.formal .btn {
+      border-color: #94a3b8;
+      background: #f1f5f9;
+      color: #1a2a4a;
+    }
+    body.formal .btn:hover:not(:disabled) { background: rgba(2,128,144,0.3); }
+    body.formal .hint { color: #94a3b8; }
+    body.formal .proto-label { font-size: 1.1em; }
+    body.formal .step-title { font-size: 2.4em; }
+
+    /* SVG rect fills for Alice, Bob, Eve boxes */
+    body.formal #alice-rect { fill: #f0f6ff; }
+    body.formal #bob-rect   { fill: #f0f6ff; }
+    body.formal #eve-rect   { fill: #fff5f5; }
   </style>
 </head>
 <body>
+
+<!-- Mode toggle -->
+<button class="mode-toggle" onclick="toggleMode()" title="Switch between dark and light mode">
+  <span>🌙 Dark</span>
+  <div class="toggle-track"><div class="toggle-knob"></div></div>
+  <span>☀️ Light</span>
+</button>
 
 <div class="proto-label">QUANTUM KEY DISTRIBUTION — GENERAL SETUP</div>
 <div class="step-title" id="step-title"></div>
@@ -606,6 +726,113 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1);  }
   if (e.key === 'ArrowLeft')                    { e.preventDefault(); go(-1); }
 });
+
+// ── Mode toggle ──────────────────────────────────────────────────
+// SVG text colors cannot all be targeted by CSS, so we update them via JS
+function applyTheme(formal) {
+  const svg = document.getElementById('main-svg');
+  if (!svg) return;
+
+  // Map of [darkFill, lightFill] for text/element fills
+  const colorMap = [
+    // Alice sub-label texts (dark: rgba(200,220,252,0.55) → light: #334155)
+    { dark: 'rgba(200,220,252,0.55)', light: '#334155' },
+    // Alice body texts (dark: rgba(200,220,252,0.8) → light: #1e3a5f)
+    { dark: 'rgba(200,220,252,0.8)', light: '#1e3a5f' },
+    // Bob sub-label texts same
+  ];
+
+  // Targeted: Alice "Name" text fill
+  const aliceNameText = svg.querySelector('#alice-g text[fill="#0DCAD8"]');
+  // We work by querying all text elements in alice-g and bob-g
+  // and updating known fill values
+
+  // Alice group texts
+  svg.querySelectorAll('#alice-g text').forEach(t => {
+    const fill = t.getAttribute('fill');
+    if (formal) {
+      if (fill === 'rgba(200,220,252,0.55)') t.setAttribute('fill', '#334155');
+      else if (fill === 'rgba(200,220,252,0.8)') t.setAttribute('fill', '#1e3a5f');
+      else if (fill === '#0DCAD8') t.setAttribute('fill', '#0284c7');
+    } else {
+      if (fill === '#334155') t.setAttribute('fill', 'rgba(200,220,252,0.55)');
+      else if (fill === '#1e3a5f') t.setAttribute('fill', 'rgba(200,220,252,0.8)');
+      else if (fill === '#0284c7') t.setAttribute('fill', '#0DCAD8');
+    }
+  });
+
+  // Bob group texts
+  svg.querySelectorAll('#bob-g text').forEach(t => {
+    const fill = t.getAttribute('fill');
+    if (formal) {
+      if (fill === 'rgba(200,220,252,0.55)') t.setAttribute('fill', '#334155');
+      else if (fill === 'rgba(200,220,252,0.8)') t.setAttribute('fill', '#14532d');
+      else if (fill === '#34d399') t.setAttribute('fill', '#16a34a');
+    } else {
+      if (fill === '#334155') t.setAttribute('fill', 'rgba(200,220,252,0.55)');
+      else if (fill === '#14532d') t.setAttribute('fill', 'rgba(200,220,252,0.8)');
+      else if (fill === '#16a34a') t.setAttribute('fill', '#34d399');
+    }
+  });
+
+  // Eve group texts
+  svg.querySelectorAll('#eve-g text').forEach(t => {
+    const fill = t.getAttribute('fill');
+    if (formal) {
+      if (fill === 'rgba(248,113,113,0.65)') t.setAttribute('fill', '#991b1b');
+      else if (fill === '#f87171') t.setAttribute('fill', '#dc2626');
+    } else {
+      if (fill === '#991b1b') t.setAttribute('fill', 'rgba(248,113,113,0.65)');
+      else if (fill === '#dc2626' && t.closest('#eve-g')) t.setAttribute('fill', '#f87171');
+    }
+  });
+
+  // Quantum channel label
+  const qLbl = document.getElementById('q-chan-lbl');
+  if (qLbl) {
+    if (formal) qLbl.setAttribute('fill', '#1d4ed8');
+    else qLbl.setAttribute('fill', 'rgba(96,165,250,0.75)');
+  }
+  const psiLbl = document.getElementById('lbl-psi');
+  if (psiLbl) {
+    if (formal) psiLbl.setAttribute('fill', '#1d4ed8');
+    else psiLbl.setAttribute('fill', 'rgba(96,165,250,0.9)');
+  }
+
+  // Classical channel label
+  const cLbl = document.getElementById('c-chan-lbl');
+  if (cLbl) {
+    if (formal) cLbl.setAttribute('fill', '#b91c1c');
+    else cLbl.setAttribute('fill', 'rgba(248,113,113,0.72)');
+  }
+  const cPost = document.getElementById('c-post-lbl');
+  if (cPost) {
+    if (formal) cPost.setAttribute('fill', '#991b1b');
+    else cPost.setAttribute('fill', 'rgba(248,113,113,0.55)');
+  }
+
+  // Eve steal label
+  const stealLbl = document.getElementById('lbl-steal');
+  if (stealLbl) {
+    if (formal) stealLbl.setAttribute('fill', '#dc2626');
+    else stealLbl.setAttribute('fill', '#f87171');
+  }
+}
+
+function toggleMode() {
+  const isFormal = document.body.classList.toggle('formal');
+  applyTheme(isFormal);
+  localStorage.setItem('portfolioMode', isFormal ? 'formal' : 'quantum');
+}
+
+// Restore saved preference on load
+(function() {
+  if (localStorage.getItem('portfolioMode') === 'formal') {
+    document.body.classList.add('formal');
+    // Apply theme after DOM is ready
+    window.addEventListener('load', () => applyTheme(true));
+  }
+})();
 
 render();
 </script>
