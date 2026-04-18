@@ -1,6 +1,3 @@
-Here's the full updated `index.html`:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -649,9 +646,205 @@ Here's the full updated `index.html`:
             .header h1 { font-size: 1.3em; }
             .mobile-gate-grid { gap: 8px; }
         }
+
+        /* ─── Mode toggle button ──────────────────────────────── */
+        .mode-toggle {
+            position: fixed;
+            top: 18px;
+            right: 22px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 13px;
+            border-radius: 30px;
+            border: 1.5px solid rgba(0,255,255,0.5);
+            background: rgba(10,10,26,0.7);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.78em;
+            color: #00ffff;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .mode-toggle:hover { border-color: #00ffff; background: rgba(0,255,255,0.1); }
+
+        .toggle-track {
+            width: 38px; height: 20px;
+            background: rgba(0,255,255,0.15);
+            border: 1.5px solid #00ffff;
+            border-radius: 10px;
+            position: relative;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .toggle-knob {
+            position: absolute;
+            width: 14px; height: 14px;
+            background: #00ffff;
+            border-radius: 50%;
+            top: 2px; left: 2px;
+            transition: left 0.3s, background 0.3s;
+        }
+
+        /* ─── Formal/light mode overrides ────────────────────── */
+        body.formal { background: #f4f4f4; color: #111; }
+
+        body.formal .mode-toggle {
+            background: rgba(255,255,255,0.92);
+            border-color: #555;
+            color: #333;
+        }
+        body.formal .mode-toggle:hover { background: #e8e8e8; }
+        body.formal .toggle-track { background: rgba(0,0,0,0.08); border-color: #555; }
+        body.formal .toggle-knob { background: #333; left: 20px; }
+
+        body.formal .stars { display: none; }
+
+        body.formal .header {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        body.formal .header::before { display: none; }
+        body.formal .header h1 {
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: #111;
+            animation: none;
+            font-size: 2.4em;
+        }
+        body.formal .subtitle { color: #444; }
+        body.formal .wave-bar { background: linear-gradient(to top, #555, #999); }
+
+        body.formal .circuit-controls { }
+        body.formal .control-btn {
+            background: #fff;
+            border-color: #555;
+            color: #333;
+            backdrop-filter: none;
+        }
+        body.formal .control-btn:hover {
+            background: #eee;
+            box-shadow: none;
+            transform: none;
+        }
+        body.formal .control-btn.active {
+            background: #111;
+            border-color: #111;
+            color: #fff;
+        }
+
+        /* Circuit — formal publication look */
+        body.formal .circuit-container {
+            background: #fff;
+            border: 1px solid #bbb;
+            backdrop-filter: none;
+        }
+        body.formal .circuit-track { background: #111; }
+        body.formal .qubit-label { color: #111; }
+        body.formal .qubit-label:hover { color: #555; transform: none; }
+
+        body.formal .gate {
+            background: #fff !important;
+            border-color: #111 !important;
+            color: #111 !important;
+            box-shadow: none !important;
+            backdrop-filter: none;
+        }
+        body.formal .gate:hover {
+            transform: none !important;
+            box-shadow: 2px 2px 0 #111 !important;
+        }
+        body.formal .gate-cx-control,
+        body.formal .gate-cx-target {
+            background: #fff;
+            border-color: #111;
+        }
+        body.formal .cx-control-dot { background: #111; }
+        body.formal .cx-target-circle { border-color: #111; }
+        body.formal .cx-target-circle::before,
+        body.formal .cx-target-circle::after { background: #111; }
+        body.formal .cnot-line { background: #111; }
+
+        body.formal .measurement {
+            border-color: #111;
+            background: #fff;
+        }
+        body.formal .measurement::before { background: #111; }
+        body.formal .measurement-result { color: #111; }
+
+        /* Legend */
+        body.formal .legend { background: #efefef; }
+        body.formal .legend-item { color: #333; }
+        body.formal .legend-box {
+            border-color: #333 !important;
+            background: #fff !important;
+            color: #333 !important;
+        }
+
+        /* Content panels */
+        body.formal .content-panel {
+            background: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+            backdrop-filter: none;
+        }
+        body.formal .content-panel h2 { color: #111; }
+        body.formal .content-panel h3 { color: #444; }
+        body.formal .content-panel p,
+        body.formal .content-panel li { color: #333; }
+        body.formal .content-panel a { color: #111; text-decoration: underline; }
+        body.formal .content-panel a:hover { color: #555; text-shadow: none; }
+
+        body.formal .social-link {
+            background: #fff;
+            border-color: #555;
+            color: #333;
+        }
+        body.formal .social-link:hover {
+            background: #eee;
+            box-shadow: none;
+            transform: none;
+        }
+
+        body.formal .skill-item {
+            background: #fff;
+            border-color: #ccc;
+        }
+        body.formal .skill-item:hover {
+            background: #f5f5f5;
+            border-color: #888;
+            box-shadow: none;
+            transform: none;
+        }
+        body.formal .skill-category { color: #222; }
+
+        /* Mobile gate buttons */
+        body.formal .mobile-gate-btn {
+            background: #fff !important;
+            border-color: #555 !important;
+            color: #333 !important;
+        }
+        body.formal .rotate-hint { color: #777 !important; }
+
+        /* Research tree link */
+        body.formal a[href="projects.html"] {
+            background: rgba(0,0,0,0.04) !important;
+            border-color: #555 !important;
+            color: #333 !important;
+        }
     </style>
 </head>
 <body>
+    <!-- Mode toggle -->
+    <button class="mode-toggle" onclick="toggleMode()" title="Switch between quantum and formal mode">
+        <span>🌙 Dark</span>
+        <div class="toggle-track"><div class="toggle-knob"></div></div>
+        <span>☀️ Light</span>
+    </button>
+
     <div class="stars" id="stars"></div>
 
     <div class="container">
@@ -1458,6 +1651,21 @@ Here's the full updated `index.html`:
             return 0;
         }
 
+        // ── Mode toggle ────────────────────────────────────────
+        function toggleMode() {
+            const isFormal = document.body.classList.toggle('formal');
+            localStorage.setItem('portfolioMode', isFormal ? 'formal' : 'quantum');
+            // Reinit CNOT lines since layout may shift
+            setTimeout(initCNOTLines, 50);
+        }
+
+        // Restore saved preference on load
+        (function() {
+            if (localStorage.getItem('portfolioMode') === 'formal') {
+                document.body.classList.add('formal');
+            }
+        })();
+
         window.addEventListener('load', () => {
             createStars();
             setTimeout(initCNOTLines, 100);
@@ -1473,4 +1681,3 @@ Here's the full updated `index.html`:
     </script>
 </body>
 </html>
-```
