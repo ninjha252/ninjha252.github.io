@@ -256,9 +256,146 @@
   }
   .jeec-tagline.visible { opacity: 1; }
   .jeec-tagline strong { color: #F0A500; }
+
+  /* ── Mode toggle ── */
+  .mode-toggle {
+    position: fixed;
+    top: 18px;
+    right: 22px;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 13px;
+    border-radius: 30px;
+    border: 1.5px solid rgba(0,255,255,0.5);
+    background: rgba(10,10,26,0.7);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 0.78em;
+    color: #028090;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+  .mode-toggle:hover { border-color: #028090; background: rgba(2,128,144,0.1); }
+
+  .toggle-track {
+    width: 38px; height: 20px;
+    background: rgba(2,128,144,0.15);
+    border: 1.5px solid #028090;
+    border-radius: 10px;
+    position: relative;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+  .toggle-knob {
+    position: absolute;
+    width: 14px; height: 14px;
+    background: #028090;
+    border-radius: 50%;
+    top: 2px; left: 2px;
+    transition: left 0.3s, background 0.3s;
+  }
+
+  /* ── Formal / light mode overrides ── */
+  body.formal {
+    background: #ffffff;
+    color: #1a2a4a;
+  }
+
+  body.formal .mode-toggle {
+    background: rgba(255,255,255,0.92);
+    border-color: #555;
+    color: #333;
+    backdrop-filter: none;
+  }
+  body.formal .mode-toggle:hover { background: #e8e8e8; }
+  body.formal .toggle-track { background: rgba(0,0,0,0.08); border-color: #555; }
+  body.formal .toggle-knob { background: #333; left: 20px; }
+
+  body.formal #header .label { font-size: 19px; color: #d97706; }
+  body.formal #header h1 { font-size: 48px; color: #1a2a4a; }
+
+  body.formal .data    { background: #dbeafe; color: #1e3a8a; }
+  body.formal .parity  { background: #ccfbf1; color: #0f766e; }
+  body.formal .corner  { background: #ccfbf1; color: #0f766e; }
+
+  body.formal .cell.highlight { background: #0284c7 !important; color: #fff !important; box-shadow: 0 0 18px #0284c7aa; }
+  body.formal .cell.gold-hi   { background: #d97706 !important; color: #fff !important; box-shadow: 0 0 18px #d97706aa; }
+  body.formal .cell.error     { background: #dc2626 !important; color: #fff !important; box-shadow: 0 0 22px #dc2626cc; }
+  body.formal .cell.fail      { background: #7f1d1d !important; color: #fca5a5 !important; box-shadow: 0 0 16px #dc262688; }
+  body.formal .cell.fixed     { background: #166534 !important; color: #fff !important; box-shadow: 0 0 18px #166534aa; }
+
+  body.formal #div-col { background: #d97706; }
+  body.formal #div-row { background: #d97706; }
+
+  body.formal .grid-legend { font-size: 16px; color: #334155; }
+
+  body.formal .bubble {
+    background: #f0f9ff;
+    border-left-color: #0284c7;
+    border-left-width: 5px;
+    font-size: 22px;
+    color: #334155;
+  }
+  body.formal .bubble.gold  { border-color: #d97706; background: #fffbeb; }
+  body.formal .bubble.red   { border-color: #dc2626; background: #fef2f2; }
+  body.formal .bubble.green { border-color: #166534; background: #f0fdf4; }
+  body.formal .bubble strong { color: #1a2a4a; }
+  body.formal .bubble .tag { color: #d97706; }
+
+  body.formal .step-dot {
+    background: #e2e8f0;
+    border-color: #94a3b8;
+  }
+  body.formal .step-dot.active { background: #d97706; border-color: #d97706; }
+  body.formal .step-dot.done   { background: #0284c7; border-color: #0284c7; }
+
+  body.formal .nav-btn {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #1a2a4a;
+    font-size: 15px;
+  }
+  body.formal .nav-btn:hover { background: #0284c7; border-color: #0284c7; color: #fff; }
+  body.formal .nav-btn.primary { background: #0284c7; border-color: #0284c7; color: #fff; }
+  body.formal .nav-btn.primary:hover { background: #0369a1; }
+
+  body.formal #hint { color: #94a3b8; font-size: 13px; }
+
+  body.formal .layer-card {
+    background: #f0f9ff;
+    border-top-color: #0284c7;
+    border-top-width: 5px;
+  }
+  body.formal .layer-card.gold-card { border-color: #d97706; background: #fffbeb; }
+  body.formal .layer-card h3 { font-size: 22px; }
+  body.formal .layer-card p  { font-size: 16px; color: #475569; }
+
+  body.formal .jeec-stage {
+    background: #f0f9ff;
+    border-top-color: #0284c7;
+  }
+  body.formal .jeec-stage h4 { font-size: 16px; color: #1a2a4a; }
+  body.formal .jeec-stage p  { font-size: 14px; color: #475569; }
+  body.formal .jeec-stage .css-badge { background: #166534; }
+  body.formal .jeec-arrow { font-size: 26px; color: #94a3b8; }
+  body.formal .jeec-tagline { font-size: 22px; color: #334155; }
+  body.formal .jeec-tagline strong { color: #d97706; }
+
+  body.formal .cell { font-size: 34px; }
+  body.formal .cell .cell-label { font-size: 11px; opacity: 0.65; }
 </style>
 </head>
 <body>
+
+<!-- Mode toggle -->
+<button class="mode-toggle" onclick="toggleMode()" title="Switch between dark and light mode">
+  <span>🌙 Dark</span>
+  <div class="toggle-track"><div class="toggle-knob"></div></div>
+  <span>☀️ Light</span>
+</button>
 
 <div id="header">
   <div class="label">JEEC Protocol — CSS Error Correction</div>
@@ -618,6 +755,19 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
   if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); go(-1); }
 });
+
+// ── Mode toggle ──────────────────────────────────────────────────
+function toggleMode() {
+  const isFormal = document.body.classList.toggle('formal');
+  localStorage.setItem('portfolioMode', isFormal ? 'formal' : 'quantum');
+}
+
+// Restore saved preference on load
+(function() {
+  if (localStorage.getItem('portfolioMode') === 'formal') {
+    document.body.classList.add('formal');
+  }
+})();
 
 render();
 </script>
