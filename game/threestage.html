@@ -256,9 +256,145 @@
       margin-top: 10px;
       text-align: center;
     }
+
+    /* ── Mode toggle ── */
+    .mode-toggle {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      border-radius: 30px;
+      border: 1.5px solid rgba(0,255,255,0.5);
+      background: rgba(10,10,26,0.7);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 0.78em;
+      color: var(--alice);
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .mode-toggle:hover { border-color: var(--alice); background: rgba(13,202,216,0.1); }
+
+    .toggle-track {
+      width: 38px; height: 20px;
+      background: rgba(13,202,216,0.15);
+      border: 1.5px solid var(--alice);
+      border-radius: 10px;
+      position: relative;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .toggle-knob {
+      position: absolute;
+      width: 14px; height: 14px;
+      background: var(--alice);
+      border-radius: 50%;
+      top: 2px; left: 2px;
+      transition: left 0.3s, background 0.3s;
+    }
+
+    /* ── Formal / light mode overrides ── */
+    body.formal {
+      --navy:  #1a2a4a;
+      --teal:  #0369a1;
+      --gold:  #d97706;
+      --white: #1a2a4a;
+      --light: #334155;
+      --bg:    #ffffff;
+      --card:  #f0f6ff;
+      --alice: #0284c7;
+      --bob:   #d97706;
+      background: #ffffff;
+      color: #1a2a4a;
+    }
+
+    body.formal .mode-toggle {
+      background: rgba(255,255,255,0.92);
+      border-color: #555;
+      color: #333;
+      backdrop-filter: none;
+    }
+    body.formal .mode-toggle:hover { background: #e8e8e8; }
+    body.formal .toggle-track { background: rgba(0,0,0,0.08); border-color: #555; }
+    body.formal .toggle-knob { background: #333; left: 20px; }
+
+    body.formal .stage {
+      border-color: rgba(3,105,161,0.3);
+    }
+    body.formal .track-line {
+      background: linear-gradient(to right, var(--alice), #94a3b8, var(--bob));
+      opacity: 0.75;
+    }
+    body.formal .char-state {
+      color: #1a2a4a;
+      font-weight: 600;
+    }
+    body.formal .dir-arrow {
+      color: #334155;
+      font-weight: bold;
+    }
+    body.formal .dot {
+      background: #e2e8f0;
+    }
+    body.formal .dot.active { background: #d97706; }
+    body.formal .btn {
+      border-color: var(--teal);
+      background: rgba(2,128,144,0.12);
+      color: var(--white);
+    }
+    body.formal .btn:hover:not(:disabled) { background: rgba(2,128,144,0.3); }
+    body.formal .bubble {
+      border-left-width: 5px;
+      font-size: 1.2em;
+      line-height: 1.7;
+    }
+    body.formal .bubble.teal {
+      border-color: var(--teal);
+      background: rgba(3,105,161,0.07);
+      color: var(--light);
+    }
+    body.formal .bubble.gold {
+      border-color: var(--gold);
+      background: rgba(217,119,6,0.06);
+      color: var(--light);
+    }
+    body.formal .bubble.green {
+      border-color: #2ecc71;
+      background: rgba(46,204,113,0.07);
+      color: var(--light);
+    }
+    body.formal .bubble:not(.gold):not(.teal):not(.green) {
+      border-color: var(--teal);
+      background: rgba(3,105,161,0.07);
+      color: var(--light);
+    }
+    body.formal .hint { color: #94a3b8; }
+    body.formal .box { background: #d8e8f8; border-color: rgba(100,160,220,0.4); }
+    body.formal .box.s-alice { border-color: var(--alice); box-shadow: 0 0 14px rgba(2,132,199,0.25); }
+    body.formal .box.s-bob   { border-color: var(--bob);   box-shadow: 0 0 14px rgba(217,119,6,0.25); }
+    body.formal .box.s-both  {
+      border-color: var(--bob);
+      box-shadow: 0 0 0 3px var(--alice), 0 0 18px rgba(2,132,199,0.2);
+    }
+    body.formal .box.s-open { border-color: rgba(100,160,220,0.3); box-shadow: none; }
+    body.formal .proto-label { font-size: 1.1em; }
+    body.formal .step-title { font-size: 2.4em; }
+    body.formal .char-name { font-size: 1.2em; }
   </style>
 </head>
 <body>
+
+<!-- Mode toggle -->
+<button class="mode-toggle" onclick="toggleMode()" title="Switch between dark and light mode">
+  <span>🌙 Dark</span>
+  <div class="toggle-track"><div class="toggle-knob"></div></div>
+  <span>☀️ Light</span>
+</button>
 
 <div class="proto-label">THREE-STAGE PROTOCOL — KAK'S SCHEME</div>
 <div class="step-title" id="step-title"></div>
@@ -495,6 +631,19 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1);  }
   if (e.key === 'ArrowLeft')                    { e.preventDefault(); go(-1); }
 });
+
+// ── Mode toggle ──────────────────────────────────────────────────
+function toggleMode() {
+  const isFormal = document.body.classList.toggle('formal');
+  localStorage.setItem('portfolioMode', isFormal ? 'formal' : 'quantum');
+}
+
+// Restore saved preference on load
+(function() {
+  if (localStorage.getItem('portfolioMode') === 'formal') {
+    document.body.classList.add('formal');
+  }
+})();
 
 render();
 </script>
