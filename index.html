@@ -65,8 +65,8 @@
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0.12; }
+            50% { opacity: 0.55; }
         }
 
         .container {
@@ -1906,7 +1906,7 @@
         // Create starfield
         function createStars() {
             const starsContainer = document.getElementById('stars');
-            const numStars = 200;
+            const numStars = window.innerWidth < 640 ? 90 : 200;
 
             for (let i = 0; i < numStars; i++) {
                 const star = document.createElement('div');
