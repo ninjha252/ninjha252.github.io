@@ -474,8 +474,16 @@
 
     <div class="tree-row right" data-paper="5">
         <div class="node" onclick="openModal(5)">
-            <div class="node-venue">arXiv 2025 · In Review</div>
-            <div class="node-title">An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks</div>
+            <div class="node-venue">arXiv 2025</div>
+            <div class="node-title">Quantum Hilbert Transform</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <div class="tree-row left" data-paper="6">
+        <div class="node" onclick="openModal(6)">
+            <div class="node-venue">IEEE Potentials 2025</div>
+            <div class="node-title">Towards A Global Quantum Internet: A Review of Challenges Facing Aerial Quantum Networks</div>
             <div class="node-hint">tap for overview →</div>
         </div>
     </div>
@@ -483,10 +491,50 @@
     <!-- ── 2026 ── -->
     <div class="year-marker"><span class="year-badge">2026</span></div>
 
-    <div class="tree-row left" data-paper="6">
-        <div class="node" onclick="openModal(6)">
+    <div class="tree-row right" data-paper="7">
+        <div class="node" onclick="openModal(7)">
             <div class="node-venue">Cryptologia · Taylor &amp; Francis 2026</div>
             <div class="node-title">QKD: Bridging Theoretical Security Proofs, Practical Attacks, and Error Correction</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <div class="tree-row left" data-paper="8">
+        <div class="node" onclick="openModal(8)">
+            <div class="node-venue">Frontiers in Quantum Science and Technology 2026</div>
+            <div class="node-title">An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <div class="tree-row right" data-paper="9">
+        <div class="node" onclick="openModal(9)">
+            <div class="node-venue">arXiv 2026 · In Review at ACM Ubiquity</div>
+            <div class="node-title">Are Quantum Voting Protocols Practical?</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <div class="tree-row left" data-paper="10">
+        <div class="node" onclick="openModal(10)">
+            <div class="node-venue">arXiv 2026</div>
+            <div class="node-title">A Novel Quantum Augmented Framework to Improve Microgrid Cybersecurity</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <div class="tree-row right" data-paper="11">
+        <div class="node" onclick="openModal(11)">
+            <div class="node-venue">arXiv 2026</div>
+            <div class="node-title">Hybrid Quantum-Classical GANs for the Generation of Adversarial Network Flows</div>
+            <div class="node-hint">tap for overview →</div>
+        </div>
+    </div>
+
+    <div class="tree-row left" data-paper="12">
+        <div class="node" onclick="openModal(12)">
+            <div class="node-venue">arXiv 2026</div>
+            <div class="node-title">Evaluating Multimodal Steganalysis for Split-Payload Audiovisual Steganography</div>
             <div class="node-hint">tap for overview →</div>
         </div>
     </div>
@@ -543,11 +591,19 @@ const papers = [
         doi: "10.36244/ICJ.2025.2.9"
     },
     {
-        venue: "arXiv:2511.12313 · In Review: Frontiers Quantum Science and Technology · 2025",
-        title: "An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks",
-        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
-        abstract: "This paper proposes an improved Quantum Anonymous Notification (QAN) protocol using rotation operations on shared GHZ states to anonymously notify receivers of incoming quantum communications in an n-user quantum-augmented network. The protocol is evaluated under dephasing noise and demonstrates stronger resilience to false notifications than prior approaches. It is designed to integrate with an ML classifier within a QuANet framework, reducing header-based information leakage at compromised switches.",
-        doi: null
+        venue: "arXiv:2505.23581 · 2025",
+        title: "Quantum Hilbert Transform",
+        authors: "Nitin Jha, Abhishek Parakh",
+        abstract: "This paper introduces a quantum analogue of the classical Hilbert transform, a foundational operation in signal processing that previously had no quantum counterpart. The proposed Quantum Hilbert Transform (QHT) bridges classical phase-shift techniques with quantum operations and is demonstrated on a quantum steganography application. The formulation opens new directions for quantum signal processing, communications, sensing, and secure information hiding.",
+        doi: null,
+        arxiv: "2505.23581"
+    },
+    {
+        venue: "IEEE Potentials · Vol. 44, No. 4, pp. 6-12 · July-Aug 2025",
+        title: "Towards A Global Quantum Internet: A Review of Challenges Facing Aerial Quantum Networks",
+        authors: "Nitin Jha, Abhishek Parakh",
+        abstract: "This review examines how aerial platforms — drones, high-altitude balloons, and satellites — can extend quantum networks beyond fixed ground infrastructure. It surveys the physical and engineering challenges of building aerial quantum links and proposes integrating ground stations, aerial relays, and orbital satellites into a unified architecture, laying out a practical path toward a global quantum internet.",
+        doi: "10.1109/MPOT.2026.3657057"
     },
     {
         venue: "Cryptologia · Taylor & Francis · 2026",
@@ -555,6 +611,45 @@ const papers = [
         authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
         abstract: "This review critically surveys QKD protocols — categorized into uncertainty principle-based (BB84), hybrid secure direct communication (three-stage), continuous-variable, Twin-field, and Device-Independent schemes — with emphasis on rigorous security proofs and known vulnerabilities. It highlights key experimental breakthroughs and mitigation strategies including Quantum Error Correction Codes (QECCs) to enhance channel fidelity and system robustness. The review connects this landscape to quantum-augmented networks, providing a comprehensive path from theoretical security proofs to experimental validation.",
         doi: "10.1080/01611194.2025.2596885"
+    },
+    {
+        venue: "Frontiers in Quantum Science and Technology · Vol. 5, Article 1704298 · 2026",
+        title: "An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks",
+        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        abstract: "This paper proposes an improved Quantum Anonymous Notification (QAN) protocol using rotation operations on shared GHZ states to anonymously notify receivers of incoming quantum communications in an n-user quantum-augmented network. The protocol is evaluated under dephasing noise and demonstrates stronger resilience to false notifications than prior approaches. It is designed to integrate with an ML classifier within a QuANet framework, reducing header-based information leakage at compromised switches.",
+        doi: "10.3389/frqst.2026.1704298"
+    },
+    {
+        venue: "arXiv:2601.17514 · In Review at ACM Ubiquity · 2026",
+        title: "Are Quantum Voting Protocols Practical?",
+        authors: "Nitin Jha, Abhishek Parakh",
+        abstract: "This paper surveys quantum voting systems that aim to provide ballot secrecy and publicly verifiable tallies using physical guarantees from quantum mechanics rather than relying solely on computational hardness. It reviews representative protocol families — entanglement-based schemes, self-tallying designs, and authority-minimized approaches — and evaluates practical obstacles such as loss, noise, device imperfections, and scalability, concluding with realistic near-term deployment scenarios for small-scale elections.",
+        doi: null,
+        arxiv: "2601.17514"
+    },
+    {
+        venue: "arXiv:2604.17481 · 2026",
+        title: "A Novel Quantum Augmented Framework to Improve Microgrid Cybersecurity",
+        authors: "Nitin Jha, Prateek Paudel, Abhishek Parakh, Mahadevan Subramaniam",
+        abstract: "This paper proposes a quantum-enhanced networking framework to protect microgrids powered by small modular nuclear reactors, integrating secure quantum networking, quantum anonymous notification, and quantum random number generation. It simulates a sophisticated classical attack involving traffic analysis and spoofing to expose vulnerabilities, then evaluates how the quantum-augmented methods mitigate them, analyzing trade-offs between privacy, operational availability, and mitigation cost.",
+        doi: null,
+        arxiv: "2604.17481"
+    },
+    {
+        venue: "arXiv:2605.06629 · 2026",
+        title: "Hybrid Quantum-Classical GANs for the Generation of Adversarial Network Flows",
+        authors: "Prateek Paudel, Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        abstract: "This paper proposes a hybrid quantum-classical GAN framework in which a variational quantum generator produces synthetic malicious network traffic by encoding latent vectors as quantum states rather than sampling classical noise. A classical discriminator is trained on real (UNSW-NB15) and synthetic flows to model an attacker with limited quantum resources against classical defenders, evaluating evasion effectiveness against intrusion detection systems and examining how hardware noise affects attack viability.",
+        doi: null,
+        arxiv: "2605.06629"
+    },
+    {
+        venue: "arXiv:2606.08726 · 2026",
+        title: "Evaluating Multimodal Steganalysis for Split-Payload Audiovisual Steganography",
+        authors: "Prateek Paudel, Nitin Jha, Abhishek Parakh",
+        abstract: "This paper examines whether splitting a secret payload between audio and video streams can help evade steganalysis detectors. Testing single-mode and multimodal detectors on audiovisual samples with split payloads shows that single-mode detectors perform close to random guessing, while multimodal detectors improve mainly by exploiting the video stream rather than a true combined audio-video signal — underscoring the need for careful evaluation of whether multimodal detectors truly analyze the combined signal.",
+        doi: null,
+        arxiv: "2606.08726"
     }
 ];
 
@@ -567,7 +662,7 @@ function openModal(idx) {
     const doiEl = document.getElementById('m-doi');
     doiEl.innerHTML = p.doi
         ? `DOI: <a href="https://doi.org/${p.doi}" target="_blank">${p.doi}</a>`
-        : '';
+        : (p.arxiv ? `arXiv: <a href="https://arxiv.org/abs/${p.arxiv}" target="_blank">${p.arxiv}</a>` : '');
     document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
 }
