@@ -1039,8 +1039,11 @@
             font-weight: 600;
         }
         .c-header {
-            max-width: 1180px; margin: 0 auto; padding: 22px 24px 8px;
+            max-width: 1180px; margin: 0 auto; padding: 76px 24px 8px;
             display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+        }
+        @media (max-width: 640px) {
+            .c-header { padding-top: 96px; }
         }
         .c-brand { display: flex; align-items: center; gap: 12px; }
         .c-badge {
