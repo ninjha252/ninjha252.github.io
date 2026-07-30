@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hobby | Nitin Jha</title>
+    <meta name="description" content="A wall of pen, ink, and watercolor sketches by Nitin Jha.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Hobby | Nitin Jha">
+    <meta property="og:description" content="A wall of pen, ink, and watercolor sketches by Nitin Jha.">
+    <meta property="og:image" content="https://ninjha252.github.io/assets/sketches/sketch-01.jpg">
+    <meta property="og:url" content="https://ninjha252.github.io/hobby.html">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hobby | Nitin Jha">
+    <meta name="twitter:description" content="A wall of pen, ink, and watercolor sketches by Nitin Jha.">
+    <meta name="twitter:image" content="https://ninjha252.github.io/assets/sketches/sketch-01.jpg">
+    <script>
+      (function() {
+        const _id = [71,45,48,89,82,54,52,84,66,68,54,75].map(n=>String.fromCharCode(n)).join('');
+        const _allowed = ['nitinjha.github.io', 'localhost', '127.0.0.1'];
+        if (!_allowed.some(h => location.hostname === h || location.hostname.endsWith('.' + h))) return;
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', _id);
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + _id;
+        document.head.appendChild(s);
+      })();
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a1a;
+            color: #e0e0ff;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── Starfield ── */
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
+        @keyframes twinkle { 0%,100%{opacity:.12} 50%{opacity:.55} }
+
+        /* ── Header ── */
+        .header {
+            position: relative; z-index: 1;
+            text-align: center;
+            padding: 72px 20px 28px;
+            background: rgba(255,255,255,0.04);
+            border-bottom: 1px solid rgba(0,255,255,0.15);
+            backdrop-filter: blur(10px);
+        }
+        @media (max-width: 480px) {
+            .header { padding-top: 92px; }
+        }
+        .header h1 {
+            font-size: 2em;
+            background: linear-gradient(45deg,#00ffff,#ff00ff,#00ffff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gshift 3s ease infinite;
+            margin-bottom: 6px;
+        }
+        @keyframes gshift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+        .header p { color: rgba(0,255,255,0.7); font-size: 0.9em; }
+
+        .back-btn {
+            position: absolute; top: 20px; left: 20px;
+            padding: 8px 16px;
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            background: rgba(0,255,255,0.08);
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .3s;
+        }
+        .back-btn:hover { background: rgba(0,255,255,0.22); box-shadow: 0 0 14px rgba(0,255,255,0.4); }
+
+        /* ── Gallery wall ── */
+        .gallery-wrapper {
+            position: relative; z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+            column-count: 1;
+            column-gap: 16px;
+        }
+        @media (min-width: 640px)  { .gallery-wrapper { column-count: 2; } }
+        @media (min-width: 980px)  { .gallery-wrapper { column-count: 3; } }
+
+        .sketch-card {
+            display: block;
+            width: 100%;
+            break-inside: avoid;
+            margin: 0 0 16px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid rgba(0,255,255,0.3);
+            background: #0e0e22;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all .3s ease;
+        }
+        .sketch-card:hover {
+            border-color: #00ffff;
+            box-shadow: 0 10px 32px rgba(0,255,255,0.25);
+            transform: translateY(-3px);
+        }
+        .sketch-card img { width: 100%; display: block; }
+
+        /* ── Lightbox ── */
+        .lightbox-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 300;
+            align-items: center; justify-content: center;
+            padding: 30px 20px;
+            backdrop-filter: blur(4px);
+        }
+        .lightbox-overlay.open { display: flex; }
+        .lightbox-overlay img {
+            max-width: 100%; max-height: 88vh;
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(0,255,255,0.25);
+        }
+        .lightbox-close {
+            position: absolute; top: 20px; right: 24px;
+            background: none; border: none;
+            color: #00ffff; font-size: 1.8em;
+            cursor: pointer; line-height: 1;
+        }
+        .lightbox-close:hover { color: #ff00ff; }
+
+        /* ── Mode toggle ── */
+        .mode-toggle {
+            position: fixed;
+            top: 18px; right: 22px;
+            z-index: 999;
+            display: flex; align-items: center; gap: 8px;
+            padding: 7px 13px;
+            border-radius: 30px;
+            border: 1.5px solid rgba(0,255,255,0.5);
+            background: rgba(10,10,26,0.7);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.78em;
+            color: #00ffff;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .mode-toggle:hover { border-color: #00ffff; background: rgba(0,255,255,0.1); }
+        .toggle-track {
+            width: 38px; height: 20px;
+            background: rgba(0,255,255,0.15);
+            border: 1.5px solid #00ffff;
+            border-radius: 10px;
+            position: relative; flex-shrink: 0;
+            transition: all 0.3s;
+        }
+        .toggle-knob {
+            position: absolute;
+            width: 14px; height: 14px;
+            background: #00ffff;
+            border-radius: 50%;
+            top: 2px; left: 2px;
+            transition: left 0.3s, background 0.3s;
+        }
+
+        /* ── Formal / light mode ── */
+        body.formal { background: #f4f4f4; color: #111; }
+
+        body.formal .mode-toggle {
+            background: rgba(255,255,255,0.92);
+            border-color: #555; color: #333;
+        }
+        body.formal .mode-toggle:hover { background: #e8e8e8; }
+        body.formal .toggle-track { background: rgba(0,0,0,0.08); border-color: #555; }
+        body.formal .toggle-knob { background: #333; left: 20px; }
+
+        body.formal .stars { display: none; }
+
+        body.formal .header {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            backdrop-filter: none;
+        }
+        body.formal .header h1 {
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: #111;
+            animation: none;
+        }
+        body.formal .header p { color: #555; }
+
+        body.formal .back-btn {
+            background: #fff;
+            border-color: #555;
+            color: #333;
+            box-shadow: none;
+        }
+        body.formal .back-btn:hover { background: #eee; box-shadow: none; }
+
+        body.formal .sketch-card {
+            background: #fff;
+            border-color: #ddd;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+        body.formal .sketch-card:hover {
+            border-color: #999;
+            box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+        }
+        body.formal .lightbox-close { color: #333; }
+        body.formal .lightbox-close:hover { color: #000; }
+    </style>
+</head>
+<body>
+
+<!-- Mode toggle -->
+<button class="mode-toggle" onclick="toggleMode()">
+    <span>🌙 Dark</span>
+    <div class="toggle-track"><div class="toggle-knob"></div></div>
+    <span>☀️ Light</span>
+</button>
+
+<div class="stars" id="stars"></div>
+
+<div class="header">
+    <a href="index.html" class="back-btn">← Back</a>
+    <h1>🎨 Hobby</h1>
+    <p>Pen, ink, and watercolor sketches — click any piece to see it larger</p>
+</div>
+
+<div class="gallery-wrapper" id="gallery"></div>
+
+<!-- ── Lightbox ── -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeOnOverlay(event)">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="Sketch, full size">
+</div>
+
+<script>
+const SKETCHES = [
+    'assets/sketches/sketch-01.jpg',
+    'assets/sketches/sketch-02.jpg',
+    'assets/sketches/sketch-03.jpg',
+    'assets/sketches/sketch-04.jpg',
+    'assets/sketches/sketch-05.jpg',
+    'assets/sketches/sketch-06.jpg',
+    'assets/sketches/sketch-07.jpg',
+    'assets/sketches/sketch-08.jpg',
+    'assets/sketches/sketch-09.jpg',
+    'assets/sketches/sketch-10.jpg',
+    'assets/sketches/sketch-11.jpg',
+    'assets/sketches/sketch-12.jpg'
+];
+
+function renderGallery() {
+    const wrap = document.getElementById('gallery');
+    wrap.innerHTML = SKETCHES.map((src, i) => `
+        <div class="sketch-card" onclick="openLightbox('${src}')">
+            <img src="${src}" alt="Sketch ${i + 1} by Nitin Jha" loading="lazy">
+        </div>`).join('');
+}
+renderGallery();
+
+function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+}
+function closeOnOverlay(e) {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// ── Mode toggle ────────────────────────────────────────────
+function toggleMode() {
+    const isFormal = document.body.classList.toggle('formal');
+    localStorage.setItem('portfolioMode', isFormal ? 'formal' : 'quantum');
+}
+// Restore saved preference
+if (localStorage.getItem('portfolioMode') === 'formal') {
+    document.body.classList.add('formal');
+}
+
+// Starfield
+function createStars() {
+    const c = document.getElementById('stars');
+    const numStars = window.innerWidth < 640 ? 90 : 200;
+    for (let i = 0; i < numStars; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${Math.random()*2+1}px;height:${s.style.width};animation-delay:${Math.random()*3}s`;
+        c.appendChild(s);
+    }
+}
+createStars();
+</script>
+</body>
+</html>
