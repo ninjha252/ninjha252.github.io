@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Tree | Nitin Jha</title>
+    <meta name="description" content="An interactive timeline of Nitin Jha's publications in quantum networking, quantum key distribution, and secure communication protocols.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Research Tree | Nitin Jha">
+    <meta property="og:description" content="An interactive timeline of publications in quantum networking, QKD, and secure communication protocols.">
+    <meta property="og:image" content="https://ninjha252.github.io/pic.jpeg">
+    <meta property="og:url" content="https://ninjha252.github.io/projects.html">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Research Tree | Nitin Jha">
+    <meta name="twitter:description" content="An interactive timeline of publications in quantum networking, QKD, and secure communication protocols.">
+    <meta name="twitter:image" content="https://ninjha252.github.io/pic.jpeg">
     <script>
       (function() {
         const _id = [71,45,48,89,82,54,52,84,66,68,54,75].map(n=>String.fromCharCode(n)).join('');
@@ -246,6 +258,11 @@
             color: rgba(224,224,255,0.7);
             margin-bottom: 16px;
         }
+        .modal-authors a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+        .modal-authors a:hover { color: #ff00ff; }
         .modal-abstract {
             font-size: 0.88em;
             color: #d0d0ff;
@@ -375,6 +392,8 @@
         body.formal .modal-venue { color: #555; }
         body.formal .modal-title { color: #111; }
         body.formal .modal-authors { color: #555; }
+        body.formal .modal-authors a { color: #111; text-decoration: underline; }
+        body.formal .modal-authors a:hover { color: #555; }
         body.formal .modal-abstract {
             color: #333;
             border-left-color: #bbb;
@@ -558,42 +577,42 @@ const papers = [
     {
         venue: "SPIE Photonics West 2024 · Quantum Computing, Communication, and Simulation IV, Vol. 12911",
         title: "Effect of Noise and Topologies on Multi-Photon Quantum Protocols",
-        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        authors: "Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>, Mahadevan Subramaniam",
         abstract: "This paper investigates how channel and device noise affects multi-photon quantum protocols — specifically Kak's three-stage protocol — in terms of security, transmission distances, and bit rates across ring, star, and torus network topologies. Unlike single-photon protocols, multi-photon approaches do not require ideal single-photon emitters and provide higher security guarantees over longer distances. The results offer practical guidance on repeater placement and topology selection for quantum-augmented networks.",
         doi: null
     },
     {
         venue: "IEEE International Conference on Quantum Computing and Engineering (QCE) 2024",
         title: "A ML Based Approach to Quantum Augmented HTTP Protocol",
-        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramanian",
+        authors: "Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>, Mahadevan Subramanian",
         abstract: "This paper proposes a modification to the HTTP protocol packet structure to support hybrid quantum-classical payloads in quantum-augmented networks. An NLP-based machine-learning algorithm parses outgoing messages, assigns security levels, and selectively routes sensitive content through quantum encryption channels. The work also introduces optimized bandwidth allocation between quantum and classical channels for high-traffic routes.",
         doi: "10.1109/QCE60285.2024.10420"
     },
     {
         venue: "Scientific Reports (Nature Portfolio) · Vol. 14, Article 24542 · 2024",
         title: "Joint Encryption and Error Correction for Secure Quantum Communication",
-        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        authors: "Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>, Mahadevan Subramaniam",
         abstract: "This paper proposes the first integrated quantum encryption and error correction technique by extending the three-stage QKD protocol with Calderbank-Shor-Steane (CSS) error correction codes. The combined protocol corrects single-bit flip and single-phase flip errors without the overhead of treating encryption and error correction as separate processes. It supports transmission of arbitrary qubits, making the protocol general-purpose for secure quantum communication.",
         doi: "10.1038/s41598-024-75212-8"
     },
     {
         venue: "SPIE Photonics West 2025 · Quantum Computing, Communication, and Simulation V, Vol. 13391",
         title: "Towards a Quantum-Classical Augmented Network",
-        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        authors: "Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>, Mahadevan Subramaniam",
         abstract: "This paper proposes augmenting classical networks with quantum capabilities by modifying HTTP to carry both classical and quantum payloads within a single packet, divided by privacy needs. Machine learning models (logistic regression, CNN, LSTM, BiLSTM) classify the privacy label of outgoing communications, enabling selective quantum encryption only for private content. The approach reduces quantum resource consumption while maintaining strong security for sensitive transmissions.",
         doi: null
     },
     {
         venue: "Infocommunications Journal · 2025",
         title: "Multi-Photon QKD for Practical Quantum Networks",
-        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        authors: "Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>, Mahadevan Subramaniam",
         abstract: "This paper evaluates the practicality of the three-stage QKD, Decoy-state, and E91 protocols across multiple network topologies (direct, line, grid, ring, and torus) under multi-photon burst transmissions. It establishes a mathematical relationship between multi-photon burst size and maximum stable transmission distance, removing the reliance on single-photon emitters. The findings highlight the advantages of multi-photon tolerant protocols for integration into existing classical network infrastructure.",
         doi: "10.36244/ICJ.2025.2.9"
     },
     {
         venue: "arXiv:2505.23581 · 2025",
         title: "Quantum Hilbert Transform",
-        authors: "Nitin Jha, Abhishek Parakh",
+        authors: "Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>",
         abstract: "This paper introduces a quantum analogue of the classical Hilbert transform, a foundational operation in signal processing that previously had no quantum counterpart. The proposed Quantum Hilbert Transform (QHT) bridges classical phase-shift techniques with quantum operations and is demonstrated on a quantum steganography application. The formulation opens new directions for quantum signal processing, communications, sensing, and secure information hiding.",
         doi: null,
         arxiv: "2505.23581"
@@ -601,28 +620,28 @@ const papers = [
     {
         venue: "IEEE Potentials · Vol. 44, No. 4, pp. 6-12 · July-Aug 2025",
         title: "Towards A Global Quantum Internet: A Review of Challenges Facing Aerial Quantum Networks",
-        authors: "Nitin Jha, Abhishek Parakh",
+        authors: "Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>",
         abstract: "This review examines how aerial platforms — drones, high-altitude balloons, and satellites — can extend quantum networks beyond fixed ground infrastructure. It surveys the physical and engineering challenges of building aerial quantum links and proposes integrating ground stations, aerial relays, and orbital satellites into a unified architecture, laying out a practical path toward a global quantum internet.",
         doi: "10.1109/MPOT.2026.3657057"
     },
     {
         venue: "Cryptologia · Taylor & Francis · 2026",
         title: "Quantum Key Distribution: Bridging Theoretical Security Proofs, Practical Attacks, and Error Correction for Quantum-Augmented Networks",
-        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        authors: "Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>, Mahadevan Subramaniam",
         abstract: "This review critically surveys QKD protocols — categorized into uncertainty principle-based (BB84), hybrid secure direct communication (three-stage), continuous-variable, Twin-field, and Device-Independent schemes — with emphasis on rigorous security proofs and known vulnerabilities. It highlights key experimental breakthroughs and mitigation strategies including Quantum Error Correction Codes (QECCs) to enhance channel fidelity and system robustness. The review connects this landscape to quantum-augmented networks, providing a comprehensive path from theoretical security proofs to experimental validation.",
         doi: "10.1080/01611194.2025.2596885"
     },
     {
         venue: "Frontiers in Quantum Science and Technology · Vol. 5, Article 1704298 · 2026",
         title: "An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks",
-        authors: "Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        authors: "Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>, Mahadevan Subramaniam",
         abstract: "This paper proposes an improved Quantum Anonymous Notification (QAN) protocol using rotation operations on shared GHZ states to anonymously notify receivers of incoming quantum communications in an n-user quantum-augmented network. The protocol is evaluated under dephasing noise and demonstrates stronger resilience to false notifications than prior approaches. It is designed to integrate with an ML classifier within a QuANet framework, reducing header-based information leakage at compromised switches.",
         doi: "10.3389/frqst.2026.1704298"
     },
     {
         venue: "arXiv:2601.17514 · In Review at ACM Ubiquity · 2026",
         title: "Are Quantum Voting Protocols Practical?",
-        authors: "Nitin Jha, Abhishek Parakh",
+        authors: "Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>",
         abstract: "This paper surveys quantum voting systems that aim to provide ballot secrecy and publicly verifiable tallies using physical guarantees from quantum mechanics rather than relying solely on computational hardness. It reviews representative protocol families — entanglement-based schemes, self-tallying designs, and authority-minimized approaches — and evaluates practical obstacles such as loss, noise, device imperfections, and scalability, concluding with realistic near-term deployment scenarios for small-scale elections.",
         doi: null,
         arxiv: "2601.17514"
@@ -630,21 +649,21 @@ const papers = [
     {
         venue: "Proc. SPIE 14021, Quantum Information Science, Sensing, and Computation XVIII, 1402109 · 2026",
         title: "A Novel Quantum Augmented Framework to Improve Microgrid Cybersecurity",
-        authors: "Nitin Jha, Prateek Paudel, Abhishek Parakh, Mahadevan Subramaniam",
+        authors: "Nitin Jha, <a href='https://scholar.google.com/citations?user=FsLE7UYAAAAJ&hl=en' target='_blank'>Prateek Paudel</a>, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>, Mahadevan Subramaniam",
         abstract: "This paper proposes a quantum-enhanced networking framework to protect microgrids powered by small modular nuclear reactors, integrating secure quantum networking, quantum anonymous notification, and quantum random number generation. It simulates a sophisticated classical attack involving traffic analysis and spoofing to expose vulnerabilities, then evaluates how the quantum-augmented methods mitigate them, analyzing trade-offs between privacy, operational availability, and mitigation cost.",
         doi: "10.1117/12.3095119"
     },
     {
         venue: "Proc. SPIE 14021, Quantum Information Science, Sensing, and Computation XVIII, 140210B · 2026",
         title: "Hybrid Quantum-Classical GANs for the Generation of Adversarial Network Flows",
-        authors: "Prateek Paudel, Nitin Jha, Abhishek Parakh, Mahadevan Subramaniam",
+        authors: "<a href='https://scholar.google.com/citations?user=FsLE7UYAAAAJ&hl=en' target='_blank'>Prateek Paudel</a>, Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>, Mahadevan Subramaniam",
         abstract: "This paper proposes a hybrid quantum-classical GAN framework in which a variational quantum generator produces synthetic malicious network traffic by encoding latent vectors as quantum states rather than sampling classical noise. A classical discriminator is trained on real (UNSW-NB15) and synthetic flows to model an attacker with limited quantum resources against classical defenders, evaluating evasion effectiveness against intrusion detection systems and examining how hardware noise affects attack viability.",
         doi: "10.1117/12.3095130"
     },
     {
         venue: "arXiv:2606.08726 · 2026",
         title: "Evaluating Multimodal Steganalysis for Split-Payload Audiovisual Steganography",
-        authors: "Prateek Paudel, Nitin Jha, Abhishek Parakh",
+        authors: "<a href='https://scholar.google.com/citations?user=FsLE7UYAAAAJ&hl=en' target='_blank'>Prateek Paudel</a>, Nitin Jha, <a href='https://sites.google.com/site/abhishekparakh/' target='_blank'>Abhishek Parakh</a>",
         abstract: "This paper examines whether splitting a secret payload between audio and video streams can help evade steganalysis detectors. Testing single-mode and multimodal detectors on audiovisual samples with split payloads shows that single-mode detectors perform close to random guessing, while multimodal detectors improve mainly by exploiting the video stream rather than a true combined audio-video signal — underscoring the need for careful evaluation of whether multimodal detectors truly analyze the combined signal.",
         doi: null,
         arxiv: "2606.08726"
@@ -655,12 +674,14 @@ function openModal(idx) {
     const p = papers[idx];
     document.getElementById('m-venue').textContent    = p.venue;
     document.getElementById('m-title').textContent    = p.title;
-    document.getElementById('m-authors').textContent  = p.authors;
+    document.getElementById('m-authors').innerHTML    = p.authors;
     document.getElementById('m-abstract').textContent = p.abstract;
     const doiEl = document.getElementById('m-doi');
-    doiEl.innerHTML = p.doi
+    const linkLine = p.doi
         ? `DOI: <a href="https://doi.org/${p.doi}" target="_blank">${p.doi}</a>`
         : (p.arxiv ? `arXiv: <a href="https://arxiv.org/abs/${p.arxiv}" target="_blank">${p.arxiv}</a>` : '');
+    const slidesLine = p.slides ? `<a href="${p.slides}" target="_blank">📑 View Slides</a>` : '';
+    doiEl.innerHTML = [linkLine, slidesLine].filter(Boolean).join('<br>');
     document.getElementById('modal').classList.add('open');
     document.body.style.overflow = 'hidden';
 }
