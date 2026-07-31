@@ -1101,6 +1101,11 @@
         }
         .info-card h3 { font-size: 1.05em; margin-bottom: 8px; }
         .info-card p { color: #475569; font-size: 0.92em; line-height: 1.55; margin: 0; }
+        a.info-card {
+            display: block; text-decoration: none; color: inherit; cursor: pointer;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+        a.info-card:hover { transform: translateY(-3px); box-shadow: 0 26px 80px rgba(30,41,59,0.16); }
 
         .c-pub-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
         .c-pub-card {
@@ -1825,6 +1830,23 @@
                         <h3>Teaching &amp; Outreach</h3>
                         <p>Explaining quantum cryptography and modern security infrastructure to newcomers through courses and video series aimed at building real intuition, not just formalism.</p>
                     </article>
+                </div>
+
+                <h3 class="c-subheading">Interactive Demos</h3>
+                <p class="c-pub-note" style="margin-top: -8px; margin-bottom: 16px;">Step-by-step animations that explain core concepts from my research — no equations required.</p>
+                <div class="card-grid">
+                    <a class="info-card" href="game/index.html" target="_blank">
+                        <h3>🔐 CSS Quantum Error Correction</h3>
+                        <p>An interactive 9-step animation showing how CSS codes detect and fix errors in quantum states — without ever measuring the data. Based on the JEEC protocol (Scientific Reports, 2024).</p>
+                    </a>
+                    <a class="info-card" href="game/qkd.html" target="_blank">
+                        <h3>🔭 Quantum Key Distribution</h3>
+                        <p>A 9-step walkthrough of how Alice and Bob share a secret key over a quantum optical fiber channel — including Eve's eavesdropping attempt and how quantum mechanics exposes her.</p>
+                    </a>
+                    <a class="info-card" href="game/threestage.html" target="_blank">
+                        <h3>🔒 Three-Stage Protocol</h3>
+                        <p>An animated 9-step demo of Kak's three-stage quantum key exchange — Alice and Bob each lock and unlock a shared box without ever exchanging keys, using commutative encryption.</p>
+                    </a>
                 </div>
             </section>
 
