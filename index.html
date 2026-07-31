@@ -2257,9 +2257,10 @@
             setTimeout(initCNOTLines, 50);
         }
 
-        // Restore saved preference on load
+        // Restore saved preference on load — Classical is the default
+        // unless the visitor has explicitly switched to Quantum before.
         (function() {
-            if (localStorage.getItem('portfolioMode') === 'formal') {
+            if (localStorage.getItem('portfolioMode') !== 'quantum') {
                 document.body.classList.add('formal');
             }
         })();
