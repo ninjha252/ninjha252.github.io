@@ -1802,7 +1802,7 @@
                     <p>I'm a PhD candidate in Computer Science at Kennesaw State University, where I work as a Graduate Research Assistant researching quantum networks, quantum key distribution, and secure quantum-classical communication protocols, advised by Dr. Abhishek Parakh.</p>
                     <p>I hold a BSc (Hons) in Physics, Cum Laude, from Ashoka University. My work bridges rigorous theoretical security proofs with the practical engineering challenges of deploying quantum-augmented networks in the real world.</p>
                     <div class="c-btn-row">
-                        <a class="c-btn-primary" href="javascript:void(0)" onclick="openContactModal()">Email me</a>
+                        <a class="c-btn-primary" href="javascript:void(0)" onclick="revealEmail(this)">Email me</a>
                         <a class="c-btn-secondary" href="https://scholar.google.com/citations?user=u0OLK6cAAAAJ&hl=en" target="_blank">Google Scholar</a>
                         <a class="c-btn-secondary" href="https://www.linkedin.com/in/nitin-jha-524357192/" target="_blank">LinkedIn</a>
                         <a class="c-btn-secondary" href="https://github.com/ninjha252" target="_blank">GitHub</a>
@@ -1874,7 +1874,7 @@
         <footer class="c-footer" id="c-contact">
             <p>Open to research conversations, collaborations, and PhD-adjacent questions.</p>
             <div class="c-btn-row">
-                <a class="c-btn-primary" href="javascript:void(0)" onclick="openContactModal()">Email me</a>
+                <a class="c-btn-primary" href="javascript:void(0)" onclick="revealEmail(this)">Email me</a>
                 <a class="c-btn-secondary" href="https://www.linkedin.com/in/nitin-jha-524357192/" target="_blank">LinkedIn</a>
                 <a class="c-btn-secondary" href="https://github.com/ninjha252" target="_blank">GitHub</a>
                 <a class="c-btn-secondary" href="https://orcid.org/0009-0006-3768-4292" target="_blank">ORCID</a>
@@ -2090,23 +2090,26 @@
             {
                 category: 'conference', year: 2024, venueShort: 'SPIE Photonics West 2024',
                 title: 'Effect of noise and topologies on multi-photon quantum protocols',
-                link: null,
+                link: 'https://doi.org/10.1117/12.3000586',
                 citationHtml: `<li><strong>SPIE Photonics West 2024</strong><br>
-                    Jha, N., <a href="https://sites.google.com/site/abhishekparakh/" target="_blank" class="author-link">Parakh, A.</a>, &amp; Subramaniam, M. (2024, March). Effect of noise and topologies on multi-photon quantum protocols. In <em>Quantum computing, communication, and simulation IV</em> (Vol. 12911, pp. 147-160). SPIE.</li>`
+                    Jha, N., <a href="https://sites.google.com/site/abhishekparakh/" target="_blank" class="author-link">Parakh, A.</a>, &amp; Subramaniam, M. (2024, March). Effect of noise and topologies on multi-photon quantum protocols. In <em>Quantum computing, communication, and simulation IV</em> (Vol. 12911, pp. 147-160). SPIE.<br>
+                    DOI: <a href="https://doi.org/10.1117/12.3000586" target="_blank">10.1117/12.3000586</a></li>`
             },
             {
                 category: 'conference', year: 2025, venueShort: 'SPIE Photonics West 2025',
                 title: 'Towards a quantum-classical augmented network',
-                link: null,
+                link: 'https://doi.org/10.1117/12.3042150',
                 citationHtml: `<li><strong>SPIE Photonics West 2025</strong><br>
-                    Jha, N., <a href="https://sites.google.com/site/abhishekparakh/" target="_blank" class="author-link">Parakh, A.</a>, &amp; Subramaniam, M. (2025, March). Towards a quantum-classical augmented network. In <em>Quantum Computing, Communication, and Simulation V</em> (Vol. 13391, pp. 72-86). SPIE.</li>`
+                    Jha, N., <a href="https://sites.google.com/site/abhishekparakh/" target="_blank" class="author-link">Parakh, A.</a>, &amp; Subramaniam, M. (2025, March). Towards a quantum-classical augmented network. In <em>Quantum Computing, Communication, and Simulation V</em> (Vol. 13391, pp. 72-86). SPIE.<br>
+                    DOI: <a href="https://doi.org/10.1117/12.3042150" target="_blank">10.1117/12.3042150</a></li>`
             },
             {
                 category: 'conference', year: 2024, venueShort: 'IEEE QCE 2024',
                 title: 'A ml based approach to quantum augmented http protocol',
-                link: null,
+                link: 'https://doi.org/10.1109/QCE60285.2024.10420',
                 citationHtml: `<li><strong>IEEE QCE 2024</strong><br>
-                    Jha, N., <a href="https://sites.google.com/site/abhishekparakh/" target="_blank" class="author-link">Parakh, A.</a>, &amp; Subramanian, M. (2024, September). A ml based approach to quantum augmented http protocol. In <em>2024 IEEE International Conference on Quantum Computing and Engineering (QCE)</em> (Vol. 2, pp. 591-592). IEEE.</li>`
+                    Jha, N., <a href="https://sites.google.com/site/abhishekparakh/" target="_blank" class="author-link">Parakh, A.</a>, &amp; Subramanian, M. (2024, September). A ml based approach to quantum augmented http protocol. In <em>2024 IEEE International Conference on Quantum Computing and Engineering (QCE)</em> (Vol. 2, pp. 591-592). IEEE.<br>
+                    DOI: <a href="https://doi.org/10.1109/QCE60285.2024.10420" target="_blank">10.1109/QCE60285.2024.10420</a></li>`
             },
             {
                 category: 'conference', year: 2026, venueShort: 'SPIE Quantum Info. Science, Sensing & Computation XVIII',
@@ -2175,6 +2178,14 @@
                 ul.innerHTML = '';
                 items.forEach(item => ul.appendChild(item));
             });
+        }
+
+        // ── Classical mode "Email me" — reveal address on click ──
+        function revealEmail(el) {
+            const email = 'njha1@students.kennesaw.edu';
+            el.textContent = email;
+            el.href = 'mailto:' + email;
+            el.removeAttribute('onclick');
         }
 
         // ── Contact modal ──────────────────────────────────────
