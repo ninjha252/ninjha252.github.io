@@ -1184,7 +1184,7 @@
             <button class="control-btn" onclick="showSection('education')">Education</button>
             <button class="control-btn" onclick="showSection('skills')">Skills</button>
             <button class="control-btn" onclick="showSection('experience')">Experience</button>
-            <button class="control-btn" onclick="showSection('teaching')">Teaching</button>
+            <button class="control-btn" data-section="teaching" onclick="showSection('teaching')">Teaching &amp; Mentoring</button>
             <button class="control-btn" onclick="showSection('contact')">Contact</button>
         </div>
 
@@ -1708,7 +1708,7 @@
         </div>
 
         <div id="teaching" class="content-panel">
-            <h2>🧑‍🏫 Teaching — T Gate (π/8 Gate)</h2>
+            <h2>🧑‍🏫 Teaching &amp; Mentoring — T Gate (π/8 Gate)</h2>
             <p>The T gate applies a precise phase rotation, breaking operations down into smaller, composable steps — much like teaching breaks advanced quantum concepts down into digestible pieces for new learners.</p>
 
             <h3>Online Course: Quantum Cryptography</h3>
@@ -1726,6 +1726,14 @@
                 <li><strong>TLS</strong> - How it secures the modern internet, and where it breaks down</li>
                 <li><strong>Blockchains</strong> - Security assumptions and attack surfaces</li>
                 <li><strong>Post-Quantum Cryptography (PQC)</strong> - Preparing classical systems for the quantum threat</li>
+            </ul>
+
+            <h3>Student Mentoring</h3>
+            <ul>
+                <li><strong>High School Research Intern</strong> (2026) - Mentored a high school student through a summer research internship exchange program on multi-modal steganography</li>
+                <li><strong>NSF-REU Undergraduate Researchers</strong> (2026) - Co-mentored two undergraduate students researching quantum-classical GANs for network security</li>
+                <li><strong>M.Sc. Thesis Mentoring</strong> (2023-2024) - Mentored two M.Sc. (CS) students on theses covering quantum communication protocols and an adaptive quantum education platform</li>
+                <li><strong>M.Sc. Thesis Mentoring</strong> (2024-2026) - Mentoring an M.Sc. (CS) student evolving the quantum education platform to be more modular and accessible</li>
             </ul>
         </div>
 
@@ -1800,7 +1808,7 @@
                 <a href="#c-education">Education</a>
                 <a href="#c-research">Research</a>
                 <a href="#c-publications">Publications</a>
-                <a href="#c-teaching">Teaching</a>
+                <a href="#c-teaching">Teaching &amp; Mentoring</a>
                 <a href="#c-contact">Contact</a>
                 <a href="hobby.html">Hobby</a>
                 <a href="projects.html">Research Tree</a>
@@ -1887,7 +1895,7 @@
             </section>
 
             <section class="c-section" id="c-teaching">
-                <h2>Teaching</h2>
+                <h2>Teaching &amp; Mentoring</h2>
                 <div class="card-grid">
                     <article class="info-card">
                         <h3>Online Course: Quantum Cryptography</h3>
@@ -1896,6 +1904,26 @@
                     <article class="info-card">
                         <h3>Video Series: TLS, Blockchains &amp; PQC</h3>
                         <p>A security-first look at TLS, blockchain security assumptions, and post-quantum cryptography for classical systems.</p>
+                    </article>
+                </div>
+
+                <h3 class="c-subheading">Student Mentoring</h3>
+                <div class="card-grid">
+                    <article class="info-card">
+                        <h3>High School Research Intern <span style="font-weight:400;color:#64748b;">· 2026</span></h3>
+                        <p>Mentored a high school student through a summer research internship exchange program on multi-modal steganography.</p>
+                    </article>
+                    <article class="info-card">
+                        <h3>NSF-REU Undergraduate Researchers <span style="font-weight:400;color:#64748b;">· 2026</span></h3>
+                        <p>Co-mentored two undergraduate students researching quantum-classical GANs for network security.</p>
+                    </article>
+                    <article class="info-card">
+                        <h3>M.Sc. Thesis Mentoring <span style="font-weight:400;color:#64748b;">· 2023-2024</span></h3>
+                        <p>Mentored two M.Sc. (CS) students on theses covering quantum communication protocols and an adaptive quantum education platform.</p>
+                    </article>
+                    <article class="info-card">
+                        <h3>M.Sc. Thesis Mentoring <span style="font-weight:400;color:#64748b;">· 2024-2026</span></h3>
+                        <p>Mentoring an M.Sc. (CS) student evolving the quantum education platform to be more modular and accessible.</p>
                     </article>
                 </div>
             </section>
@@ -2010,7 +2038,8 @@
             const buttons = document.querySelectorAll('.control-btn');
             buttons.forEach(btn => {
                 btn.classList.remove('active');
-                if (btn.textContent.toLowerCase().replace(/\s+/g, '') === sectionId.toLowerCase()) {
+                const key = btn.dataset.section || btn.textContent.toLowerCase().replace(/\s+/g, '');
+                if (key.toLowerCase() === sectionId.toLowerCase()) {
                     btn.classList.add('active');
                 }
             });
