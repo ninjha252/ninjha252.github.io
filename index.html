@@ -1248,41 +1248,41 @@
             <div class="circuit-container" id="circuit">
 
                 <!-- ═══════════════════════════════════════════════════
-                     Grover's Search Algorithm — target |101⟩
+                     Grover's Search Algorithm (target |101⟩)
                      Init → Oracle (X+CCX+X) → Diffusion (H+X+CCX+X+H) → Measure
                      ═══════════════════════════════════════════════════ -->
 
                 <!-- Qubit 0 -->
                 <div class="qubit-line" data-qubit="0">
-                    <div class="qubit-label" title="Qubit 0 — Init superposition">|q₀⟩</div>
+                    <div class="qubit-label" title="Qubit 0: Init superposition">|q₀⟩</div>
                     <div class="circuit-track">
                         <!-- Init H -->
                         <div class="gate-wrapper" style="left:6%">
-                            <div class="gate gate-h-0" data-section="home" title="Hadamard — Home">H</div>
+                            <div class="gate gate-h-0" data-section="home" title="Hadamard: Home">H</div>
                         </div>
                         <!-- Oracle CCX: control on q0 -->
                         <div class="gate-wrapper" style="left:28%" id="ccx-oracle-q0">
-                            <div class="gate gate-cx-control" data-section="skills" title="Toffoli (CCX) Oracle — Skills">
+                            <div class="gate gate-cx-control" data-section="skills" title="Toffoli (CCX) Oracle: Skills">
                                 <div class="cx-control-dot"></div>
                             </div>
                         </div>
                         <!-- Diffusion H -->
                         <div class="gate-wrapper" style="left:50%">
-                            <div class="gate gate-h-0" data-section="experience" title="Hadamard — Experience (Diffusion)">H</div>
+                            <div class="gate gate-h-0" data-section="experience" title="Hadamard: Experience (Diffusion)">H</div>
                         </div>
                         <!-- Diffusion X -->
                         <div class="gate-wrapper" style="left:61%">
-                            <div class="gate gate-x" data-section="experience" title="Pauli-X — Diffusion flip">X</div>
+                            <div class="gate gate-x" data-section="experience" title="Pauli-X: Diffusion flip">X</div>
                         </div>
                         <!-- Diffusion CCX: control on q0 -->
                         <div class="gate-wrapper" style="left:72%" id="ccx-diff-q0">
-                            <div class="gate gate-cx-control" data-section="contact" title="Toffoli (CCX) Diffusion — Contact">
+                            <div class="gate gate-cx-control" data-section="contact" title="Toffoli (CCX) Diffusion: Contact">
                                 <div class="cx-control-dot"></div>
                             </div>
                         </div>
                         <!-- Diffusion X restore -->
                         <div class="gate-wrapper" style="left:82%">
-                            <div class="gate gate-x" data-section="contact" title="Pauli-X — Diffusion restore">X</div>
+                            <div class="gate gate-x" data-section="contact" title="Pauli-X: Diffusion restore">X</div>
                         </div>
                         <!-- Measure -->
                         <div class="gate-wrapper" style="left:91%">
@@ -1294,43 +1294,43 @@
 
                 <!-- Qubit 1 -->
                 <div class="qubit-line" data-qubit="1">
-                    <div class="qubit-label" title="Qubit 1 — Oracle target bit">|q₁⟩</div>
+                    <div class="qubit-label" title="Qubit 1: Oracle target bit">|q₁⟩</div>
                     <div class="circuit-track">
                         <!-- Init H -->
                         <div class="gate-wrapper" style="left:6%">
-                            <div class="gate gate-h-1" data-section="about" title="Hadamard — About">H</div>
+                            <div class="gate gate-h-1" data-section="about" title="Hadamard: About">H</div>
                         </div>
                         <!-- Oracle X: flips q1 (target |101⟩ has 0 at q1) -->
                         <div class="gate-wrapper" style="left:17%">
-                            <div class="gate gate-x" data-section="publications" title="Pauli-X — Publications (Oracle marks |101⟩)">X</div>
+                            <div class="gate gate-x" data-section="publications" title="Pauli-X: Publications (Oracle marks |101⟩)">X</div>
                         </div>
                         <!-- Oracle CCX: second control on q1 -->
                         <div class="gate-wrapper" style="left:28%" id="ccx-oracle-q1">
-                            <div class="gate gate-cx-control" data-section="skills" title="Toffoli (CCX) — second control qubit">
+                            <div class="gate gate-cx-control" data-section="skills" title="Toffoli (CCX): second control qubit">
                                 <div class="cx-control-dot"></div>
                             </div>
                         </div>
                         <!-- Oracle X cleanup -->
                         <div class="gate-wrapper" style="left:39%">
-                            <div class="gate gate-x" data-section="publications" title="Pauli-X — Oracle cleanup (restores q1)">X</div>
+                            <div class="gate gate-x" data-section="publications" title="Pauli-X: Oracle cleanup (restores q1)">X</div>
                         </div>
                         <!-- Diffusion H -->
                         <div class="gate-wrapper" style="left:50%">
-                            <div class="gate gate-h-1" data-section="experience" title="Hadamard — Diffusion">H</div>
+                            <div class="gate gate-h-1" data-section="experience" title="Hadamard: Diffusion">H</div>
                         </div>
                         <!-- Diffusion X -->
                         <div class="gate-wrapper" style="left:61%">
-                            <div class="gate gate-x" data-section="experience" title="Pauli-X — Diffusion flip">X</div>
+                            <div class="gate gate-x" data-section="experience" title="Pauli-X: Diffusion flip">X</div>
                         </div>
                         <!-- Diffusion CCX: second control on q1 -->
                         <div class="gate-wrapper" style="left:72%" id="ccx-diff-q1">
-                            <div class="gate gate-cx-control" data-section="contact" title="Toffoli (CCX) — second control qubit">
+                            <div class="gate gate-cx-control" data-section="contact" title="Toffoli (CCX): second control qubit">
                                 <div class="cx-control-dot"></div>
                             </div>
                         </div>
                         <!-- Diffusion X restore -->
                         <div class="gate-wrapper" style="left:82%">
-                            <div class="gate gate-x" data-section="contact" title="Pauli-X — Diffusion restore">X</div>
+                            <div class="gate gate-x" data-section="contact" title="Pauli-X: Diffusion restore">X</div>
                         </div>
                         <!-- Measure -->
                         <div class="gate-wrapper" style="left:91%">
@@ -1342,35 +1342,35 @@
 
                 <!-- Qubit 2 -->
                 <div class="qubit-line" data-qubit="2">
-                    <div class="qubit-label" title="Qubit 2 — CCX target">|q₂⟩</div>
+                    <div class="qubit-label" title="Qubit 2: CCX target">|q₂⟩</div>
                     <div class="circuit-track">
                         <!-- Init H -->
                         <div class="gate-wrapper" style="left:6%">
-                            <div class="gate gate-h-2" data-section="research" title="Hadamard — Research">H</div>
+                            <div class="gate gate-h-2" data-section="research" title="Hadamard: Research">H</div>
                         </div>
                         <!-- Oracle CCX: target on q2 -->
                         <div class="gate-wrapper" style="left:28%" id="ccx-oracle-q2">
-                            <div class="gate gate-cx-target" data-section="skills" title="Toffoli (CCX) target — phase kickback">
+                            <div class="gate gate-cx-target" data-section="skills" title="Toffoli (CCX) target: phase kickback">
                                 <div class="cx-target-circle"></div>
                             </div>
                         </div>
                         <!-- Diffusion H -->
                         <div class="gate-wrapper" style="left:50%">
-                            <div class="gate gate-h-2" data-section="experience" title="Hadamard — Diffusion">H</div>
+                            <div class="gate gate-h-2" data-section="experience" title="Hadamard: Diffusion">H</div>
                         </div>
                         <!-- Diffusion X -->
                         <div class="gate-wrapper" style="left:61%">
-                            <div class="gate gate-x" data-section="experience" title="Pauli-X — Diffusion flip">X</div>
+                            <div class="gate gate-x" data-section="experience" title="Pauli-X: Diffusion flip">X</div>
                         </div>
                         <!-- Diffusion CCX: target on q2 -->
                         <div class="gate-wrapper" style="left:72%" id="ccx-diff-q2">
-                            <div class="gate gate-cx-target" data-section="contact" title="Toffoli (CCX) target — Diffusion oracle">
+                            <div class="gate gate-cx-target" data-section="contact" title="Toffoli (CCX) target: Diffusion oracle">
                                 <div class="cx-target-circle"></div>
                             </div>
                         </div>
                         <!-- Diffusion X restore -->
                         <div class="gate-wrapper" style="left:82%">
-                            <div class="gate gate-x" data-section="contact" title="Pauli-X — Diffusion restore">X</div>
+                            <div class="gate gate-x" data-section="contact" title="Pauli-X: Diffusion restore">X</div>
                         </div>
                         <!-- Measure -->
                         <div class="gate-wrapper" style="left:91%">
@@ -1393,11 +1393,11 @@
 
             <div class="g-step">
                 <div class="g-label">① Init</div>
-                <div class="g-desc">H gates put all 3 qubits in equal superposition — 8 states simultaneously</div>
+                <div class="g-desc">H gates put all 3 qubits in equal superposition: 8 states simultaneously</div>
             </div>
             <div class="g-step">
                 <div class="g-label">② Oracle</div>
-                <div class="g-desc">X flips q₁, Toffoli phase-kicks <code>|101⟩</code>, X restores — target marked without measuring</div>
+                <div class="g-desc">X flips q₁, Toffoli phase-kicks <code>|101⟩</code>, X restores: target marked without measuring</div>
             </div>
             <div class="g-step">
                 <div class="g-label">③ Diffusion</div>
@@ -1419,27 +1419,27 @@
         <div class="legend">
             <div class="legend-item">
                 <div class="legend-box" style="border-color:#00ffff;background:rgba(0,255,255,0.1);color:#00ffff;">H</div>
-                <span>Hadamard — Home, About, Research &amp; Experience</span>
+                <span>Hadamard: Home, About, Research &amp; Experience</span>
             </div>
             <div class="legend-item">
                 <div class="legend-box" style="border-color:#ff6600;background:rgba(255,102,0,0.1);color:#ff6600;">X</div>
-                <span>Pauli-X — Oracle marks target &amp; Diffusion flip</span>
+                <span>Pauli-X: Oracle marks target &amp; Diffusion flip</span>
             </div>
             <div class="legend-item">
                 <div class="legend-box" style="border-color:#00ffff;background:rgba(0,255,255,0.1);display:flex;align-items:center;justify-content:center;">
                     <div style="width:10px;height:10px;border-radius:50%;background:#00ffff;"></div>
                 </div>
-                <span>Toffoli (CCX) — Skills (Oracle) &amp; Contact (Diffusion)</span>
+                <span>Toffoli (CCX): Skills (Oracle) &amp; Contact (Diffusion)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-box" style="border-color:#ff00ff;background:rgba(255,0,255,0.05);color:#ff00ff;font-size:1.1em;">M</div>
-                <span>Measurement — Collapse &amp; read result</span>
+                <span>Measurement: Collapse &amp; read result</span>
             </div>
         </div>
 
         <!-- Content Panels -->
         <div id="home" class="content-panel active">
-            <h2>🏠 Welcome — H Gate (q₀) | Grover's Init</h2>
+            <h2>🏠 Welcome: H Gate (q₀) | Grover's Init</h2>
             <div style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 260px;">
                     <p>Hello! I'm Nitin Jha, a PhD student at Kennesaw State University in the Department of Computer Science. Welcome to my quantum-inspired portfolio!</p>
@@ -1469,21 +1469,21 @@
 
             <h3>Education</h3>
             <ul>
-                <li><strong>Ph.D. in Computer Science</strong> — Kennesaw State University, GA, USA (2023 - Ongoing)<br>
+                <li><strong>Ph.D. in Computer Science</strong>, Kennesaw State University, GA, USA (2023 - Ongoing)<br>
                     Advisor: Dr. <a href="https://sites.google.com/site/abhishekparakh/" target="_blank" class="author-link">Abhishek Parakh</a></li>
-                <li><strong>BSc (Hons.) Physics, Cum Laude</strong> — Ashoka University, Sonepat, India (2020 - 2023)<br>
+                <li><strong>BSc (Hons.) Physics, Cum Laude</strong>, Ashoka University, Sonepat, India (2020 - 2023)<br>
                     Mentor: Dr. Susmita Saha</li>
             </ul>
         </div>
 
         <div id="about" class="content-panel">
-            <h2>👤 About Me — H Gate (q₁) | Grover's Init</h2>
+            <h2>👤 About Me: H Gate (q₁) | Grover's Init</h2>
             <p>I'm currently pursuing my PhD in Computer Science at Kennesaw State University in Georgia, USA, where I work as a Graduate Research Assistant focusing on quantum network and communication protocols.</p>
             <p>My journey in physics and quantum computing began at Ashoka University in India, where I earned my BSc (Hons) in Physics with Cum Laude distinction. This strong foundation in physics, combined with my computer science expertise, allows me to bridge theory and practical implementation in quantum systems.</p>
             <h3>Research Philosophy</h3>
             <p>I believe in the transformative potential of quantum technologies to revolutionize secure communications and networking. My approach combines rigorous theoretical understanding with practical protocol development, always keeping real-world implementation challenges in mind.</p>
             <h3>Beyond the Lab</h3>
-            <p>Outside of research, I sketch — take a look at the wall.
+            <p>Outside of research, I sketch. Take a look at the wall.
                 <a href="hobby.html" class="social-link" style="margin-left: 10px; padding: 6px 16px; font-size: 0.85em;">
                     🎨 Hobby
                 </a>
@@ -1491,8 +1491,8 @@
         </div>
 
         <div id="research" class="content-panel">
-            <h2>🔬 Research — H Gate (q₂) | Grover's Init</h2>
-            <p>The Hadamard gate puts q₂ into superposition — just as my research explores quantum states across multiple dimensions, from quantum network protocols to error correction schemes.</p>
+            <h2>🔬 Research: H Gate (q₂) | Grover's Init</h2>
+            <p>The Hadamard gate puts q₂ into superposition, just as my research explores quantum states across multiple dimensions, from quantum network protocols to error correction schemes.</p>
 
             <h3>Current Research Focus</h3>
             <ul>
@@ -1512,7 +1512,7 @@
             </ul>
 
             <h3>Interactive Demos</h3>
-            <p>Step-by-step animations that explain core concepts from my research — no equations required.</p>
+            <p>Step-by-step animations that explain core concepts from my research (no equations required).</p>
             <div style="margin-top: 14px; display: flex; flex-wrap: wrap; gap: 14px;">
 
                 <!-- CSS Error Correction -->
@@ -1526,10 +1526,10 @@
                     <span style="font-size: 2em; line-height: 1;">🔐</span>
                     <div>
                         <div style="color: #00ffff; font-size: 0.95em; font-weight: bold; margin-bottom: 5px;">
-                            CSS Quantum Error Correction — Sudoku Explainer
+                            CSS Quantum Error Correction: Sudoku Explainer
                         </div>
                         <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
-                            An interactive 9-step animation showing how CSS codes detect and fix errors in quantum states — without ever measuring the data. Based on the JEEC protocol (Scientific Reports, 2024).
+                            An interactive 9-step animation showing how CSS codes detect and fix errors in quantum states, without ever measuring the data. Based on the JEEC protocol (Scientific Reports, 2024).
                         </div>
                         <div style="color: #ff00ff; font-size: 0.72em; margin-top: 8px; letter-spacing: 0.5px;">
                             LAUNCH DEMO →
@@ -1548,10 +1548,10 @@
                     <span style="font-size: 2em; line-height: 1;">🔭</span>
                     <div>
                         <div style="color: #60a5fa; font-size: 0.95em; font-weight: bold; margin-bottom: 5px;">
-                            Quantum Key Distribution — General Setup
+                            Quantum Key Distribution: General Setup
                         </div>
                         <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
-                            A 9-step walkthrough of how Alice and Bob share a secret key over a quantum optical fiber channel — including Eve's eavesdropping attempt and how quantum mechanics exposes her.
+                            A 9-step walkthrough of how Alice and Bob share a secret key over a quantum optical fiber channel, including Eve's eavesdropping attempt and how quantum mechanics exposes her.
                         </div>
                         <div style="color: #ff00ff; font-size: 0.72em; margin-top: 8px; letter-spacing: 0.5px;">
                             LAUNCH DEMO →
@@ -1570,10 +1570,10 @@
                     <span style="font-size: 2em; line-height: 1;">🔒</span>
                     <div>
                         <div style="color: #34d399; font-size: 0.95em; font-weight: bold; margin-bottom: 5px;">
-                            Three-Stage Protocol — Kak's Scheme
+                            Three-Stage Protocol: Kak's Scheme
                         </div>
                         <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
-                            An animated 9-step demo of Kak's three-stage quantum key exchange — Alice and Bob each lock and unlock a shared box without ever exchanging keys, using commutative encryption.
+                            An animated 9-step demo of Kak's three-stage quantum key exchange: Alice and Bob each lock and unlock a shared box without ever exchanging keys, using commutative encryption.
                         </div>
                         <div style="color: #ff00ff; font-size: 0.72em; margin-top: 8px; letter-spacing: 0.5px;">
                             LAUNCH DEMO →
@@ -1585,8 +1585,8 @@
         </div>
 
         <div id="publications" class="content-panel">
-            <h2>📚 Publications — X Gate (q₁) | Grover's Oracle</h2>
-            <p>The Pauli-X gate marks the target state in Grover's oracle — just as each publication marks a contribution, identifying and pinpointing results from the search space of open research problems.</p>
+            <h2>📚 Publications: X Gate (q₁) | Grover's Oracle</h2>
+            <p>The Pauli-X gate marks the target state in Grover's oracle, just as each publication marks a contribution, identifying and pinpointing results from the search space of open research problems.</p>
 
             <h3>Journal Publications</h3>
             <ul id="pub-journal"></ul>
@@ -1630,8 +1630,8 @@
         </div>
 
         <div id="skills" class="content-panel">
-            <h2>⚡ Skills — Toffoli (CCX) | Grover's Oracle</h2>
-            <p>The Toffoli gate is the most complex gate in the circuit — a 3-qubit operation that encodes the oracle's logic. Similarly, my skills span across quantum computing, classical CS, and the tools needed to bridge both worlds.</p>
+            <h2>⚡ Skills: Toffoli (CCX) | Grover's Oracle</h2>
+            <p>The Toffoli gate is the most complex gate in the circuit: a 3-qubit operation that encodes the oracle's logic. Similarly, my skills span across quantum computing, classical CS, and the tools needed to bridge both worlds.</p>
 
             <div class="skill-grid">
                 <div class="skill-item">
@@ -1690,7 +1690,7 @@
         </div>
 
         <div id="experience" class="content-panel">
-            <h2>💼 Experience — H Gate (q₀) | Grover's Diffusion</h2>
+            <h2>💼 Experience: H Gate (q₀) | Grover's Diffusion</h2>
             <p>The Hadamard in the diffusion operator reinitializes the superposition, amplifying what matters. Each experience in my journey has similarly amplified the direction of my research and broadened my perspective.</p>
 
             <h3>Research Positions</h3>
@@ -1726,8 +1726,8 @@
         </div>
 
         <div id="teaching" class="content-panel">
-            <h2>🧑‍🏫 Teaching &amp; Mentoring — T Gate (π/8 Gate)</h2>
-            <p>The T gate applies a precise phase rotation, breaking operations down into smaller, composable steps — much like teaching breaks advanced quantum concepts down into digestible pieces for new learners.</p>
+            <h2>🧑‍🏫 Teaching &amp; Mentoring: T Gate (π/8 Gate)</h2>
+            <p>The T gate applies a precise phase rotation, breaking operations down into smaller, composable steps, much like teaching breaks advanced quantum concepts down into digestible pieces for new learners.</p>
 
             <h3>Online Course: Quantum Cryptography</h3>
             <p>A self-paced lecture series covering the foundations of quantum cryptography, from qubit fundamentals to the open challenges facing real-world quantum networks:</p>
@@ -1756,8 +1756,8 @@
         </div>
 
         <div id="sideprojects" class="content-panel">
-            <h2>🎲 Side Projects — SWAP Gate</h2>
-            <p>The SWAP gate exchanges the states of two qubits — much like these projects swap my attention away from quantum networks toward whatever random idea catches my interest for a weekend.</p>
+            <h2>🎲 Side Projects: SWAP Gate</h2>
+            <p>The SWAP gate exchanges the states of two qubits, much like these projects swap my attention away from quantum networks toward whatever random idea catches my interest for a weekend.</p>
 
             <h3>Fun Little Builds</h3>
             <p>Small things I build for fun, mostly on Cloudflare Workers, mostly because I got curious.</p>
@@ -1777,7 +1777,7 @@
                             FPL League Book
                         </div>
                         <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
-                            A live leaderboard for a small Fantasy Premier League group — standings, chip tracking, all-time records, and league chat, pulling from the public FPL API.
+                            A live leaderboard for a small Fantasy Premier League group: standings, chip tracking, all-time records, and league chat, pulling from the public FPL API.
                         </div>
                         <div style="color: #ff00ff; font-size: 0.72em; margin-top: 8px; letter-spacing: 0.5px;">
                             OPEN LEAGUE →
@@ -1796,10 +1796,10 @@
                     <span style="font-size: 2em; line-height: 1;">📝</span>
                     <div>
                         <div style="color: #ffaa00; font-size: 0.95em; font-weight: bold; margin-bottom: 5px;">
-                            Grammar — PDF &amp; Document Proofreader
+                            Grammar: PDF &amp; Document Proofreader
                         </div>
                         <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
-                            Drop in a PDF, Word, LaTeX, or Markdown file and get every grammar issue highlighted in place — accept the fixes you want and download the corrected file in the same format. Runs entirely in the browser.
+                            Drop in a PDF, Word, LaTeX, or Markdown file and get every grammar issue highlighted in place. Accept the fixes you want and download the corrected file in the same format. Runs entirely in the browser.
                         </div>
                         <div style="color: #ff00ff; font-size: 0.72em; margin-top: 8px; letter-spacing: 0.5px;">
                             OPEN TOOL →
@@ -1811,8 +1811,8 @@
         </div>
 
         <div id="contact" class="content-panel">
-            <h2>📬 Contact — Toffoli (CCX) | Grover's Diffusion</h2>
-            <p>The Toffoli gate in the diffusion step is the final amplifier — collapsing probability towards the right answer. Let's make the right connection! Feel free to reach out for collaborations, research discussions, or any questions about my work.</p>
+            <h2>📬 Contact: Toffoli (CCX) | Grover's Diffusion</h2>
+            <p>The Toffoli gate in the diffusion step is the final amplifier, collapsing probability towards the right answer. Let's make the right connection! Feel free to reach out for collaborations, research discussions, or any questions about my work.</p>
 
             <h3>Get in Touch</h3>
             <p>I'm always interested in discussing quantum networking/communication research, potential collaborations, and new opportunities in quantum technology. Send me a message directly using the button below!</p>
@@ -1948,19 +1948,19 @@
                 </div>
 
                 <h3 class="c-subheading">Interactive Demos</h3>
-                <p class="c-pub-note" style="margin-top: -8px; margin-bottom: 16px;">Step-by-step animations that explain core concepts from my research — no equations required.</p>
+                <p class="c-pub-note" style="margin-top: -8px; margin-bottom: 16px;">Step-by-step animations that explain core concepts from my research (no equations required).</p>
                 <div class="card-grid">
                     <a class="info-card" href="game/index.html" target="_blank">
                         <h3>🔐 CSS Quantum Error Correction</h3>
-                        <p>An interactive 9-step animation showing how CSS codes detect and fix errors in quantum states — without ever measuring the data. Based on the JEEC protocol (Scientific Reports, 2024).</p>
+                        <p>An interactive 9-step animation showing how CSS codes detect and fix errors in quantum states, without ever measuring the data. Based on the JEEC protocol (Scientific Reports, 2024).</p>
                     </a>
                     <a class="info-card" href="game/qkd.html" target="_blank">
                         <h3>🔭 Quantum Key Distribution</h3>
-                        <p>A 9-step walkthrough of how Alice and Bob share a secret key over a quantum optical fiber channel — including Eve's eavesdropping attempt and how quantum mechanics exposes her.</p>
+                        <p>A 9-step walkthrough of how Alice and Bob share a secret key over a quantum optical fiber channel, including Eve's eavesdropping attempt and how quantum mechanics exposes her.</p>
                     </a>
                     <a class="info-card" href="game/threestage.html" target="_blank">
                         <h3>🔒 Three-Stage Protocol</h3>
-                        <p>An animated 9-step demo of Kak's three-stage quantum key exchange — Alice and Bob each lock and unlock a shared box without ever exchanging keys, using commutative encryption.</p>
+                        <p>An animated 9-step demo of Kak's three-stage quantum key exchange: Alice and Bob each lock and unlock a shared box without ever exchanging keys, using commutative encryption.</p>
                     </a>
                 </div>
             </section>
@@ -2011,11 +2011,11 @@
                 <div class="card-grid">
                     <a class="info-card" href="https://fluke-league.fantasypl.workers.dev" target="_blank">
                         <h3>⚽ FPL League Book</h3>
-                        <p>A live leaderboard for a small Fantasy Premier League group — standings, chip tracking, all-time records, and league chat, pulling from the public FPL API.</p>
+                        <p>A live leaderboard for a small Fantasy Premier League group: standings, chip tracking, all-time records, and league chat, pulling from the public FPL API.</p>
                     </a>
                     <a class="info-card" href="https://correct-grammar.pages.dev" target="_blank">
-                        <h3>📝 Grammar — Document Proofreader</h3>
-                        <p>Drop in a PDF, Word, LaTeX, or Markdown file and get every grammar issue highlighted in place — accept the fixes you want and download the corrected file in the same format. Runs entirely in the browser.</p>
+                        <h3>📝 Grammar: Document Proofreader</h3>
+                        <p>Drop in a PDF, Word, LaTeX, or Markdown file and get every grammar issue highlighted in place. Accept the fixes you want and download the corrected file in the same format. Runs entirely in the browser.</p>
                     </a>
                 </div>
             </section>
@@ -2038,7 +2038,7 @@
         <div style="background:#0e0e22; border:2px solid #00ffff; border-radius:14px; max-width:520px; width:100%; padding:30px; position:relative; box-shadow:0 0 40px rgba(0,255,255,0.2); max-height:90vh; overflow-y:auto;">
             <button onclick="closeContactModal()" style="position:absolute; top:14px; right:16px; background:none; border:none; color:#00ffff; font-size:1.4em; cursor:pointer; line-height:1;">✕</button>
             <h3 style="color:#00ffff; margin-bottom:6px; font-size:1.2em;">✉️ Send a Message</h3>
-            <p style="color:rgba(224,224,255,0.6); font-size:0.8em; margin-bottom:20px;">Your message goes directly to my inbox — no email address needed.</p>
+            <p style="color:rgba(224,224,255,0.6); font-size:0.8em; margin-bottom:20px;">Your message goes directly to my inbox. No email address needed.</p>
 
             <form id="contact-form" style="display:flex; flex-direction:column; gap:14px;">
                 <div>
