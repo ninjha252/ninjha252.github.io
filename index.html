@@ -1062,9 +1062,10 @@
         .c-brand-sub { font-size: 0.8em; color: #64748b; }
         .c-nav-bar {
             position: sticky; top: 58px; z-index: 90;
-            background: rgba(251,250,248,0.88);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(35,52,74,0.1);
+            background: rgba(255,255,255,0.45);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border-bottom: 1px solid rgba(35,52,74,0.06);
         }
         .c-nav-bar .c-nav { max-width: 1180px; margin: 0 auto; padding: 12px 24px; }
         .c-nav { display: flex; gap: 22px; flex-wrap: wrap; }
@@ -1762,7 +1763,7 @@
             <p>Small things I build for fun, mostly on Cloudflare Workers, mostly because I got curious.</p>
             <div style="margin-top: 14px; display: flex; flex-wrap: wrap; gap: 14px;">
 
-                <!-- Fluke League -->
+                <!-- FPL League Book -->
                 <a href="https://fluke-league.fantasypl.workers.dev" target="_blank"
                    style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px;
                           background: rgba(255,0,153,0.05); border: 2px solid rgba(255,0,153,0.35);
@@ -1773,7 +1774,7 @@
                     <span style="font-size: 2em; line-height: 1;">⚽</span>
                     <div>
                         <div style="color: #ff0099; font-size: 0.95em; font-weight: bold; margin-bottom: 5px;">
-                            Fluke League Record Book
+                            FPL League Book
                         </div>
                         <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
                             A live leaderboard for a small Fantasy Premier League group — standings, chip tracking, all-time records, and league chat, pulling from the public FPL API.
@@ -2009,7 +2010,7 @@
                 <p style="color:#475569; margin-bottom: 16px;">Small things I build for fun, mostly on Cloudflare Workers, mostly because I got curious.</p>
                 <div class="card-grid">
                     <a class="info-card" href="https://fluke-league.fantasypl.workers.dev" target="_blank">
-                        <h3>⚽ Fluke League Record Book</h3>
+                        <h3>⚽ FPL League Book</h3>
                         <p>A live leaderboard for a small Fantasy Premier League group — standings, chip tracking, all-time records, and league chat, pulling from the public FPL API.</p>
                     </a>
                     <a class="info-card" href="https://correct-grammar.pages.dev" target="_blank">
