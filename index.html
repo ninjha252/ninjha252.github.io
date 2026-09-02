@@ -167,7 +167,13 @@
             gap: 10px;
             margin-bottom: 30px;
             flex-wrap: wrap;
-            padding: 0 5px;
+            padding: 10px 5px;
+            position: sticky;
+            top: 58px;
+            z-index: 90;
+            background: rgba(10,10,26,0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
         }
 
         .control-btn {
@@ -1054,6 +1060,13 @@
         }
         .c-brand-name { font-weight: 700; font-size: 1.05em; color: #172033; }
         .c-brand-sub { font-size: 0.8em; color: #64748b; }
+        .c-nav-bar {
+            position: sticky; top: 58px; z-index: 90;
+            background: rgba(251,250,248,0.88);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(35,52,74,0.1);
+        }
+        .c-nav-bar .c-nav { max-width: 1180px; margin: 0 auto; padding: 12px 24px; }
         .c-nav { display: flex; gap: 22px; flex-wrap: wrap; }
         .c-nav a { color: #344155; text-decoration: none; font-size: 0.92em; }
         .c-nav a:hover { color: #1d4ed8; }
@@ -1185,6 +1198,7 @@
             <button class="control-btn" onclick="showSection('skills')">Skills</button>
             <button class="control-btn" onclick="showSection('experience')">Experience</button>
             <button class="control-btn" data-section="teaching" onclick="showSection('teaching')">Teaching &amp; Mentoring</button>
+            <button class="control-btn" data-section="sideprojects" onclick="showSection('sideprojects')">Side Projects</button>
             <button class="control-btn" onclick="showSection('contact')">Contact</button>
         </div>
 
@@ -1216,6 +1230,9 @@
             </button>
             <button class="mobile-gate-btn color-rx" onclick="showSection('teaching')">
                 <span class="gate-symbol">T</span>Teaching
+            </button>
+            <button class="mobile-gate-btn color-ry" onclick="showSection('sideprojects')">
+                <span class="gate-symbol">S</span>Side Projects
             </button>
             <button class="mobile-gate-btn color-meas" onclick="showSection('contact')">
                 <span class="gate-symbol">M</span>Contact
@@ -1737,6 +1754,61 @@
             </ul>
         </div>
 
+        <div id="sideprojects" class="content-panel">
+            <h2>🎲 Side Projects — SWAP Gate</h2>
+            <p>The SWAP gate exchanges the states of two qubits — much like these projects swap my attention away from quantum networks toward whatever random idea catches my interest for a weekend.</p>
+
+            <h3>Fun Little Builds</h3>
+            <p>Small things I build for fun, mostly on Cloudflare Workers, mostly because I got curious.</p>
+            <div style="margin-top: 14px; display: flex; flex-wrap: wrap; gap: 14px;">
+
+                <!-- Fluke League -->
+                <a href="https://fluke-league.fantasypl.workers.dev" target="_blank"
+                   style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px;
+                          background: rgba(255,0,153,0.05); border: 2px solid rgba(255,0,153,0.35);
+                          border-radius: 12px; text-decoration: none; transition: all .3s ease;
+                          max-width: 460px;"
+                   onmouseover="this.style.background='rgba(255,0,153,0.13)';this.style.borderColor='#ff0099';this.style.boxShadow='0 0 22px rgba(255,0,153,0.3)';this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='rgba(255,0,153,0.05)';this.style.borderColor='rgba(255,0,153,0.35)';this.style.boxShadow='none';this.style.transform='none'">
+                    <span style="font-size: 2em; line-height: 1;">⚽</span>
+                    <div>
+                        <div style="color: #ff0099; font-size: 0.95em; font-weight: bold; margin-bottom: 5px;">
+                            Fluke League Record Book
+                        </div>
+                        <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
+                            A live leaderboard for a small Fantasy Premier League group — standings, chip tracking, all-time records, and league chat, pulling from the public FPL API.
+                        </div>
+                        <div style="color: #ff00ff; font-size: 0.72em; margin-top: 8px; letter-spacing: 0.5px;">
+                            OPEN LEAGUE →
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Grammar Proofreader -->
+                <a href="https://correct-grammar.pages.dev" target="_blank"
+                   style="display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px;
+                          background: rgba(255,170,0,0.05); border: 2px solid rgba(255,170,0,0.35);
+                          border-radius: 12px; text-decoration: none; transition: all .3s ease;
+                          max-width: 460px;"
+                   onmouseover="this.style.background='rgba(255,170,0,0.13)';this.style.borderColor='#ffaa00';this.style.boxShadow='0 0 22px rgba(255,170,0,0.3)';this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='rgba(255,170,0,0.05)';this.style.borderColor='rgba(255,170,0,0.35)';this.style.boxShadow='none';this.style.transform='none'">
+                    <span style="font-size: 2em; line-height: 1;">📝</span>
+                    <div>
+                        <div style="color: #ffaa00; font-size: 0.95em; font-weight: bold; margin-bottom: 5px;">
+                            Grammar — PDF &amp; Document Proofreader
+                        </div>
+                        <div style="color: rgba(208,208,255,0.8); font-size: 0.8em; line-height: 1.6;">
+                            Drop in a PDF, Word, LaTeX, or Markdown file and get every grammar issue highlighted in place — accept the fixes you want and download the corrected file in the same format. Runs entirely in the browser.
+                        </div>
+                        <div style="color: #ff00ff; font-size: 0.72em; margin-top: 8px; letter-spacing: 0.5px;">
+                            OPEN TOOL →
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
         <div id="contact" class="content-panel">
             <h2>📬 Contact — Toffoli (CCX) | Grover's Diffusion</h2>
             <p>The Toffoli gate in the diffusion step is the final amplifier — collapsing probability towards the right answer. Let's make the right connection! Feel free to reach out for collaborations, research discussions, or any questions about my work.</p>
@@ -1804,16 +1876,20 @@
                     <div class="c-brand-sub">Quantum networks &amp; security researcher</div>
                 </div>
             </div>
+        </header>
+
+        <div class="c-nav-bar">
             <nav class="c-nav">
                 <a href="#c-education">Education</a>
                 <a href="#c-research">Research</a>
                 <a href="#c-publications">Publications</a>
                 <a href="#c-teaching">Teaching &amp; Mentoring</a>
+                <a href="#c-sideprojects">Side Projects</a>
                 <a href="#c-contact">Contact</a>
                 <a href="hobby.html">Hobby</a>
                 <a href="projects.html">Research Tree</a>
             </nav>
-        </header>
+        </div>
 
         <main class="c-main">
             <section class="c-hero">
@@ -1925,6 +2001,21 @@
                         <h3>M.Sc. Thesis Mentoring <span style="font-weight:400;color:#64748b;">· 2024-2026</span></h3>
                         <p>Mentoring an M.Sc. (CS) student evolving the quantum education platform to be more modular and accessible.</p>
                     </article>
+                </div>
+            </section>
+
+            <section class="c-section" id="c-sideprojects">
+                <h2>Side Projects</h2>
+                <p style="color:#475569; margin-bottom: 16px;">Small things I build for fun, mostly on Cloudflare Workers, mostly because I got curious.</p>
+                <div class="card-grid">
+                    <a class="info-card" href="https://fluke-league.fantasypl.workers.dev" target="_blank">
+                        <h3>⚽ Fluke League Record Book</h3>
+                        <p>A live leaderboard for a small Fantasy Premier League group — standings, chip tracking, all-time records, and league chat, pulling from the public FPL API.</p>
+                    </a>
+                    <a class="info-card" href="https://correct-grammar.pages.dev" target="_blank">
+                        <h3>📝 Grammar — Document Proofreader</h3>
+                        <p>Drop in a PDF, Word, LaTeX, or Markdown file and get every grammar issue highlighted in place — accept the fixes you want and download the corrected file in the same format. Runs entirely in the browser.</p>
+                    </a>
                 </div>
             </section>
         </main>
