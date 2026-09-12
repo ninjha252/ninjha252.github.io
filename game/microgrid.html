@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum-Augmented Microgrid</title>
+  <style>
+    :root {
+      --navy:  #1A2A4A;
+      --teal:  #028090;
+      --gold:  #F0A500;
+      --white: #F5F7FA;
+      --light: #C8DCFC;
+      --bg:    #101e35;
+      --card:  #162240;
+      --gen:   #34d399;
+      --qlink: #0DCAD8;
+      --clink: rgba(200,220,252,0.45);
+      --danger:#ef4444;
+      --grid:  #F0A500;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Trebuchet MS', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 20px 20px;
+    }
+
+    @media (max-width: 480px) {
+      body { padding-top: 90px; }
+    }
+
+    /* Header */
+    .proto-label {
+      font-size: 0.72em;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .step-title {
+      font-size: 1.55em;
+      font-weight: bold;
+      color: var(--white);
+      text-align: center;
+      margin-bottom: 20px;
+      min-height: 2.2em;
+      max-width: 860px;
+    }
+
+    /* Stage */
+    .mg-stage {
+      width: 100%;
+      max-width: 860px;
+      background: var(--card);
+      border: 1px solid rgba(2,128,144,0.35);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 20px;
+      position: relative;
+      min-height: 440px;
+      overflow: hidden;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+      padding: 18px;
+    }
+    .scene.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    /* Network scene */
+    #net-svg { width: 100%; height: 100%; max-height: 420px; }
+    .mg-node-circle { fill: var(--navy); stroke: rgba(200,220,252,0.4); stroke-width: 2; transition: stroke 0.4s, fill 0.4s; }
+    .mg-node.highlight .mg-node-circle { stroke: var(--gold); stroke-width: 3.5; filter: drop-shadow(0 0 8px rgba(240,165,0,0.5)); }
+    .mg-node-icon { font-size: 22px; text-anchor: middle; dominant-baseline: central; }
+    .mg-node-label { font-size: 12px; fill: var(--light); text-anchor: middle; font-family: 'Trebuchet MS', sans-serif; }
+    #node-controller .mg-node-circle { fill: rgba(2,128,144,0.25); stroke: var(--teal); stroke-width: 3; }
+    #node-utility .mg-node-circle { fill: rgba(240,165,0,0.15); stroke: var(--grid); stroke-width: 2.5; }
+
+    .edge-classical { stroke: var(--clink); stroke-width: 2; fill: none; }
+    .edge-quantum   { stroke: var(--qlink); stroke-width: 2; stroke-dasharray: 5 4; fill: none; opacity: 0; transition: opacity 0.4s; }
+    .edge-group.dual .edge-quantum { opacity: 1; }
+    .edge-group.dual .edge-classical { stroke: var(--light); opacity: 0.55; }
+    .edge-import { stroke: var(--grid); stroke-width: 2.5; fill: none; transition: stroke 0.4s, stroke-dasharray 0.4s; }
+    .edge-break { opacity: 0; transition: opacity 0.3s; }
+    #edge-utility-controller.severed .edge-import { stroke: var(--danger); stroke-dasharray: 5 5; }
+    #edge-utility-controller.severed .edge-break { opacity: 1; }
+
+    .attack-badge { opacity: 0; transition: opacity 0.4s; }
+    .attack-badge.visible { opacity: 1; animation: pulse-badge 1.2s ease-in-out infinite; }
+    @keyframes pulse-badge { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+    /* Mode HUD */
+    .mode-hud {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.78em;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+      max-width: 260px;
+      line-height: 1.5;
+    }
+    .mode-hud.visible { opacity: 1; }
+    .mode-hud.grid { background: rgba(52,211,153,0.15); border: 1.5px solid var(--gen); color: var(--gen); }
+    .mode-hud.island { background: rgba(239,68,68,0.13); border: 1.5px solid var(--danger); color: #fca5a5; }
+
+    /* Cutaway scene */
+    .cutaway-wrap { width: 100%; }
+    .cutaway-heading { text-align: center; font-size: 0.95em; color: var(--gold); margin-bottom: 16px; font-weight: bold; }
+    .cutaway-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .cutaway-part {
+      flex: 1 1 200px;
+      max-width: 240px;
+      background: rgba(2,128,144,0.06);
+      border: 2px solid rgba(200,220,252,0.15);
+      border-radius: 14px;
+      padding: 18px 14px;
+      text-align: center;
+      transition: border-color 0.4s, background 0.4s, transform 0.4s;
+      opacity: 0.4;
+    }
+    .cutaway-part.active {
+      border-color: var(--teal);
+      background: rgba(2,128,144,0.16);
+      opacity: 1;
+      transform: translateY(-4px);
+    }
+    .cutaway-part .cp-icons { font-size: 1.8em; margin-bottom: 8px; letter-spacing: 4px; }
+    .cutaway-part .cp-title { font-weight: bold; color: var(--white); font-size: 0.92em; margin-bottom: 6px; }
+    .cutaway-part .cp-desc { font-size: 0.76em; color: rgba(208,208,255,0.75); line-height: 1.5; }
+    .cutaway-badges {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .cutaway-badges.visible { opacity: 1; }
+    .cbadge {
+      font-size: 0.74em;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+    .cbadge.classical { background: rgba(200,220,252,0.12); color: var(--light); border: 1px solid rgba(200,220,252,0.4); }
+    .cbadge.quantum { background: rgba(13,202,216,0.12); color: var(--qlink); border: 1px solid var(--qlink); }
+
+    /* Explanation panel */
+    .panel {
+      width: 100%;
+      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 90px;
+      margin-bottom: 18px;
+    }
+    .bubble {
+      padding: 11px 16px;
+      border-radius: 8px;
+      border-left: 4px solid var(--teal);
+      background: rgba(2,128,144,0.1);
+      font-size: 0.87em;
+      line-height: 1.65;
+      color: var(--light);
+      opacity: 0;
+      transform: translateY(7px);
+      transition: opacity 0.35s, transform 0.35s;
+    }
+    .bubble.visible { opacity: 1; transform: none; }
+    .bubble.gold  { border-color: var(--gold); background: rgba(240,165,0,0.08); }
+    .bubble.teal  { border-color: var(--teal); background: rgba(2,128,144,0.1); }
+    .bubble.green { border-color: var(--gen);  background: rgba(52,211,153,0.07); }
+    .bubble.red   { border-color: var(--danger); background: rgba(239,68,68,0.08); }
+
+    /* Navigation */
+    .nav { display: flex; align-items: center; gap: 14px; }
+    .dots { display: flex; gap: 8px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(200,220,252,0.2); transition: background 0.3s; }
+    .dot.active { background: var(--gold); }
+    .btn {
+      padding: 9px 22px;
+      border-radius: 8px;
+      border: 2px solid var(--teal);
+      background: rgba(2,128,144,0.12);
+      color: var(--white);
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .btn:hover:not(:disabled) { background: rgba(2,128,144,0.3); }
+    .btn:disabled { opacity: 0.3; cursor: default; }
+
+    .hint { font-size: 0.68em; color: rgba(200,220,252,0.35); margin-top: 10px; text-align: center; }
+    .citation { font-size: 0.66em; color: rgba(200,220,252,0.4); margin-top: 6px; text-align: center; max-width: 700px; line-height: 1.6; }
+    .citation a { color: var(--qlink); }
+
+    /* Mode toggle */
+    .mode-toggle {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      border-radius: 30px;
+      border: 1.5px solid rgba(0,255,255,0.5);
+      background: rgba(10,10,26,0.7);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 0.78em;
+      color: var(--qlink);
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .mode-toggle:hover { border-color: var(--qlink); background: rgba(13,202,216,0.1); }
+    .toggle-track { width: 38px; height: 20px; background: rgba(13,202,216,0.15); border: 1.5px solid var(--qlink); border-radius: 10px; position: relative; transition: all 0.3s; flex-shrink: 0; }
+    .toggle-knob { position: absolute; width: 14px; height: 14px; background: var(--qlink); border-radius: 50%; top: 2px; left: 2px; transition: left 0.3s, background 0.3s; }
+
+    /* Light mode overrides */
+    body.formal {
+      --navy:  #1a2a4a;
+      --teal:  #0369a1;
+      --gold:  #d97706;
+      --white: #1a2a4a;
+      --light: #334155;
+      --bg:    #ffffff;
+      --card:  #f0f6ff;
+      --gen:   #059669;
+      --qlink: #0284c7;
+      --clink: rgba(51,65,85,0.32);
+      --danger:#dc2626;
+      --grid:  #d97706;
+      background: #ffffff;
+      color: #1a2a4a;
+    }
+    body.formal .mode-toggle { background: rgba(255,255,255,0.92); border-color: #555; color: #333; backdrop-filter: none; }
+    body.formal .mode-toggle:hover { background: #e8e8e8; }
+    body.formal .toggle-track { background: rgba(0,0,0,0.08); border-color: #555; }
+    body.formal .toggle-knob { background: #333; left: 20px; }
+    body.formal .mg-stage { border-color: rgba(3,105,161,0.3); }
+    body.formal .mg-node-label { fill: #1a2a4a; font-weight: 600; }
+    body.formal .dot { background: #e2e8f0; }
+    body.formal .dot.active { background: #d97706; }
+    body.formal .btn { border-color: var(--teal); background: rgba(3,105,161,0.1); color: var(--white); }
+    body.formal .btn:hover:not(:disabled) { background: rgba(3,105,161,0.25); }
+    body.formal .bubble { border-left-width: 5px; font-size: 1.08em; line-height: 1.7; color: var(--light); }
+    body.formal .bubble.teal  { background: rgba(3,105,161,0.06); }
+    body.formal .bubble.gold  { background: rgba(217,119,6,0.06); }
+    body.formal .bubble.green { background: rgba(5,150,105,0.06); }
+    body.formal .bubble.red   { background: rgba(220,38,38,0.06); }
+    body.formal .hint, body.formal .citation { color: #94a3b8; }
+    body.formal .cutaway-part { background: rgba(3,105,161,0.04); border-color: rgba(51,65,85,0.12); }
+    body.formal .cutaway-part.active { background: rgba(3,105,161,0.09); border-color: var(--teal); }
+    body.formal .cutaway-part .cp-title { color: var(--white); }
+    body.formal .cutaway-part .cp-desc { color: #475569; }
+    body.formal .cbadge.classical { color: #475569; border-color: #94a3b8; background: rgba(148,163,184,0.12); }
+    body.formal .cbadge.quantum { color: var(--qlink); border-color: var(--qlink); background: rgba(2,132,199,0.08); }
+    body.formal .mode-hud.grid { background: rgba(5,150,105,0.09); color: var(--gen); }
+    body.formal .mode-hud.island { background: rgba(220,38,38,0.08); color: var(--danger); }
+    body.formal .proto-label { font-size: 1.05em; }
+    body.formal .step-title { font-size: 2.1em; }
+  </style>
+</head>
+<body>
+
+<!-- Mode toggle -->
+<button class="mode-toggle" onclick="toggleMode()" title="Switch between dark and light mode">
+  <span>🌙 Dark</span>
+  <div class="toggle-track"><div class="toggle-knob"></div></div>
+  <span>☀️ Light</span>
+</button>
+
+<div class="proto-label">QUANTUM-AUGMENTED MICROGRID (QuAM)</div>
+<div class="step-title" id="step-title"></div>
+
+<div class="mg-stage">
+
+  <!-- Network scene -->
+  <div class="scene" id="scene-network">
+    <div class="mode-hud" id="mode-hud"></div>
+    <svg id="net-svg" viewBox="0 0 860 460" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+
+  <!-- Cutaway scene -->
+  <div class="scene" id="scene-cutaway">
+    <div class="cutaway-wrap">
+      <div class="cutaway-heading">🏭 MG-1 — Internal View</div>
+      <div class="cutaway-row">
+        <div class="cutaway-part" id="cp-gen">
+          <div class="cp-icons">☢️☀️💨🔋</div>
+          <div class="cp-title">Generation &amp; Storage</div>
+          <div class="cp-desc">A steady SMR baseload plus variable solar and wind, buffered by a battery and shared power bus.</div>
+        </div>
+        <div class="cutaway-part" id="cp-load">
+          <div class="cp-icons">🏥🏠🚨</div>
+          <div class="cp-title">Loads (priority-ranked)</div>
+          <div class="cp-desc">Critical, standard, and low-priority loads. The lowest priority sheds first when supply runs short.</div>
+        </div>
+        <div class="cutaway-part" id="cp-ctrl">
+          <div class="cp-icons">🎛️</div>
+          <div class="cp-title">Local Controller</div>
+          <div class="cp-desc">Dispatches power locally and talks to the central controller over two parallel links.</div>
+        </div>
+      </div>
+      <div class="cutaway-badges" id="cutaway-badges">
+        <span class="cbadge classical">📡 Classical SCADA link</span>
+        <span class="cbadge quantum">🔐 Quantum-secured link</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Explanation -->
+<div class="panel" id="panel"></div>
+
+<!-- Nav -->
+<div class="nav">
+  <button class="btn" id="btn-prev" onclick="go(-1)">← Back</button>
+  <div class="dots" id="dots"></div>
+  <button class="btn" id="btn-next" onclick="go(1)">Next →</button>
+</div>
+<div class="hint">Press → or Space to advance &nbsp;|&nbsp; ← to go back</div>
+<div class="citation">Based on: Jha, N., Paudel, P., Parakh, A., &amp; Subramaniam, M. (2026). A Novel Quantum Augmented Framework to Improve Microgrid Cybersecurity. Proc. SPIE 14021, Quantum Information Science, Sensing, and Computation XVIII, 1402109. DOI: <a href="https://doi.org/10.1117/12.3095119" target="_blank">10.1117/12.3095119</a></div>
+
+<script>
+const TOTAL = 9;
+let step = 0;
+
+// ── Network node/edge data ──────────────────────────────────────────
+const NODES = {
+  utility:    { x: 430, y: 55,  r: 28, label: 'Utility Grid',       icon: '⚡' },
+  controller: { x: 430, y: 240, r: 36, label: 'Central Controller', icon: '🎛️' },
+  mg1: { x: 430, y: 405,   r: 30, label: 'MG-1', icon: '🏭' },
+  mg2: { x: 527, y: 106.5, r: 28, label: 'MG-2', icon: '🏭' },
+  mg3: { x: 587, y: 291,   r: 28, label: 'MG-3', icon: '🏭' },
+  mg4: { x: 273, y: 291,   r: 28, label: 'MG-4', icon: '🏭' },
+  mg5: { x: 333, y: 106.5, r: 28, label: 'MG-5', icon: '🏭' },
+};
+const MG_LINKS = ['mg1', 'mg2', 'mg3', 'mg4', 'mg5'];
+
+const svgns = 'http://www.w3.org/2000/svg';
+function el(tag, attrs) {
+  const e = document.createElementNS(svgns, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function shrink(a, b) {
+  const dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy);
+  const ux = dx / len, uy = dy / len;
+  return {
+    x1: a.x + ux * a.r, y1: a.y + uy * a.r,
+    x2: b.x - ux * b.r, y2: b.y - uy * b.r,
+    ux, uy,
+  };
+}
+
+function buildNetwork() {
+  const svg = document.getElementById('net-svg');
+  svg.innerHTML = '';
+  const edgeLayer = el('g', { id: 'edges' });
+  const nodeLayer = el('g', { id: 'nodes' });
+  svg.appendChild(edgeLayer);
+  svg.appendChild(nodeLayer);
+
+  // Utility -> Controller (import link)
+  {
+    const p = shrink(NODES.utility, NODES.controller);
+    const g = el('g', { id: 'edge-utility-controller', class: 'edge-group' });
+    g.appendChild(el('line', { class: 'edge-import', x1: p.x1, y1: p.y1, x2: p.x2, y2: p.y2 }));
+    const mx = (p.x1 + p.x2) / 2, my = (p.y1 + p.y2) / 2;
+    const brk = el('g', { class: 'edge-break' });
+    brk.appendChild(el('circle', { cx: mx, cy: my, r: 12, fill: 'var(--bg)', stroke: 'var(--danger)', 'stroke-width': 2 }));
+    const brkTxt = el('text', { x: mx, y: my + 5, 'text-anchor': 'middle', fill: 'var(--danger)', 'font-size': 14, 'font-weight': 'bold' });
+    brkTxt.textContent = '✕';
+    brk.appendChild(brkTxt);
+    g.appendChild(brk);
+    edgeLayer.appendChild(g);
+  }
+
+  // Controller <-> each MG (dual classical + quantum)
+  MG_LINKS.forEach(id => {
+    const p = shrink(NODES.controller, NODES[id]);
+    const ox = -p.uy * 4.5, oy = p.ux * 4.5;
+    const g = el('g', { id: 'edge-controller-' + id, class: 'edge-group' });
+    g.appendChild(el('line', { class: 'edge-classical', x1: p.x1 - ox, y1: p.y1 - oy, x2: p.x2 - ox, y2: p.y2 - oy }));
+    g.appendChild(el('line', { class: 'edge-quantum', x1: p.x1 + ox, y1: p.y1 + oy, x2: p.x2 + ox, y2: p.y2 + oy }));
+    if (id === 'mg1') {
+      const mx = (p.x1 + p.x2) / 2 + ox, my = (p.y1 + p.y2) / 2 + oy - 14;
+      const badge = el('g', { class: 'attack-badge', id: 'attack-badge' });
+      badge.appendChild(el('rect', { x: mx - 34, y: my - 12, width: 68, height: 20, rx: 10, fill: 'var(--danger)', opacity: 0.9 }));
+      const t = el('text', { x: mx, y: my + 3, 'text-anchor': 'middle', fill: '#fff', 'font-size': 10, 'font-weight': 'bold' });
+      t.textContent = '🔒 BLOCKED';
+      badge.appendChild(t);
+      g.appendChild(badge);
+    }
+    edgeLayer.appendChild(g);
+  });
+
+  // Nodes
+  function addNode(key) {
+    const n = NODES[key];
+    const g = el('g', { id: 'node-' + key, class: 'mg-node' });
+    g.appendChild(el('circle', { class: 'mg-node-circle', cx: n.x, cy: n.y, r: n.r }));
+    const icon = el('text', { class: 'mg-node-icon', x: n.x, y: n.y + 1 });
+    icon.textContent = n.icon;
+    g.appendChild(icon);
+    const lbl = el('text', { class: 'mg-node-label', x: n.x, y: n.y + n.r + 16 });
+    lbl.textContent = n.label;
+    g.appendChild(lbl);
+    nodeLayer.appendChild(g);
+  }
+  addNode('utility');
+  addNode('controller');
+  MG_LINKS.forEach(addNode);
+
+  document.getElementById('node-mg1').classList.add('highlight');
+}
+
+// ── Scene / state helpers ───────────────────────────────────────────
+function scene(name) {
+  document.getElementById('scene-network').classList.toggle('active', name === 'network');
+  document.getElementById('scene-cutaway').classList.toggle('active', name === 'cutaway');
+}
+
+function netState({ dual = false, utility = 'connected', attack = false, hud = null } = {}) {
+  MG_LINKS.forEach(id => {
+    document.getElementById('edge-controller-' + id).classList.toggle('dual', dual);
+  });
+  document.getElementById('edge-utility-controller').classList.toggle('severed', utility === 'severed');
+  document.getElementById('attack-badge').classList.toggle('visible', attack);
+
+  const hudEl = document.getElementById('mode-hud');
+  if (hud) {
+    hudEl.className = 'mode-hud visible ' + hud.cls;
+    hudEl.textContent = hud.text;
+  } else {
+    hudEl.className = 'mode-hud';
+    hudEl.textContent = '';
+  }
+}
+
+function cutawayState(activeId, badges) {
+  ['cp-gen', 'cp-load', 'cp-ctrl'].forEach(id => {
+    document.getElementById(id).classList.toggle('active', id === activeId);
+  });
+  document.getElementById('cutaway-badges').classList.toggle('visible', !!badges);
+}
+
+function T(t) { document.getElementById('step-title').textContent = t; }
+
+function panel(items) {
+  const el2 = document.getElementById('panel');
+  el2.innerHTML = '';
+  items.forEach((item, i) => {
+    const b = document.createElement('div');
+    b.className = 'bubble ' + (item.c || '');
+    b.textContent = item.t;
+    el2.appendChild(b);
+    setTimeout(() => b.classList.add('visible'), i * 150);
+  });
+}
+
+// ── Steps ────────────────────────────────────────────────────────────
+const steps = [
+  // 0 — Network overview
+  () => {
+    T('A network of quantum-augmented microgrids');
+    scene('network');
+    netState({ dual: false, utility: 'connected' });
+    panel([
+      { t: 'Small modular reactors (SMRs) let us build compact, scalable microgrids for critical infrastructure, isolated bases, and AI data centers.', c: 'teal' },
+      { t: "Several microgrids are linked under one central controller for resilience. Let's zoom into MG-1, then zoom back out to see how they all talk to each other.", c: 'gold' },
+    ]);
+  },
+  // 1 — Generation & storage
+  () => {
+    T('Zooming into MG-1: generation and storage');
+    scene('cutaway');
+    cutawayState('cp-gen', false);
+    panel([
+      { t: 'Generation blends a steady SMR baseload with variable solar and wind.', c: 'teal' },
+      { t: 'A battery and shared power bus buffer the mismatch between generation and demand.', c: 'green' },
+    ]);
+  },
+  // 2 — Loads
+  () => {
+    T("MG-1's loads: priority-ranked and sheddable");
+    scene('cutaway');
+    cutawayState('cp-load', false);
+    panel([
+      { t: 'Loads are ranked by priority. When supply falls short, the controller sheds the lowest-priority load first, keeping critical systems powered.', c: 'gold' },
+      { t: 'Any demand that still goes unmet is tracked as energy-not-served (EENS), the key metric for grading how well a defense holds up under attack.', c: 'teal' },
+    ]);
+  },
+  // 3 — Local controller / dual channel
+  () => {
+    T("MG-1's local controller: two parallel links out");
+    scene('cutaway');
+    cutawayState('cp-ctrl', true);
+    panel([
+      { t: 'The local controller manages dispatch and talks to the central controller over two parallel links: a classical SCADA channel and a quantum-secured channel.', c: 'teal' },
+      { t: 'The quantum link carries a QKD-derived key pool, continuously refilled and monitored for eavesdropping with a Ping-Pong intrusion-detection probe.', c: 'green' },
+    ]);
+  },
+  // 4 — Zoom out: dual-channel network
+  () => {
+    T('Zooming back out: every controller, two channels each');
+    scene('network');
+    netState({ dual: true, utility: 'connected' });
+    panel([
+      { t: 'All five microgrid controllers keep this same dual-channel link to the central controller, which coordinates dispatch and can order any microgrid to switch modes.', c: 'gold' },
+      { t: "Three message classes ride these links: routine telemetry, control setpoints, and urgent priority-action commands like 'shed load now' or 'go islanded.'", c: 'teal' },
+    ]);
+  },
+  // 5 — Grid-connected mode
+  () => {
+    T('Mode 1: grid-connected');
+    scene('network');
+    netState({ dual: true, utility: 'connected', hud: { cls: 'grid', text: '⚡ Grid-connected: importing up to 35kW per microgrid' } });
+    panel([
+      { t: 'Each microgrid can import up to 35kW from the utility grid to cover local shortfalls. Batteries stay topped up and shedding stays minimal.', c: 'green' },
+      { t: 'This is the default, lowest-stress operating mode.', c: 'teal' },
+    ]);
+  },
+  // 6 — Islanded mode
+  () => {
+    T('Mode 2: islanded');
+    scene('network');
+    netState({ dual: true, utility: 'severed', hud: { cls: 'island', text: '🔌 Islanded: running on local generation and storage only' } });
+    panel([
+      { t: 'The utility link is opened, deliberately, or forced by an outage or attack. The network now runs entirely on its own generation and storage.', c: 'red' },
+      { t: 'In a simulated 10-minute islanding event, battery state-of-charge drops from 15 to 5kWh and peak unserved load doubles from 25 to 60kW.', c: 'gold' },
+    ]);
+  },
+  // 7 — Why the quantum link matters
+  () => {
+    T('Why the quantum link matters');
+    scene('network');
+    netState({ dual: true, utility: 'connected', attack: true });
+    panel([
+      { t: "A spoofed 'go islanded' command sent at the wrong moment could strand a microgrid needlessly, or worse, keep it grid-tied during a real attack.", c: 'red' },
+      { t: 'Our SPIE 2026 study shows a full quantum defense stack (QKD, Ping-Pong intrusion detection, and quantum-authenticated control tokens) blocks 100% of these spoofed commands, cutting energy-not-served from about 52kWh to about 12kWh under attack.', c: 'teal' },
+    ]);
+  },
+  // 8 — Summary
+  () => {
+    T('QuAM, in one picture');
+    scene('network');
+    netState({ dual: true, utility: 'connected' });
+    panel([
+      { t: '① A network of SMR-powered microgrids under one central controller.', c: 'teal' },
+      { t: '② Each microgrid: generation and storage, priority-ranked loads, a local controller.', c: 'gold' },
+      { t: '③ Dual classical and quantum channels link every controller to the center.', c: 'teal' },
+      { t: '④ Two modes: grid-connected (capped import) and islanded (self-sufficient).', c: 'gold' },
+      { t: '⑤ A quantum-augmented defense stack keeps mode-switching commands trustworthy.', c: 'green' },
+    ]);
+  },
+];
+
+function buildDots() {
+  const d = document.getElementById('dots');
+  d.innerHTML = '';
+  for (let i = 0; i < TOTAL; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === step ? ' active' : '');
+    d.appendChild(dot);
+  }
+}
+
+function render() {
+  steps[step]();
+  buildDots();
+  document.getElementById('btn-prev').disabled = step === 0;
+  const btn = document.getElementById('btn-next');
+  btn.textContent = step === TOTAL - 1 ? 'Done ✓' : 'Next →';
+  btn.disabled = step === TOTAL - 1;
+}
+
+function go(dir) {
+  step = Math.max(0, Math.min(TOTAL - 1, step + dir));
+  render();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+});
+
+// ── Mode toggle ──────────────────────────────────────────────────
+function toggleMode() {
+  const isFormal = document.body.classList.toggle('formal');
+  localStorage.setItem('portfolioMode', isFormal ? 'formal' : 'quantum');
+}
+(function() {
+  if (localStorage.getItem('portfolioMode') === 'formal') {
+    document.body.classList.add('formal');
+  }
+})();
+
+buildNetwork();
+render();
+</script>
+</body>
+</html>
