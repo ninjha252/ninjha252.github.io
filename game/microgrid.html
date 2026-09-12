@@ -37,6 +37,14 @@
       body { padding-top: 90px; }
     }
 
+    .page {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     /* Header */
     .proto-label {
       font-size: 0.72em;
@@ -53,51 +61,57 @@
       text-align: center;
       margin-bottom: 20px;
       min-height: 2.2em;
-      max-width: 860px;
+      max-width: 100%;
+    }
+
+    /* Two-column layout: diagram left, explanation right (stacks on narrow screens) */
+    .demo-grid {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin-bottom: 20px;
+    }
+    .demo-left { width: 100%; }
+    .demo-right { width: 100%; display: flex; flex-direction: column; gap: 16px; }
+    @media (min-width: 860px) {
+      .demo-grid { flex-direction: row; align-items: stretch; }
+      .demo-left { flex: 0 0 55%; max-width: 660px; }
+      .demo-right { flex: 1 1 0; justify-content: center; gap: 14px; }
     }
 
     /* Stage */
     .mg-stage {
       width: 100%;
-      max-width: 900px;
       background: var(--card);
       border: 1px solid rgba(2,128,144,0.35);
       border-radius: 18px;
-      padding: 10px;
-      margin-bottom: 20px;
+      padding: 12px;
       position: relative;
-      min-height: 500px;
-      overflow: hidden;
     }
 
     .scene {
-      position: absolute;
-      inset: 0;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
-      opacity: 0;
-      transform: scale(0.9);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      pointer-events: none;
-      padding: 18px;
+      position: relative;
+      padding: 14px;
     }
     .scene.active {
-      opacity: 1;
-      transform: scale(1);
-      pointer-events: auto;
+      display: flex;
     }
 
-    /* Network scene */
-    #net-svg { width: 100%; height: 100%; max-height: 520px; }
-    .mg-node-circle { fill: var(--navy); stroke: rgba(200,220,252,0.4); stroke-width: 2.5; transition: stroke 0.4s, fill 0.4s; }
-    .mg-node.highlight .mg-node-circle { stroke: var(--gold); stroke-width: 4.5; filter: drop-shadow(0 0 10px rgba(240,165,0,0.55)); }
-    .mg-node-icon { font-size: 34px; text-anchor: middle; dominant-baseline: central; }
+    /* Network scene: fixed aspect ratio so it sizes itself from width alone,
+       independent of the cutaway scene's content-driven height */
+    #net-svg { width: 100%; aspect-ratio: 700 / 680; display: block; }
+    .mg-node-circle { fill: var(--navy); stroke: rgba(200,220,252,0.4); stroke-width: 3; transition: stroke 0.4s, fill 0.4s; }
+    .mg-node.highlight .mg-node-circle { stroke: var(--gold); stroke-width: 5; filter: drop-shadow(0 0 10px rgba(240,165,0,0.55)); }
+    .mg-node-icon { font-size: 38px; text-anchor: middle; dominant-baseline: central; }
     .mg-node-image { pointer-events: none; }
-    .mg-node-label { font-size: 18px; font-weight: bold; fill: var(--light); text-anchor: middle; font-family: 'Trebuchet MS', sans-serif; }
-    #node-controller .mg-node-circle { fill: rgba(2,128,144,0.25); stroke: var(--teal); stroke-width: 3.5; }
-    #node-controller .mg-node-icon { font-size: 50px; }
-    #node-utility .mg-node-circle { fill: rgba(240,165,0,0.15); stroke: var(--grid); stroke-width: 3; }
+    .mg-node-label { font-size: 21px; font-weight: bold; fill: var(--light); text-anchor: middle; font-family: 'Trebuchet MS', sans-serif; }
+    #node-controller .mg-node-circle { fill: rgba(2,128,144,0.25); stroke: var(--teal); stroke-width: 4; }
+    #node-controller .mg-node-icon { font-size: 60px; }
+    #node-utility .mg-node-circle { fill: rgba(240,165,0,0.15); stroke: var(--grid); stroke-width: 3.5; }
 
     .edge-classical { stroke: var(--clink); stroke-width: 3; fill: none; }
     .edge-quantum   { stroke: var(--qlink); stroke-width: 3; stroke-dasharray: 7 5; fill: none; opacity: 0; transition: opacity 0.4s; }
@@ -136,14 +150,14 @@
     /* Cutaway scene */
     .cutaway-wrap { width: 100%; }
     .cutaway-heading { text-align: center; font-size: 1.15em; color: var(--gold); margin-bottom: 20px; font-weight: bold; }
-    .cutaway-row { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
+    .cutaway-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
     .cutaway-part {
-      flex: 1 1 230px;
-      max-width: 270px;
+      flex: 1 1 165px;
+      max-width: 200px;
       background: rgba(2,128,144,0.06);
       border: 2px solid rgba(200,220,252,0.15);
       border-radius: 16px;
-      padding: 22px 16px;
+      padding: 16px 12px;
       text-align: center;
       transition: border-color 0.4s, background 0.4s, transform 0.4s;
       opacity: 0.4;
@@ -154,11 +168,11 @@
       opacity: 1;
       transform: translateY(-4px);
     }
-    .cutaway-part .cp-icons { font-size: 3.2em; margin-bottom: 12px; }
-    .cp-icon-row { display: flex; justify-content: center; align-items: flex-end; gap: 8px; margin-bottom: 14px; min-height: 64px; }
-    .cp-icon-row img { height: 60px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35)); }
-    .cutaway-part .cp-title { font-weight: bold; color: var(--white); font-size: 1.12em; margin-bottom: 8px; }
-    .cutaway-part .cp-desc { font-size: 0.92em; color: rgba(208,208,255,0.8); line-height: 1.55; }
+    .cutaway-part .cp-icons { font-size: 2.6em; margin-bottom: 10px; }
+    .cp-icon-row { display: flex; justify-content: center; align-items: flex-end; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; min-height: 48px; }
+    .cp-icon-row img { height: 44px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35)); }
+    .cutaway-part .cp-title { font-weight: bold; color: var(--white); font-size: 1em; margin-bottom: 6px; }
+    .cutaway-part .cp-desc { font-size: 0.82em; color: rgba(208,208,255,0.8); line-height: 1.5; }
     .cutaway-badges {
       display: flex;
       justify-content: center;
@@ -185,12 +199,10 @@
     /* Explanation panel */
     .panel {
       width: 100%;
-      max-width: 860px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       min-height: 90px;
-      margin-bottom: 18px;
     }
     .bubble {
       padding: 12px 18px;
@@ -230,7 +242,7 @@
     .btn:disabled { opacity: 0.3; cursor: default; }
 
     .hint { font-size: 0.68em; color: rgba(200,220,252,0.35); margin-top: 10px; text-align: center; }
-    .citation { font-size: 0.66em; color: rgba(200,220,252,0.4); margin-top: 6px; text-align: center; max-width: 700px; line-height: 1.6; }
+    .citation { font-size: 0.66em; color: rgba(200,220,252,0.4); margin-top: 6px; text-align: center; max-width: 900px; line-height: 1.6; }
     .citation a { color: var(--qlink); }
 
     /* Mode toggle */
@@ -312,63 +324,72 @@
   <span>☀️ Light</span>
 </button>
 
+<div class="page">
 <div class="proto-label">QUANTUM-AUGMENTED MICROGRID (QuAM)</div>
 <div class="step-title" id="step-title"></div>
 
-<div class="mg-stage">
+<div class="demo-grid">
+  <div class="demo-left">
+    <div class="mg-stage">
 
-  <!-- Network scene -->
-  <div class="scene" id="scene-network">
-    <div class="mode-hud" id="mode-hud"></div>
-    <svg id="net-svg" viewBox="0 0 860 500" xmlns="http://www.w3.org/2000/svg"></svg>
-  </div>
+      <!-- Network scene -->
+      <div class="scene" id="scene-network">
+        <div class="mode-hud" id="mode-hud"></div>
+        <svg id="net-svg" viewBox="0 0 700 680" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
 
-  <!-- Cutaway scene -->
-  <div class="scene" id="scene-cutaway">
-    <div class="cutaway-wrap">
-      <div class="cutaway-heading">MG-1 — Internal View</div>
-      <div class="cutaway-row">
-        <div class="cutaway-part" id="cp-gen">
-          <div class="cp-icon-row">
-            <img src="assets/icons/smr.png" alt="SMR">
-            <img src="assets/icons/solar.png" alt="Solar">
-            <img src="assets/icons/wind.png" alt="Wind">
-            <img src="assets/icons/battery.png" alt="Battery">
+      <!-- Cutaway scene -->
+      <div class="scene" id="scene-cutaway">
+        <div class="cutaway-wrap">
+          <div class="cutaway-heading">MG-1 — Internal View</div>
+          <div class="cutaway-row">
+            <div class="cutaway-part" id="cp-gen">
+              <div class="cp-icon-row">
+                <img src="assets/icons/smr.png" alt="SMR">
+                <img src="assets/icons/solar.png" alt="Solar">
+                <img src="assets/icons/wind.png" alt="Wind">
+                <img src="assets/icons/battery.png" alt="Battery">
+              </div>
+              <div class="cp-title">Generation &amp; Storage</div>
+              <div class="cp-desc">A steady SMR baseload plus variable solar and wind, buffered by a battery and shared power bus.</div>
+            </div>
+            <div class="cutaway-part" id="cp-load">
+              <div class="cp-icons">🏥🏠🚨</div>
+              <div class="cp-title">Loads (priority-ranked)</div>
+              <div class="cp-desc">Critical, standard, and low-priority loads. The lowest priority sheds first when supply runs short.</div>
+            </div>
+            <div class="cutaway-part" id="cp-ctrl">
+              <div class="cp-icons">🎛️</div>
+              <div class="cp-title">Local Controller</div>
+              <div class="cp-desc">Dispatches power locally and talks to the central controller over two parallel links.</div>
+            </div>
           </div>
-          <div class="cp-title">Generation &amp; Storage</div>
-          <div class="cp-desc">A steady SMR baseload plus variable solar and wind, buffered by a battery and shared power bus.</div>
-        </div>
-        <div class="cutaway-part" id="cp-load">
-          <div class="cp-icons">🏥🏠🚨</div>
-          <div class="cp-title">Loads (priority-ranked)</div>
-          <div class="cp-desc">Critical, standard, and low-priority loads. The lowest priority sheds first when supply runs short.</div>
-        </div>
-        <div class="cutaway-part" id="cp-ctrl">
-          <div class="cp-icons">🎛️</div>
-          <div class="cp-title">Local Controller</div>
-          <div class="cp-desc">Dispatches power locally and talks to the central controller over two parallel links.</div>
+          <div class="cutaway-badges" id="cutaway-badges">
+            <span class="cbadge classical">📡 Classical SCADA link</span>
+            <span class="cbadge quantum"><img src="assets/icons/qubit.png" alt="Quantum">Quantum-secured link</span>
+          </div>
         </div>
       </div>
-      <div class="cutaway-badges" id="cutaway-badges">
-        <span class="cbadge classical">📡 Classical SCADA link</span>
-        <span class="cbadge quantum"><img src="assets/icons/qubit.png" alt="Quantum">Quantum-secured link</span>
-      </div>
+
     </div>
   </div>
 
+  <div class="demo-right">
+    <!-- Explanation -->
+    <div class="panel" id="panel"></div>
+
+    <!-- Nav -->
+    <div class="nav">
+      <button class="btn" id="btn-prev" onclick="go(-1)">← Back</button>
+      <div class="dots" id="dots"></div>
+      <button class="btn" id="btn-next" onclick="go(1)">Next →</button>
+    </div>
+    <div class="hint">Press → or Space to advance &nbsp;|&nbsp; ← to go back</div>
+  </div>
 </div>
 
-<!-- Explanation -->
-<div class="panel" id="panel"></div>
-
-<!-- Nav -->
-<div class="nav">
-  <button class="btn" id="btn-prev" onclick="go(-1)">← Back</button>
-  <div class="dots" id="dots"></div>
-  <button class="btn" id="btn-next" onclick="go(1)">Next →</button>
-</div>
-<div class="hint">Press → or Space to advance &nbsp;|&nbsp; ← to go back</div>
 <div class="citation">Based on: Jha, N., Paudel, P., Parakh, A., &amp; Subramaniam, M. (2026). A Novel Quantum Augmented Framework to Improve Microgrid Cybersecurity. Proc. SPIE 14021, Quantum Information Science, Sensing, and Computation XVIII, 1402109. DOI: <a href="https://doi.org/10.1117/12.3095119" target="_blank">10.1117/12.3095119</a></div>
+</div>
 
 <script>
 const TOTAL = 9;
@@ -376,13 +397,13 @@ let step = 0;
 
 // ── Network node/edge data ──────────────────────────────────────────
 const NODES = {
-  utility:    { x: 430, y: 70,  r: 46, label: 'Utility Grid',       icon: 'assets/icons/tower.png' },
-  controller: { x: 430, y: 255, r: 60, label: 'Central Controller', icon: '🎛️' },
-  mg1: { x: 430, y: 420, r: 44, label: 'MG-1', icon: 'assets/icons/smr.png' },
-  mg2: { x: 540, y: 112, r: 42, label: 'MG-2', icon: 'assets/icons/smr.png' },
-  mg3: { x: 606, y: 305, r: 42, label: 'MG-3', icon: 'assets/icons/smr.png' },
-  mg4: { x: 254, y: 305, r: 42, label: 'MG-4', icon: 'assets/icons/smr.png' },
-  mg5: { x: 320, y: 112, r: 42, label: 'MG-5', icon: 'assets/icons/smr.png' },
+  utility:    { x: 350, y: 90,  r: 54, label: 'Utility Grid',       icon: 'assets/icons/tower.png' },
+  controller: { x: 350, y: 345, r: 72, label: 'Central Controller', icon: '🎛️' },
+  mg1: { x: 350, y: 560, r: 50, label: 'MG-1', icon: 'assets/icons/smr.png' },
+  mg2: { x: 476, y: 171, r: 48, label: 'MG-2', icon: 'assets/icons/smr.png' },
+  mg3: { x: 555, y: 411, r: 48, label: 'MG-3', icon: 'assets/icons/smr.png' },
+  mg4: { x: 146, y: 411, r: 48, label: 'MG-4', icon: 'assets/icons/smr.png' },
+  mg5: { x: 225, y: 171, r: 48, label: 'MG-5', icon: 'assets/icons/smr.png' },
 };
 const MG_LINKS = ['mg1', 'mg2', 'mg3', 'mg4', 'mg5'];
 
