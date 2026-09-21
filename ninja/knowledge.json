@@ -2,12 +2,32 @@
  "greeting": "Hi, I'm Ninja, a small bot that knows Nitin's research, papers, and projects. Ask me anything about them.",
  "fallback": "I'm not sure about that one. I only know Nitin's research, papers, teaching, and projects. Try one of the questions below, or use the Email me button on the page.",
  "chips": [
-  "research",
+  "job",
+  "qualifications",
   "papers",
-  "p-microgrid",
   "contact"
  ],
  "routes": [
+  [
+   "\\b(is|are)\\s+(he|nitin)\\s+(a|an)\\s+(professor|student|employee|researcher|postdoc|phd|grad)|^\\s*what\\s+(does|do)\\s+(he|nitin)\\s+do\\s*[?.!]*$|\\bwhere\\s+(is|does)\\s+(he|nitin)\\s+(based|located|live)\\b",
+   "job"
+  ],
+  [
+   "\\b(jobs|positions|roles)\\b.*\\b(had|held|previous|past|before|earlier)\\b|\\b(had|held|previous|past|earlier)\\b.*\\b(jobs|positions|roles)\\b|work\\s+(history|experience)",
+   "experience"
+  ],
+  [
+   "\\bwhere\\s+(does|do)\\s+(he|nitin)\\s+work\\b|\\bfor\\s+(work|a\\s+living)\\b|\\b(is|does)\\s+(he|nitin)\\s+(employed|have\\s+a\\s+job)\\b",
+   "job"
+  ],
+  [
+   "\\b(his|nitin.?s)\\s+(dissertation|thesis)\\b|\\b(phd|doctoral)\\s+(dissertation|thesis)\\b",
+   "dissertation"
+  ],
+  [
+   "\\b(like|want|prefer|plan|interested|love)\\s+to\\s+teach\\b|\\bteaching\\s+interests?\\b",
+   "teaching-interests"
+  ],
   [
    "^\\s*(are|r)\\s+(you|u)\\b",
    "bot"
@@ -100,7 +120,7 @@
    "title": "Who is Nitin",
    "k": "who is nitin jha about introduce yourself tell me about him bio background summary overview what does he do",
    "ex": "who is nitin; tell me about nitin; what does nitin do; is nitin a phd student",
-   "a": "Nitin Jha is a PhD student in Computer Science at Kennesaw State University in Georgia, working under Dr. Abhishek Parakh. He researches quantum networks and quantum key distribution, and how to make quantum-secured communication practical on real networks. He has a physics background from Ashoka University.",
+   "a": "Nitin Jha is a doctoral researcher in Computer Science at Kennesaw State University in Georgia, working under Dr. Abhishek Parakh. He researches quantum networks and quantum key distribution, and how to make quantum-secured communication practical on real networks. He has a physics background from Ashoka University.",
    "related": [
     "research",
     "papers",
@@ -112,7 +132,7 @@
    "title": "Research",
    "k": "research work focus interests topics area study studying working on themes field protocol protocols design designs",
    "ex": "what does nitin research; what is his research about; what is he working on",
-   "a": "Nitin works on quantum networks and quantum key distribution. His main thread is quantum-augmented networks: today's classical networks with quantum protocols added where they matter, since fully quantum networks aren't practical yet. That covers protocol design, the effect of noise and topology, quantum error correction, and quantum-secured defenses for things like microgrids.",
+   "a": "Nitin works on quantum networks and quantum key distribution. His main thread is quantum-augmented networks: today's classical networks with quantum protocols added where they matter, since fully quantum networks aren't practical yet. That covers protocol design, the effect of noise and topology, quantum error correction, and quantum-secured defenses for things like microgrids. His stated interests are secure quantum communication and networking, secure quantum-augmented networks, quantum ML/AI for cybersecurity, and cyber-physical systems security.",
    "related": [
     "c-quanet",
     "papers",
@@ -123,10 +143,11 @@
   {
    "id": "education",
    "title": "Education",
-   "k": "education degree degrees university college school studied study bachelor master phd bsc physics kennesaw ashoka graduate undergrad undergraduate cum laude start started begin began when since",
+   "k": "education degree degrees university college school studied study bachelor master phd bsc physics kennesaw ashoka graduate undergrad undergraduate cum laude gpa grades honors honours start started begin began when since",
    "ex": "where did he study; what degrees does he have; where is he from",
-   "a": "Nitin is doing his PhD in Computer Science at Kennesaw State University (2023 to now). Before that he did a BSc (Hons) in Physics at Ashoka University in India (2020 to 2023) and graduated Cum Laude.",
+   "a": "Nitin is doing his PhD in Computer Science at Kennesaw State University (2023 to now), with a current GPA of 3.85/4.00 on his resume. Before that he did a BSc (Hons) in Physics at Ashoka University in India (2020 to 2023), graduating Cum Laude with a 3.69/4.00 GPA.",
    "related": [
+    "dissertation",
     "advisor",
     "ashoka"
    ],
@@ -174,7 +195,7 @@
   {
    "id": "lab",
    "title": "Quantum Information Lab",
-   "k": "lab laboratory qil quantum information lab room 1212 group team where does he work office located",
+   "k": "lab laboratory qil quantum information lab room 1212 group team office located",
    "ex": "which lab is he in; where does he work; what is qil",
    "a": "Nitin is a member of the Quantum Information Lab at Kennesaw State University, Room 1212.",
    "links": [
@@ -194,7 +215,7 @@
    "title": "Experience",
    "k": "experience job jobs position role work history career graduate research assistant gra assistantship employed",
    "ex": "what is his work experience; what jobs has he had",
-   "a": "Since August 2023 Nitin has been a Graduate Research Assistant at Kennesaw State University, working on quantum network protocols, noise and topology effects, and quantum-classical hybrid networks. Earlier, in 2022 to 2023, he was a research assistant at Ashoka University doing micromagnetic simulations for spintronics.",
+   "a": "Since August 2023 Nitin has been a Graduate Research Assistant at Kennesaw State University, doing theoretical and simulation-based studies of quantum networks and communication: quantum network protocols, noise and topology effects, and quantum-classical hybrid networks. Earlier, in 2022 to 2023, he was a research assistant at Ashoka University doing micromagnetic simulations for spintronics.",
    "related": [
     "ashoka",
     "research"
@@ -203,7 +224,7 @@
   {
    "id": "ashoka",
    "title": "Ashoka research",
-   "k": "ashoka spintronics permalloy mumax mumax3 oommf micromagnetic magnetic simulation physics undergrad undergraduate research thesis",
+   "k": "ashoka spintronics permalloy mumax mumax3 oommf micromagnetic magnetic simulation physics undergrad undergraduate research",
    "ex": "",
    "a": "At Ashoka University (2022 to 2023) Nitin was a research assistant running micromagnetic simulations of permalloy with MuMax3, looking at magnetic domain dynamics and spin waves for spintronic devices.",
    "related": [
@@ -229,7 +250,7 @@
    "title": "Teaching",
    "k": "teaching teach course class instructor lecture lectures video videos series youtube tls blockchain slides lab docker",
    "ex": "does he teach; what courses has he taught",
-   "a": "Nitin taught an online Quantum Cryptography course for graduate students (2026), covering qubits, QKD protocols, practical quantum networks, and open problems. He built all the slides and a Docker-based lab on middlebox attacks. He also made a video series on TLS, blockchain security, and post-quantum cryptography.",
+   "a": "Nitin taught an online Quantum Cryptography course for graduate students in 2026 (Introduction to Cryptography and Its Applications), covering qubits, QKD protocols, practical quantum networks, and open problems. He built the slides and a Docker-based lab on middlebox attacks, and made a video series on TLS, blockchain security, and post-quantum cryptography. His resume lists online and in-person instruction.",
    "related": [
     "mentoring",
     "c-pqc"
@@ -241,7 +262,7 @@
    "title": "Mentoring",
    "k": "mentoring mentor mentored mentee students student thesis reu intern internship undergraduates supervise supervised",
    "ex": "has he mentored students; does he supervise anyone",
-   "a": "Nitin has mentored a high school intern on multi-modal steganography (2026), co-mentored two NSF-REU undergraduates on quantum-classical GANs for network security (2026), and mentored M.Sc. (CS) students on theses about quantum communication protocols and an adaptive quantum education platform. He is currently helping one M.Sc. student make that education platform more modular and accessible.",
+   "a": "Nitin has mentored five students so far (three M.Sc. and two undergraduates) and is currently mentoring two more, an undergraduate and a high-school student, both working with the lab. That includes a high-school summer intern on multi-modal steganography (2026), two NSF-REU undergraduates on quantum-classical GANs for network security (2026), and M.Sc. (CS) students on theses about quantum communication protocols and an adaptive, more modular quantum education platform (2023 to 2026).",
    "related": [
     "teaching",
     "p-gan"
@@ -253,14 +274,14 @@
    "title": "Reviewing and service",
    "k": "reviewer review reviewing peer journals service editor xrds ieee access transactions qute workshop beacon",
    "ex": "does he review papers; is he an editor",
-   "a": "Nitin reviews for IEEE Transactions on Mobile Computing, Scientific Reports, IEEE Access, Advanced Quantum Technologies (QUTE), ACM Transactions, Infocommunications Journal, and Discover Computing. He is also a Feature Editor for ACM XRDS."
+   "a": "Nitin reviews for IEEE Transactions on Mobile Computing, Scientific Reports, IEEE Access, Advanced Quantum Technologies (QUTE), ACM Transactions, Infocommunications Journal, and Discover Computing. He is also a Feature Editor for ACM XRDS, and he took part in the BEACON Labs Cybersecurity Workshop (2026)."
   },
   {
    "id": "papers",
    "title": "Papers",
    "k": "papers paper publications publication published list articles preprints preprint journal conference read work writings wrote written",
    "ex": "what papers has he published; list his publications; what has he written",
-   "a": "Here are Nitin's papers. Ask me about any of them for a summary:\n- [Joint Encryption and Error Correction](https://arxiv.org/abs/2505.18133) (Scientific Reports, 2024)\n- [Effect of Noise and Topologies on Multi-Photon Protocols](https://arxiv.org/abs/2505.19270) (SPIE 2024)\n- [ML Based Approach to Quantum Augmented HTTP](https://doi.org/10.1109/QCE60285.2024.10420) (IEEE QCE 2024)\n- [Towards a Quantum-Classical Augmented Network](https://arxiv.org/abs/2505.18282) (SPIE 2025)\n- [Multi-Photon QKD for Practical Quantum Networks](https://arxiv.org/abs/2505.21726) (Infocommunications Journal, 2025)\n- [Aerial Quantum Networks review](https://arxiv.org/abs/2505.23603) (IEEE Potentials, 2025)\n- [Quantum Hilbert Transform](https://arxiv.org/abs/2505.23581) (arXiv, 2025)\n- [QKD review](https://arxiv.org/abs/2511.20602) (Cryptologia, 2026)\n- [Improved Quantum Anonymous Notification](https://arxiv.org/abs/2511.12313) (Frontiers, 2026)\n- [Are Quantum Voting Protocols Practical?](https://arxiv.org/abs/2601.17514) (arXiv, 2026)\n- [Microgrid Cybersecurity Framework](https://arxiv.org/abs/2604.17481) (SPIE 2026)\n- [Hybrid Quantum-Classical GANs](https://arxiv.org/abs/2605.06629) (SPIE 2026)\n- [Multimodal Steganalysis](https://arxiv.org/abs/2606.08726) (arXiv, 2026)",
+   "a": "Here are Nitin's papers. Ask me about any of them for a summary:\n- [Joint Encryption and Error Correction](https://arxiv.org/abs/2505.18133) (Scientific Reports, 2024)\n- [Effect of Noise and Topologies on Multi-Photon Protocols](https://arxiv.org/abs/2505.19270) (SPIE 2024)\n- [ML Based Approach to Quantum Augmented HTTP](https://doi.org/10.1109/QCE60285.2024.10420) (IEEE QCE 2024)\n- [Towards a Quantum-Classical Augmented Network](https://arxiv.org/abs/2505.18282) (SPIE 2025)\n- [Multi-Photon QKD for Practical Quantum Networks](https://arxiv.org/abs/2505.21726) (Infocommunications Journal, 2025)\n- [Aerial Quantum Networks review](https://arxiv.org/abs/2505.23603) (IEEE Potentials, 2025)\n- [Quantum Hilbert Transform](https://arxiv.org/abs/2505.23581) (arXiv, 2025)\n- [QKD review](https://arxiv.org/abs/2511.20602) (Cryptologia, 2026)\n- [Improved Quantum Anonymous Notification](https://arxiv.org/abs/2511.12313) (Frontiers, 2026)\n- [Are Quantum Voting Protocols Practical?](https://arxiv.org/abs/2601.17514) (arXiv, 2026)\n- [Microgrid Cybersecurity Framework](https://arxiv.org/abs/2604.17481) (SPIE 2026)\n- [Hybrid Quantum-Classical GANs](https://arxiv.org/abs/2605.06629) (SPIE 2026)\n- [Multimodal Steganalysis](https://arxiv.org/abs/2606.08726) (arXiv, 2026)\n- [Steganography Scheme Using Quantum Hilbert Transform](https://arxiv.org/abs/2609.07894) (arXiv, 2026, under review)",
    "links": [
     [
      "Google Scholar",
@@ -476,6 +497,114 @@
    ]
   },
   {
+   "id": "qualifications",
+   "title": "Qualifications",
+   "k": "qualification qualifications credentials background resume cv experience expertise qualified summary highlights achievements accomplishments profile",
+   "ex": "what are his qualifications; what are his credentials; give me a summary of his cv",
+   "a": "In short: Nitin is a PhD candidate in Computer Science at Kennesaw State University (BSc Physics, Cum Laude, from Ashoka University) and a Graduate Research Assistant in the Quantum Information Lab. He has published in Scientific Reports, Cryptologia, the Infocommunications Journal, and SPIE and IEEE proceedings. He reviews for several IEEE, ACM, and Springer Nature journals, is a Feature Editor at ACM XRDS, taught a graduate quantum cryptography course, and has mentored five students.",
+   "links": [
+    [
+     "Resume",
+     "https://ninjha252.github.io/resume.pdf"
+    ]
+   ],
+   "related": [
+    "job",
+    "education",
+    "resume"
+   ],
+   "chip": "What are his qualifications?"
+  },
+  {
+   "id": "job",
+   "title": "Current job",
+   "k": "job jobs current currently role position title employer employed occupation work works working workplace employment now present right present profession do for living university kennesaw department based located live city",
+   "ex": "what is his current job; where does he work; what does he do for work; what is his current position",
+   "a": "Right now Nitin is a PhD student in Computer Science and a Graduate Research Assistant at Kennesaw State University (Marietta, Georgia), where he has worked since August 2023. He does theoretical and simulation-based research on quantum networks and communication as a member of the Quantum Information Lab (Room 1212), advised by Dr. Abhishek Parakh.",
+   "links": [
+    [
+     "Lab website",
+     "https://ksucybersec.github.io/quantum-information-lab/"
+    ]
+   ],
+   "related": [
+    "qualifications",
+    "lab",
+    "research"
+   ],
+   "chip": "What is his current job?"
+  },
+  {
+   "id": "dissertation",
+   "title": "Dissertation",
+   "k": "dissertation thesis title topic phd thesis tentative defense defend graduate secured cyber-physical infrastructures",
+   "ex": "what is his dissertation about; what is his thesis",
+   "a": "His tentative dissertation title is 'Secured Quantum-Augmented Networks for Cyber-Physical Infrastructures'.",
+   "related": [
+    "c-quanet",
+    "research"
+   ],
+   "chip": "What is his dissertation about?"
+  },
+  {
+   "id": "teaching-interests",
+   "title": "Teaching interests",
+   "k": "teaching interests would like to teach subjects courses prefer areas teach future",
+   "ex": "",
+   "a": "Nitin's teaching interests are cybersecurity and network security, cryptography and quantum communication, and computer networks and data communications.",
+   "related": [
+    "teaching",
+    "mentoring"
+   ]
+  },
+  {
+   "id": "languages",
+   "title": "Languages spoken",
+   "k": "speak spoken languages language english hindi fluent multilingual",
+   "ex": "",
+   "a": "Nitin speaks English and Hindi."
+  },
+  {
+   "id": "resume",
+   "title": "Resume",
+   "k": "resume cv curriculum vitae download pdf print",
+   "ex": "where can i see his resume; where is his cv",
+   "a": "You can download Nitin's resume (CV) as a PDF.",
+   "links": [
+    [
+     "Resume (PDF)",
+     "https://ninjha252.github.io/resume.pdf"
+    ]
+   ],
+   "related": [
+    "qualifications",
+    "contact"
+   ],
+   "chip": "Where can I see his resume?"
+  },
+  {
+   "id": "under-review",
+   "title": "Under review",
+   "k": "under review submitted submission manuscript manuscripts upcoming forthcoming progress pipeline next working new unpublished",
+   "ex": "what is under review; what is he working on next; any upcoming papers",
+   "a": "Nitin currently has a few manuscripts under review: a quantum steganography scheme built on the Quantum Hilbert Transform (Multidimensional Systems and Signal Processing, special issue on Signal Processing for Quantum Technologies), quantum-assisted session authentication in quantum-augmented networks (Academia Quantum, with Prateek Paudel and Dr. Parakh), a general-audience piece on quantum error correction (IEEE Potentials), and the quantum voting survey (ACM Ubiquity).",
+   "links": [
+    [
+     "Steganography scheme (arXiv)",
+     "https://arxiv.org/abs/2609.07894"
+    ],
+    [
+     "Voting survey (arXiv)",
+     "https://arxiv.org/abs/2601.17514"
+    ]
+   ],
+   "related": [
+    "papers",
+    "paper-latest"
+   ],
+   "chip": "What is under review?"
+  },
+  {
    "id": "c-qkd",
    "title": "What is QKD",
    "k": "qkd quantum key distribution what is explain key distribution bb84 secret key eavesdropping eve",
@@ -665,6 +794,24 @@
    "chip": "Tell me about the microgrid paper"
   },
   {
+   "id": "p-stego",
+   "title": "Quantum Hilbert steganography scheme",
+   "k": "steganography scheme quantum hilbert transform phase operator quantum fourier transform conceal hide classical information binary state discrimination error-correcting multidimensional signal processing under review paper",
+   "ex": "",
+   "a": "'A Novel Steganography Scheme Using Quantum Hilbert Transform' (with Dr. Parakh, arXiv 2026, under review at Multidimensional Systems and Signal Processing) builds a finite-dimensional Quantum Hilbert Transform as a phase operator derived from the Quantum Fourier Transform. It hides classical information as subtle phase changes in quantum states, which the recipient recovers with binary state discrimination and error-correcting techniques.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2609.07894"
+    ]
+   ],
+   "related": [
+    "p-hilbert",
+    "c-stego"
+   ],
+   "chip": "Tell me about the Hilbert steganography scheme"
+  },
+  {
    "id": "p-gan",
    "title": "GAN paper",
    "k": "gan gans generative adversarial hybrid quantum-classical network flows traffic intrusion detection unsw variational generator adversarial network paudel paper",
@@ -729,8 +876,8 @@
     ]
    ],
    "related": [
-    "c-stego",
-    "p-steganalysis"
+    "p-stego",
+    "c-stego"
    ],
    "chip": "Tell me about the Hilbert transform paper"
   },
