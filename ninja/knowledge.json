@@ -1,0 +1,879 @@
+{
+ "greeting": "Hi, I'm Ninja, a small bot that knows Nitin's research, papers, and projects. Ask me anything about them.",
+ "fallback": "I'm not sure about that one. I only know Nitin's research, papers, teaching, and projects. Try one of the questions below, or use the Email me button on the page.",
+ "chips": [
+  "research",
+  "papers",
+  "p-microgrid",
+  "contact"
+ ],
+ "routes": [
+  [
+   "^\\s*(are|r)\\s+(you|u)\\b",
+   "bot"
+  ],
+  [
+   "\\b(is|are)\\s+(this|it|that)\\s+(an?\\s+)?(ai|bot|human|real)\\b",
+   "bot"
+  ],
+  [
+   "\\b(help|advice|advise|guide|guidance)\\s+(me|us)\\b",
+   "collab"
+  ],
+  [
+   "^\\s*(who|what)(\\s+is|\\s+are|'s)?\\s+(you|u|ninja)\\s*[?.!]*$",
+   "bot"
+  ],
+  [
+   "^\\s*(who|what)(\\s+is|'s)\\s+(nitin( jha)?|he|this guy|this person)\\s*[?.!]*$",
+   "about"
+  ],
+  [
+   "^\\s*(tell me|talk to me|say)\\s*(more)?\\s*about\\s+(nitin( jha)?|him|himself)\\s*[?.!]*$",
+   "about"
+  ],
+  [
+   "^\\s*(introduce|describe)\\s+(nitin|him|himself)",
+   "about"
+  ],
+  [
+   "\\b(his|the)\\s+(mentor|advisor|adviser|supervisor|professor|guide)\\b",
+   "advisor"
+  ],
+  [
+   "\\bwho\\s+(supervises|advises|mentors|guides)\\s+(him|nitin)",
+   "advisor"
+  ],
+  [
+   "\\b(work|collaborate|collab|team\\s*up|partner)\\b.*\\bwith\\b.*\\b(him|nitin)\\b",
+   "collab"
+  ],
+  [
+   "^\\s*(write|code|create|generate|make|translate|solve|calculate|compute|debug|fix)\\s+(me\\s+)?(a|an|some|the|my)\\b",
+   "none"
+  ]
+ ],
+ "entries": [
+  {
+   "id": "greeting",
+   "title": "Hello",
+   "k": "hi hello hey yo sup howdy greetings good morning good evening",
+   "ex": "",
+   "a": "Hey! I'm Ninja. Ask me about Nitin's research, papers, teaching, or projects.",
+   "related": [
+    "research",
+    "papers",
+    "demo-microgrid"
+   ]
+  },
+  {
+   "id": "thanks",
+   "title": "Thanks",
+   "k": "thanks thank you thx cheers appreciate great awesome cool nice",
+   "ex": "",
+   "a": "Anytime! Ask me anything else about Nitin's work.",
+   "related": [
+    "papers",
+    "contact"
+   ]
+  },
+  {
+   "id": "bye",
+   "title": "Goodbye",
+   "k": "bye goodbye see you later cya take care",
+   "ex": "",
+   "a": "Bye! Thanks for stopping by."
+  },
+  {
+   "id": "bot",
+   "title": "About Ninja",
+   "k": "who are you what are you chatgpt claude gpt bot robot human real person llm model how does this bot function ninja name",
+   "ex": "",
+   "a": "I'm Ninja, a small bot that lives in this page. I run entirely in your browser and answer from a notes file Nitin wrote, so there's no AI service behind me and nothing you type leaves your device. That also means I can miss questions, so if I do, try rephrasing or use the Email me button.",
+   "related": [
+    "research",
+    "contact"
+   ]
+  },
+  {
+   "id": "about",
+   "title": "Who is Nitin",
+   "k": "who is nitin jha about introduce yourself tell me about him bio background summary overview what does he do",
+   "ex": "who is nitin; tell me about nitin; what does nitin do; is nitin a phd student",
+   "a": "Nitin Jha is a PhD student in Computer Science at Kennesaw State University in Georgia, working under Dr. Abhishek Parakh. He researches quantum networks and quantum key distribution, and how to make quantum-secured communication practical on real networks. He has a physics background from Ashoka University.",
+   "related": [
+    "research",
+    "papers",
+    "education"
+   ]
+  },
+  {
+   "id": "research",
+   "title": "Research",
+   "k": "research work focus interests topics area study studying working on themes field protocol protocols design designs",
+   "ex": "what does nitin research; what is his research about; what is he working on",
+   "a": "Nitin works on quantum networks and quantum key distribution. His main thread is quantum-augmented networks: today's classical networks with quantum protocols added where they matter, since fully quantum networks aren't practical yet. That covers protocol design, the effect of noise and topology, quantum error correction, and quantum-secured defenses for things like microgrids.",
+   "related": [
+    "c-quanet",
+    "papers",
+    "c-qkd"
+   ],
+   "chip": "What does Nitin research?"
+  },
+  {
+   "id": "education",
+   "title": "Education",
+   "k": "education degree degrees university college school studied study bachelor master phd bsc physics kennesaw ashoka graduate undergrad undergraduate cum laude start started begin began when since",
+   "ex": "where did he study; what degrees does he have; where is he from",
+   "a": "Nitin is doing his PhD in Computer Science at Kennesaw State University (2023 to now). Before that he did a BSc (Hons) in Physics at Ashoka University in India (2020 to 2023) and graduated Cum Laude.",
+   "related": [
+    "advisor",
+    "ashoka"
+   ],
+   "chip": "Where did he study?"
+  },
+  {
+   "id": "advisor",
+   "title": "Advisor",
+   "k": "advisor adviser supervisor mentor professor guide who advises parakh susmita",
+   "ex": "who is his advisor; who supervises him",
+   "a": "His PhD advisor is Dr. Abhishek Parakh at Kennesaw State University. During his BSc at Ashoka University, his mentor was Dr. Susmita Saha.",
+   "links": [
+    [
+     "Dr. Parakh's page",
+     "https://sites.google.com/site/abhishekparakh/"
+    ]
+   ],
+   "related": [
+    "lab",
+    "papers"
+   ],
+   "chip": "Who is his advisor?"
+  },
+  {
+   "id": "coauthors",
+   "title": "Co-authors",
+   "k": "coauthor coauthors co-author co-authors collaborator collaborators authors written with wrote with team people works with",
+   "ex": "who are his coauthors; who does he write papers with",
+   "a": "Nitin's main co-authors are his advisor Dr. Abhishek Parakh, Mahadevan Subramaniam at the University of Nebraska Omaha, and Prateek Paudel at Kennesaw State University.",
+   "links": [
+    [
+     "Dr. Parakh's page",
+     "https://sites.google.com/site/abhishekparakh/"
+    ],
+    [
+     "Prateek Paudel",
+     "https://scholar.google.com/citations?user=FsLE7UYAAAAJ&hl=en"
+    ]
+   ],
+   "related": [
+    "papers",
+    "advisor"
+   ]
+  },
+  {
+   "id": "lab",
+   "title": "Quantum Information Lab",
+   "k": "lab laboratory qil quantum information lab room 1212 group team where does he work office located",
+   "ex": "which lab is he in; where does he work; what is qil",
+   "a": "Nitin is a member of the Quantum Information Lab at Kennesaw State University, Room 1212.",
+   "links": [
+    [
+     "Lab website",
+     "https://ksucybersec.github.io/quantum-information-lab/"
+    ]
+   ],
+   "related": [
+    "advisor",
+    "research"
+   ],
+   "chip": "What is the Quantum Information Lab?"
+  },
+  {
+   "id": "experience",
+   "title": "Experience",
+   "k": "experience job jobs position role work history career graduate research assistant gra assistantship employed",
+   "ex": "what is his work experience; what jobs has he had",
+   "a": "Since August 2023 Nitin has been a Graduate Research Assistant at Kennesaw State University, working on quantum network protocols, noise and topology effects, and quantum-classical hybrid networks. Earlier, in 2022 to 2023, he was a research assistant at Ashoka University doing micromagnetic simulations for spintronics.",
+   "related": [
+    "ashoka",
+    "research"
+   ]
+  },
+  {
+   "id": "ashoka",
+   "title": "Ashoka research",
+   "k": "ashoka spintronics permalloy mumax mumax3 oommf micromagnetic magnetic simulation physics undergrad undergraduate research thesis",
+   "ex": "",
+   "a": "At Ashoka University (2022 to 2023) Nitin was a research assistant running micromagnetic simulations of permalloy with MuMax3, looking at magnetic domain dynamics and spin waves for spintronic devices.",
+   "related": [
+    "education",
+    "skills"
+   ],
+   "chip": "What did he do at Ashoka?"
+  },
+  {
+   "id": "skills",
+   "title": "Skills",
+   "k": "skills tools tech stack programming languages python matlab qiskit pennylane tensorflow pytorch machine learning software technologies know good at",
+   "ex": "what skills does he have; what languages does he use",
+   "a": "On the quantum side: quantum circuits and algorithms, QKD and secure direct communication protocols, Qiskit, PennyLane, and quantum network simulators. On the classical side: Python, MATLAB, TensorFlow, PyTorch, scikit-learn, network simulation, and security topics like cryptography, TLS/PKI, post-quantum crypto, threat modeling, and steganography.",
+   "related": [
+    "ashoka",
+    "teaching"
+   ],
+   "chip": "What are his skills?"
+  },
+  {
+   "id": "teaching",
+   "title": "Teaching",
+   "k": "teaching teach course class instructor lecture lectures video videos series youtube tls blockchain slides lab docker",
+   "ex": "does he teach; what courses has he taught",
+   "a": "Nitin taught an online Quantum Cryptography course for graduate students (2026), covering qubits, QKD protocols, practical quantum networks, and open problems. He built all the slides and a Docker-based lab on middlebox attacks. He also made a video series on TLS, blockchain security, and post-quantum cryptography.",
+   "related": [
+    "mentoring",
+    "c-pqc"
+   ],
+   "chip": "What is he teaching?"
+  },
+  {
+   "id": "mentoring",
+   "title": "Mentoring",
+   "k": "mentoring mentor mentored mentee students student thesis reu intern internship undergraduates supervise supervised",
+   "ex": "has he mentored students; does he supervise anyone",
+   "a": "Nitin has mentored a high school intern on multi-modal steganography (2026), co-mentored two NSF-REU undergraduates on quantum-classical GANs for network security (2026), and mentored M.Sc. (CS) students on theses about quantum communication protocols and an adaptive quantum education platform. He is currently helping one M.Sc. student make that education platform more modular and accessible.",
+   "related": [
+    "teaching",
+    "p-gan"
+   ],
+   "chip": "Has he mentored students?"
+  },
+  {
+   "id": "service",
+   "title": "Reviewing and service",
+   "k": "reviewer review reviewing peer journals service editor xrds ieee access transactions qute workshop beacon",
+   "ex": "does he review papers; is he an editor",
+   "a": "Nitin reviews for IEEE Transactions on Mobile Computing, Scientific Reports, IEEE Access, Advanced Quantum Technologies (QUTE), ACM Transactions, Infocommunications Journal, and Discover Computing. He is also a Feature Editor for ACM XRDS."
+  },
+  {
+   "id": "papers",
+   "title": "Papers",
+   "k": "papers paper publications publication published list articles preprints preprint journal conference read work writings wrote written",
+   "ex": "what papers has he published; list his publications; what has he written",
+   "a": "Here are Nitin's papers. Ask me about any of them for a summary:\n- [Joint Encryption and Error Correction](https://arxiv.org/abs/2505.18133) (Scientific Reports, 2024)\n- [Effect of Noise and Topologies on Multi-Photon Protocols](https://arxiv.org/abs/2505.19270) (SPIE 2024)\n- [ML Based Approach to Quantum Augmented HTTP](https://doi.org/10.1109/QCE60285.2024.10420) (IEEE QCE 2024)\n- [Towards a Quantum-Classical Augmented Network](https://arxiv.org/abs/2505.18282) (SPIE 2025)\n- [Multi-Photon QKD for Practical Quantum Networks](https://arxiv.org/abs/2505.21726) (Infocommunications Journal, 2025)\n- [Aerial Quantum Networks review](https://arxiv.org/abs/2505.23603) (IEEE Potentials, 2025)\n- [Quantum Hilbert Transform](https://arxiv.org/abs/2505.23581) (arXiv, 2025)\n- [QKD review](https://arxiv.org/abs/2511.20602) (Cryptologia, 2026)\n- [Improved Quantum Anonymous Notification](https://arxiv.org/abs/2511.12313) (Frontiers, 2026)\n- [Are Quantum Voting Protocols Practical?](https://arxiv.org/abs/2601.17514) (arXiv, 2026)\n- [Microgrid Cybersecurity Framework](https://arxiv.org/abs/2604.17481) (SPIE 2026)\n- [Hybrid Quantum-Classical GANs](https://arxiv.org/abs/2605.06629) (SPIE 2026)\n- [Multimodal Steganalysis](https://arxiv.org/abs/2606.08726) (arXiv, 2026)",
+   "links": [
+    [
+     "Google Scholar",
+     "https://scholar.google.com/citations?user=u0OLK6cAAAAJ&hl=en"
+    ]
+   ],
+   "related": [
+    "paper-start",
+    "paper-latest",
+    "p-microgrid"
+   ],
+   "chip": "What papers has he published?"
+  },
+  {
+   "id": "paper-start",
+   "title": "Where to start",
+   "k": "start first begin recommend recommendation best top favorite read beginner introduction intro overview should good",
+   "ex": "",
+   "a": "For the big picture on QKD, start with the Cryptologia review. For his main idea of adding quantum protocols to existing networks, read 'Towards a Quantum-Classical Augmented Network'. If you'd rather see than read, the interactive demos on the site walk through the ideas step by step.",
+   "links": [
+    [
+     "QKD review",
+     "https://arxiv.org/abs/2511.20602"
+    ],
+    [
+     "Quantum-classical augmented network",
+     "https://arxiv.org/abs/2505.18282"
+    ]
+   ],
+   "related": [
+    "demos",
+    "c-qkd"
+   ],
+   "chip": "Which paper should I read first?"
+  },
+  {
+   "id": "paper-latest",
+   "title": "Newest papers",
+   "k": "newest latest recent new newly 2026 current lately most recent",
+   "ex": "",
+   "a": "His newest work is from 2026: the microgrid cybersecurity framework and the hybrid quantum GANs paper (both SPIE), the multimodal steganalysis paper, the quantum voting survey, the improved quantum anonymous notification protocol (Frontiers), and the QKD review in Cryptologia.",
+   "related": [
+    "p-microgrid",
+    "p-gan"
+   ],
+   "chip": "What are his newest papers?"
+  },
+  {
+   "id": "scholar",
+   "title": "Google Scholar and links",
+   "k": "scholar google citations citation cited orcid arxiv profile github",
+   "ex": "",
+   "a": "You can find everything on Nitin's Google Scholar, and he is on ORCID and GitHub too.",
+   "links": [
+    [
+     "Google Scholar",
+     "https://scholar.google.com/citations?user=u0OLK6cAAAAJ&hl=en"
+    ],
+    [
+     "ORCID",
+     "https://orcid.org/0009-0006-3768-4292"
+    ],
+    [
+     "GitHub",
+     "https://github.com/ninjha252"
+    ]
+   ],
+   "related": [
+    "papers",
+    "contact"
+   ]
+  },
+  {
+   "id": "conferences",
+   "title": "Conferences",
+   "k": "conference conferences venue venues spie photonics west qce ieee imns presented presenting poster talk",
+   "ex": "",
+   "a": "Nitin has papers at SPIE Photonics West (2024 and 2025), an IEEE QCE 2024 poster, and two at SPIE Quantum Information Science, Sensing, and Computation XVIII (2026). His steganalysis paper is accepted for IEEE IMNS.",
+   "related": [
+    "papers"
+   ]
+  },
+  {
+   "id": "demos",
+   "title": "Interactive demos",
+   "k": "demo demos interactive animation animations explainer explainers game visual visualization walkthrough step by step",
+   "ex": "what are the demos; are there interactive things",
+   "a": "The site has four step-by-step interactive demos, no equations needed:\n- [CSS quantum error correction](https://ninjha252.github.io/game/index.html)\n- [Quantum key distribution with Eve](https://ninjha252.github.io/game/qkd.html)\n- [Three-stage protocol](https://ninjha252.github.io/game/threestage.html)\n- [Quantum-augmented microgrid](https://ninjha252.github.io/game/microgrid.html)",
+   "related": [
+    "demo-microgrid",
+    "c-threestage"
+   ],
+   "chip": "What are the demos?"
+  },
+  {
+   "id": "projects",
+   "title": "Side projects",
+   "k": "side project projects build built making made app apps tool tools cloudflare workers fun",
+   "ex": "",
+   "a": "Nitin builds small things for fun, mostly on Cloudflare Workers: a Fantasy Premier League leaderboard called FPL League Book, and Grammar, a document proofreader that runs entirely in the browser.",
+   "related": [
+    "fpl",
+    "grammar"
+   ],
+   "chip": "What are his side projects?"
+  },
+  {
+   "id": "fpl",
+   "title": "FPL League Book",
+   "k": "fpl fantasy premier league football soccer leaderboard standings chips league book fluke",
+   "ex": "",
+   "a": "FPL League Book is a live leaderboard for a small Fantasy Premier League group: standings, chip tracking, all-time records, and league chat, pulling from the public FPL API.",
+   "links": [
+    [
+     "FPL League Book",
+     "https://fluke-league.fantasypl.workers.dev"
+    ]
+   ],
+   "related": [
+    "grammar",
+    "hobby"
+   ],
+   "chip": "What is FPL League Book?"
+  },
+  {
+   "id": "grammar",
+   "title": "Grammar",
+   "k": "grammar proofreader proofreading proofread document pdf word latex markdown spelling correct corrections writing",
+   "ex": "",
+   "a": "Grammar is a proofreader for documents. Drop in a PDF, Word, LaTeX, or Markdown file, review the highlighted grammar issues, accept the fixes you want, and download the corrected file in the same format. It all runs in your browser.",
+   "links": [
+    [
+     "Grammar",
+     "https://correct-grammar.pages.dev"
+    ]
+   ],
+   "related": [
+    "fpl",
+    "hobby"
+   ],
+   "chip": "What is Grammar?"
+  },
+  {
+   "id": "hobby",
+   "title": "Hobbies",
+   "k": "hobby hobbies sketch sketches sketching draw drawing art artist paint free time outside research fun interests instagram",
+   "ex": "",
+   "a": "Outside research, Nitin sketches. There's a photo wall of his sketches on the Hobby page.",
+   "links": [
+    [
+     "Hobby page",
+     "https://ninjha252.github.io/hobby.html"
+    ]
+   ],
+   "related": [
+    "projects"
+   ],
+   "chip": "What are his hobbies?"
+  },
+  {
+   "id": "contact",
+   "title": "Contact",
+   "k": "contact email mail reach message linkedin get in touch talk connect hire address write dm",
+   "ex": "how can i contact him; how do i reach nitin",
+   "a": "The easiest way is the Email me button at the top of the site, which reveals his email. He's also on LinkedIn, and he's happy to chat about research, collaborations, and PhD-related questions.",
+   "links": [
+    [
+     "LinkedIn",
+     "https://www.linkedin.com/in/nitin-jha-524357192/"
+    ],
+    [
+     "GitHub",
+     "https://github.com/ninjha252"
+    ]
+   ],
+   "related": [
+    "collab"
+   ],
+   "chip": "How can I contact him?"
+  },
+  {
+   "id": "collab",
+   "title": "Collaboration",
+   "k": "collaborate collaboration collab open work together join opportunities opening position internship apply",
+   "ex": "",
+   "a": "Yes, Nitin says he's open to research conversations, collaborations, and PhD-related questions. The best way to start is the Email me button on the site or a message on LinkedIn.",
+   "links": [
+    [
+     "LinkedIn",
+     "https://www.linkedin.com/in/nitin-jha-524357192/"
+    ]
+   ],
+   "related": [
+    "contact"
+   ],
+   "chip": "Is he open to collaboration?"
+  },
+  {
+   "id": "site",
+   "title": "This website",
+   "k": "website site page pages research tree timeline classical quantum mode toggle dark light navigate",
+   "ex": "",
+   "a": "The Research Tree page shows all his papers as a timeline. The toggle in the top right switches between the Classical and Quantum looks of the site, and the Hobby page has his sketches.",
+   "links": [
+    [
+     "Research Tree",
+     "https://ninjha252.github.io/projects.html"
+    ]
+   ],
+   "related": [
+    "demos",
+    "papers"
+   ]
+  },
+  {
+   "id": "c-qkd",
+   "title": "What is QKD",
+   "k": "qkd quantum key distribution what is explain key distribution bb84 secret key eavesdropping eve",
+   "ex": "",
+   "a": "Quantum key distribution lets two parties agree on a shared secret key using quantum states. Because measuring a quantum state disturbs it, an eavesdropper leaves detectable traces. Nitin's QKD review in Cryptologia covers the main protocol families and their known attacks.",
+   "links": [
+    [
+     "QKD demo",
+     "https://ninjha252.github.io/game/qkd.html"
+    ]
+   ],
+   "related": [
+    "c-threestage",
+    "p-qkdreview"
+   ],
+   "chip": "What is QKD?"
+  },
+  {
+   "id": "c-threestage",
+   "title": "Three-stage protocol",
+   "k": "three-stage three stage protocol kak kaks lock commutative encryption box no key exchange",
+   "ex": "",
+   "a": "Kak's three-stage protocol sends a message securely without ever sharing a key. Alice locks it with her own operation and sends it to Bob, Bob adds his lock and sends it back, Alice removes hers, and Bob finally removes his. It works because the two locks commute. It also tolerates multi-photon pulses, which is why Nitin studies it for practical networks.",
+   "links": [
+    [
+     "Three-stage demo",
+     "https://ninjha252.github.io/game/threestage.html"
+    ]
+   ],
+   "related": [
+    "p-multiphoton",
+    "c-qkd"
+   ],
+   "chip": "What is the three-stage protocol?"
+  },
+  {
+   "id": "c-quanet",
+   "title": "Quantum-augmented network",
+   "k": "quantum-augmented augmented quanet quanets network hybrid quantum-classical what is add",
+   "ex": "",
+   "a": "A quantum-augmented network (QuANet) is a classical network with quantum protocols added where they matter most, like key distribution or secure direct communication for the most sensitive traffic. It's a practical near-term route because a fully quantum network needs hardware that doesn't exist at scale yet. It's the running theme of Nitin's research.",
+   "related": [
+    "p-augnet",
+    "research"
+   ],
+   "chip": "What is a quantum-augmented network?"
+  },
+  {
+   "id": "c-css",
+   "title": "CSS error correction",
+   "k": "css calderbank shor steane error correction quantum errors bit flip phase flip syndrome fix codes qecc",
+   "ex": "",
+   "a": "CSS (Calderbank-Shor-Steane) codes are quantum error-correcting codes that fix bit-flip and phase-flip errors by measuring error syndromes, without ever measuring the data itself. Nitin combines them with the three-stage protocol so encryption and error correction happen in one step.",
+   "links": [
+    [
+     "CSS demo",
+     "https://ninjha252.github.io/game/index.html"
+    ]
+   ],
+   "related": [
+    "p-jeec"
+   ],
+   "chip": "What is CSS error correction?"
+  },
+  {
+   "id": "c-qan",
+   "title": "Quantum anonymous notification",
+   "k": "anonymous notification qan ghz state states entangled notify receiver anonymity sender who is sending",
+   "ex": "",
+   "a": "Quantum anonymous notification lets a sender tell a receiver that a quantum message is coming without revealing who is talking to whom. Nitin's improved version uses rotations on shared GHZ states (a kind of multi-party entangled state) and holds up better against dephasing noise.",
+   "related": [
+    "p-qan"
+   ],
+   "chip": "What is quantum anonymous notification?"
+  },
+  {
+   "id": "c-stego",
+   "title": "Steganography",
+   "k": "steganography steganalysis stego hidden hiding cover payload detect audio video",
+   "ex": "",
+   "a": "Steganography hides a secret message inside ordinary media like an image or video, and steganalysis tries to detect it. Nitin has looked at both a quantum hiding scheme (the Quantum Hilbert Transform) and how well detectors catch payloads split across audio and video.",
+   "related": [
+    "p-steganalysis",
+    "p-hilbert"
+   ],
+   "chip": "What is steganography?"
+  },
+  {
+   "id": "c-microgrid",
+   "title": "Microgrids",
+   "k": "microgrid microgrids smr small modular reactor islanded island grid-connected grid controller energy power",
+   "ex": "",
+   "a": "A microgrid is a small local power system with its own generation, storage, and loads that can run connected to the main grid or on its own. In Nitin's work they're powered by small modular reactors, plus solar and wind, and run by controllers that talk over classical and quantum links.",
+   "links": [
+    [
+     "Microgrid demo",
+     "https://ninjha252.github.io/game/microgrid.html"
+    ]
+   ],
+   "related": [
+    "p-microgrid",
+    "c-islanded"
+   ]
+  },
+  {
+   "id": "c-islanded",
+   "title": "Islanded mode",
+   "k": "islanded islanding island mode disconnected grid-connected connected import utility",
+   "ex": "",
+   "a": "Islanded mode means a microgrid is cut off from the utility grid and runs only on its own generation and storage. In grid-connected mode it can import a limited amount of power (35 kW per microgrid in his simulator). In a simulated 10-minute islanding event, battery charge dropped from 15 to 5 kWh and peak unserved load rose from 25 to 60 kW.",
+   "links": [
+    [
+     "Microgrid demo",
+     "https://ninjha252.github.io/game/microgrid.html"
+    ]
+   ],
+   "related": [
+    "p-microgrid"
+   ],
+   "chip": "What is islanded mode?"
+  },
+  {
+   "id": "c-pqc",
+   "title": "Post-quantum cryptography",
+   "k": "post-quantum post quantum cryptography pqc crypto tls pki lattice classical algorithms resist",
+   "ex": "",
+   "a": "Post-quantum cryptography means classical algorithms designed to stay secure even against quantum computers. Nitin covers it, along with TLS and blockchain security, in his video series.",
+   "related": [
+    "teaching"
+   ],
+   "chip": "What is post-quantum cryptography?"
+  },
+  {
+   "id": "c-multiphoton",
+   "title": "Multi-photon protocols",
+   "k": "multi-photon multiphoton photon photons single-photon emitter burst decoy e91",
+   "ex": "",
+   "a": "Multi-photon protocols like the three-stage protocol don't need ideal single-photon sources, which makes them easier to deploy over existing infrastructure. Nitin studies how far and how fast they work under noise and across different network topologies.",
+   "related": [
+    "p-multiphoton",
+    "p-noise"
+   ],
+   "chip": "What are multi-photon protocols?"
+  },
+  {
+   "id": "demo-microgrid",
+   "title": "Microgrid demo",
+   "k": "microgrid demo animation interactive zoom islanded grid-connected",
+   "ex": "",
+   "a": "The microgrid demo is a 9-step tour of a network of SMR-powered microgrids. It zooms into one microgrid's generation, storage, loads, and controller, zooms back out to the quantum and classical links between controllers, then shows grid-connected and islanded modes and how the quantum defense blocks a spoofed command.",
+   "links": [
+    [
+     "Open the demo",
+     "https://ninjha252.github.io/game/microgrid.html"
+    ]
+   ],
+   "related": [
+    "p-microgrid",
+    "c-islanded"
+   ],
+   "chip": "What is the microgrid demo?"
+  },
+  {
+   "id": "p-microgrid",
+   "title": "Microgrid paper",
+   "k": "microgrid cybersecurity framework quam spie 2026 paudel small modular reactor smr attack spoofing false data injection qca ping-pong defense paper",
+   "ex": "",
+   "a": "'A Novel Quantum Augmented Framework to Improve Microgrid Cybersecurity' (SPIE 2026, with Prateek Paudel, Dr. Parakh, and Mahadevan Subramaniam) builds QuAM, a simulator for microgrids powered by small modular reactors. It layers physical power, communication, quantum security, and attacks, then tests spoofing and false-data attacks in grid-connected and islanded modes. The full quantum defense blocked all simulated spoofed commands and cut energy-not-served from about 52 kWh to about 12 kWh, for roughly 35 ms of extra latency. Quantum-authenticated control tokens mattered most.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2604.17481"
+    ],
+    [
+     "DOI",
+     "https://doi.org/10.1117/12.3095119"
+    ],
+    [
+     "Demo",
+     "https://ninjha252.github.io/game/microgrid.html"
+    ]
+   ],
+   "related": [
+    "c-islanded",
+    "p-gan"
+   ],
+   "chip": "Tell me about the microgrid paper"
+  },
+  {
+   "id": "p-gan",
+   "title": "GAN paper",
+   "k": "gan gans generative adversarial hybrid quantum-classical network flows traffic intrusion detection unsw variational generator adversarial network paudel paper",
+   "ex": "",
+   "a": "'Hybrid Quantum-Classical GANs for the Generation of Adversarial Network Flows' (SPIE 2026, with Prateek Paudel) uses a variational quantum generator to create synthetic malicious traffic from latent vectors encoded as quantum states. A classical discriminator trains against it on UNSW-NB15 data, to study how well such traffic evades intrusion detection and how hardware noise affects the attack.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2605.06629"
+    ]
+   ],
+   "related": [
+    "p-microgrid",
+    "p-steganalysis"
+   ],
+   "chip": "What is the GAN paper about?"
+  },
+  {
+   "id": "p-steganalysis",
+   "title": "Steganalysis paper",
+   "k": "steganalysis steganography multimodal split-payload audiovisual audio video detectors evade imns paudel paper",
+   "ex": "",
+   "a": "'Evaluating Multimodal Steganalysis for Split-Payload Audiovisual Steganography' (with Prateek Paudel, accepted to IEEE IMNS) asks whether splitting a secret between audio and video helps it evade detectors. Single-mode detectors were near random guessing, and multimodal detectors improved mostly by using the video stream rather than a real joint audio-video signal.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2606.08726"
+    ]
+   ],
+   "related": [
+    "c-stego",
+    "p-hilbert"
+   ],
+   "chip": "Tell me about the steganalysis paper"
+  },
+  {
+   "id": "p-voting",
+   "title": "Quantum voting paper",
+   "k": "voting vote election elections ballot ballots tally quantum voting protocols practical ubiquity paper",
+   "ex": "",
+   "a": "'Are Quantum Voting Protocols Practical?' (with Dr. Parakh) surveys quantum voting schemes that promise ballot secrecy and verifiable tallies from quantum physics rather than computational hardness. It reviews the main families and the obstacles (loss, noise, imperfect devices, scaling) and concludes with realistic scenarios for small elections. It's an arXiv preprint.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2601.17514"
+    ]
+   ],
+   "related": [
+    "papers"
+   ]
+  },
+  {
+   "id": "p-hilbert",
+   "title": "Quantum Hilbert Transform",
+   "k": "hilbert transform quantum hilbert qht signal processing phase shift steganography scheme paper",
+   "ex": "",
+   "a": "'Quantum Hilbert Transform' (with Dr. Parakh) introduces a quantum version of the classical Hilbert transform, a signal-processing operation that had no quantum counterpart, and demonstrates it on a quantum steganography task. It points toward quantum signal processing, sensing, and secure information hiding.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2505.23581"
+    ]
+   ],
+   "related": [
+    "c-stego",
+    "p-steganalysis"
+   ],
+   "chip": "Tell me about the Hilbert transform paper"
+  },
+  {
+   "id": "p-aerial",
+   "title": "Aerial quantum networks",
+   "k": "aerial drones drone balloons satellites satellite global quantum internet ieee potentials free-space review air paper",
+   "ex": "",
+   "a": "'Towards a Global Quantum Internet: A Review of Challenges Facing Aerial Quantum Networks' (IEEE Potentials, 2025, with Dr. Parakh) looks at using drones, high-altitude balloons, and satellites to extend quantum networks beyond fixed ground links. It covers the engineering challenges and proposes combining ground stations, aerial relays, and satellites into one architecture.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2505.23603"
+    ]
+   ],
+   "related": [
+    "c-quanet"
+   ]
+  },
+  {
+   "id": "p-qkdreview",
+   "title": "QKD review",
+   "k": "qkd review cryptologia security proofs practical attacks bb84 continuous-variable twin-field device-independent survey paper",
+   "ex": "",
+   "a": "'Quantum Key Distribution: Bridging Theoretical Security Proofs, Practical Attacks, and Error Correction for Quantum-Augmented Networks' (Cryptologia, 2026) is a long review of QKD families: BB84-style, three-stage, continuous-variable, twin-field, and device-independent. It emphasizes security proofs and known attacks, and connects them to quantum error correction and quantum-augmented networks.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2511.20602"
+    ]
+   ],
+   "related": [
+    "c-qkd",
+    "c-quanet"
+   ],
+   "chip": "Tell me about the QKD review"
+  },
+  {
+   "id": "p-qan",
+   "title": "Anonymous notification paper",
+   "k": "anonymous notification protocol improved frontiers ghz state rotation dephasing false notifications qan quantum-augmented paper",
+   "ex": "",
+   "a": "'An Improved Quantum Anonymous Notification Protocol for Quantum-Augmented Networks' (Frontiers in Quantum Science and Technology, 2026) uses rotation operations on shared GHZ states to anonymously notify receivers in an n-user network. It resists false notifications better under dephasing noise, and it's designed to work with an ML classifier in a QuANet so headers leak less information.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2511.12313"
+    ]
+   ],
+   "related": [
+    "c-qan"
+   ],
+   "chip": "Tell me about the anonymous notification paper"
+  },
+  {
+   "id": "p-jeec",
+   "title": "Joint encryption paper",
+   "k": "joint encryption error correction jeec scientific reports css three-stage nature 2024 integrated paper",
+   "ex": "",
+   "a": "'Joint Encryption and Error Correction for Secure Quantum Communication' (Scientific Reports, 2024) extends the three-stage protocol with CSS error-correcting codes so encryption and error correction are one process instead of two. It fixes single bit-flip and phase-flip errors and works for arbitrary qubits.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2505.18133"
+    ],
+    [
+     "Demo",
+     "https://ninjha252.github.io/game/index.html"
+    ]
+   ],
+   "related": [
+    "c-css",
+    "c-threestage"
+   ],
+   "chip": "Tell me about the joint encryption paper"
+  },
+  {
+   "id": "p-noise",
+   "title": "Noise and topologies paper",
+   "k": "noise topologies topology ring star torus repeater placement spie photonics west 2024 channel device paper",
+   "ex": "",
+   "a": "'Effect of Noise and Topologies on Multi-Photon Quantum Protocols' (SPIE Photonics West 2024) studies how channel and device noise affect the three-stage protocol in ring, star, and torus networks, in terms of security, distance, and bit rate. It gives practical guidance on repeater placement and topology choice.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2505.19270"
+    ]
+   ],
+   "related": [
+    "c-multiphoton"
+   ],
+   "chip": "Tell me about the noise and topologies paper"
+  },
+  {
+   "id": "p-http",
+   "title": "ML HTTP paper",
+   "k": "http protocol machine learning ml nlp qce ieee poster packet payload classify sensitive 2024 quantum augmented http paper",
+   "ex": "",
+   "a": "'A ML Based Approach to Quantum Augmented HTTP Protocol' (IEEE QCE 2024 poster) proposes changing the HTTP packet structure to carry both classical and quantum payloads. An NLP model rates how sensitive each message is, and only sensitive content goes through the quantum channel. There's no arXiv version, but his SPIE 2025 paper builds on the same idea.",
+   "links": [
+    [
+     "DOI",
+     "https://doi.org/10.1109/QCE60285.2024.10420"
+    ]
+   ],
+   "related": [
+    "p-augnet"
+   ]
+  },
+  {
+   "id": "p-augnet",
+   "title": "Quantum-classical augmented network paper",
+   "k": "augmented network towards quantum-classical http classical quantum payload privacy label logistic regression cnn lstm bilstm spie photonics west 2025 paper",
+   "ex": "",
+   "a": "'Towards a Quantum-Classical Augmented Network' (SPIE Photonics West 2025) expands the HTTP idea: one packet carries classical and quantum payloads split by privacy need. Models like logistic regression, CNN, LSTM, and BiLSTM classify each message's privacy label, so quantum resources are used only where they're needed.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2505.18282"
+    ]
+   ],
+   "related": [
+    "c-quanet"
+   ],
+   "chip": "Tell me about the augmented network paper"
+  },
+  {
+   "id": "p-multiphoton",
+   "title": "Multi-photon QKD paper",
+   "k": "multi-photon qkd practical infocommunications journal decoy-state e91 topologies burst distance emitters 2025 paper",
+   "ex": "",
+   "a": "'Multi-Photon QKD for Practical Quantum Networks' (Infocommunications Journal, 2025) evaluates the three-stage, decoy-state, and E91 protocols across direct, line, grid, ring, and torus topologies under multi-photon bursts. It relates burst size to the maximum stable distance, which removes the need for single-photon emitters.",
+   "links": [
+    [
+     "arXiv",
+     "https://arxiv.org/abs/2505.21726"
+    ]
+   ],
+   "related": [
+    "c-multiphoton",
+    "p-noise"
+   ],
+   "chip": "Tell me about the multi-photon QKD paper"
+  }
+ ]
+}
