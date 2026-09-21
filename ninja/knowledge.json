@@ -9,6 +9,42 @@
  ],
  "routes": [
   [
+   "^(?!.*(microgrid|qkd|css|three|stage|error|key)).*\\bdemos?\\b",
+   "demos"
+  ],
+  [
+   "^\\s*what\\s+(is|are)\\s+(he|nitin)\\s+working\\s+on\\s*[?.!]*$",
+   "research"
+  ],
+  [
+   "\\b(see|view|browse|read|look\\s+at|check\\s+out)\\b.*\\b(his|nitin.?s)\\s+(work|research|writing|publications?)\\b",
+   "papers"
+  ],
+  [
+   "^\\s*(see\\s+you|take\\s+care|cya|bye|goodbye|good\\s*night)\\b",
+   "bye"
+  ],
+  [
+   "\\bwhat\\s+can\\s+(you|i)\\s+(do|ask)\\b|^\\s*(help|menu|options)\\s*[?!.]*$|\\bwhat\\s+do\\s+you\\s+know\\b",
+   "help"
+  ],
+  [
+   "\\bhow\\s+(do|does|are)\\s+(you|this\\s+bot|ninja)\\s+(work|made|built)\\b",
+   "bot"
+  ],
+  [
+   "\\b(cited|citations?|h-?\\s?index|impact\\s+factor)\\b",
+   "scholar"
+  ],
+  [
+   "\\b(intern|internship|apply|applying|join|opening|hiring)\\b.*\\b(him|his|nitin|lab)\\b|\\b(him|his|nitin)\\b.*\\b(intern|internship|hiring)\\b",
+   "collab"
+  ],
+  [
+   "\\b(take|takes|taking|accept|accepts)\\s+(new\\s+)?(students?|interns?|advisees?)\\b",
+   "collab"
+  ],
+  [
    "\\b(is|are)\\s+(he|nitin)\\s+(a|an)\\s+(professor|student|employee|researcher|postdoc|phd|grad)|^\\s*what\\s+(does|do)\\s+(he|nitin)\\s+do\\s*[?.!]*$|\\bwhere\\s+(is|does)\\s+(he|nitin)\\s+(based|located|live)\\b",
    "job"
   ],
@@ -100,7 +136,7 @@
   {
    "id": "bye",
    "title": "Goodbye",
-   "k": "bye goodbye see you later cya take care",
+   "k": "bye goodbye later cya farewell",
    "ex": "",
    "a": "Bye! Thanks for stopping by."
   },
@@ -172,6 +208,62 @@
    "chip": "Who is his advisor?"
   },
   {
+   "id": "help",
+   "title": "What Ninja can do",
+   "k": "help what can you do ask capabilities options topics menu assist assistance questions know answer",
+   "ex": "",
+   "a": "I can tell you about Nitin's current job, education, and qualifications, his research and papers, teaching and mentoring, the interactive demos, his side projects, and how to contact him. I can also explain ideas like QKD or a quantum-augmented network. Pick one below or just type a question.",
+   "related": [
+    "job",
+    "papers",
+    "demos",
+    "contact"
+   ],
+   "chip": "What can I ask you?"
+  },
+  {
+   "id": "methods",
+   "title": "Methods",
+   "k": "hardware experiments experiment experimental simulation simulations simulate simulator simulators theoretical theory methods methodology equipment real devices real quantum computer computers discrete-event",
+   "ex": "does he use real quantum hardware; what simulators does he use; does he do experiments",
+   "a": "Nitin's work is theoretical and simulation-based: he designs protocols and evaluates them with simulations of noise, network topology, and realistic attack models, mostly in Python with tools like Qiskit and PennyLane. For microgrids he built a Python discrete-event simulator (QuAM). He hasn't described running on physical quantum hardware.",
+   "related": [
+    "skills",
+    "p-microgrid"
+   ],
+   "chip": "Does he use real quantum hardware?"
+  },
+  {
+   "id": "prateek",
+   "title": "Prateek Paudel",
+   "k": "prateek paudel prateek paudel student phd colleague labmate",
+   "ex": "",
+   "a": "Prateek Paudel is a fellow researcher at Kennesaw State University and one of Nitin's frequent co-authors. They wrote the microgrid cybersecurity, hybrid quantum GAN, and multimodal steganalysis papers together, and have a manuscript on quantum-assisted session authentication under review.",
+   "links": [
+    [
+     "Prateek's Google Scholar",
+     "https://scholar.google.com/citations?user=FsLE7UYAAAAJ&hl=en"
+    ]
+   ],
+   "related": [
+    "p-microgrid",
+    "p-gan"
+   ],
+   "chip": "Who is Prateek Paudel?"
+  },
+  {
+   "id": "subramaniam",
+   "title": "Mahadevan Subramaniam",
+   "k": "mahadevan subramaniam subramanian nebraska omaha unomaha",
+   "ex": "",
+   "a": "Mahadevan Subramaniam is at the University of Nebraska Omaha and a long-time collaborator: he is a co-author on most of Nitin's journal and conference papers, together with Dr. Parakh.",
+   "related": [
+    "coauthors",
+    "papers"
+   ],
+   "chip": "Who is Mahadevan Subramaniam?"
+  },
+  {
    "id": "coauthors",
    "title": "Co-authors",
    "k": "coauthor coauthors co-author co-authors collaborator collaborators authors written with wrote with team people works with",
@@ -190,7 +282,8 @@
    "related": [
     "papers",
     "advisor"
-   ]
+   ],
+   "chip": "Who are his co-authors?"
   },
   {
    "id": "lab",
@@ -482,18 +575,23 @@
   {
    "id": "site",
    "title": "This website",
-   "k": "website site page pages research tree timeline classical quantum mode toggle dark light navigate",
-   "ex": "",
-   "a": "The Research Tree page shows all his papers as a timeline. The toggle in the top right switches between the Classical and Quantum looks of the site, and the Hobby page has his sketches.",
+   "k": "website site page pages navigate navigation menu navbar around explore use tour sections where things toggle switch mode dark light classical quantum research tree timeline",
+   "ex": "how to navigate this website; how do i use this site; give me a tour; what is on this website",
+   "a": "Use the menu at the top to jump between sections: Education, Research, Publications, Teaching & Mentoring, Side Projects, and Contact. Hobby has Nitin's sketches, and Research Tree shows his papers as a timeline. The switch in the top right toggles between the Classical look and the Quantum look (a quantum-circuit theme with a button for each section). The Interactive Demos are under Research, and you can ask me about anything along the way.",
    "links": [
     [
      "Research Tree",
      "https://ninjha252.github.io/projects.html"
+    ],
+    [
+     "Hobby",
+     "https://ninjha252.github.io/hobby.html"
     ]
    ],
    "related": [
     "demos",
-    "papers"
+    "papers",
+    "help"
    ]
   },
   {
@@ -518,7 +616,7 @@
   {
    "id": "job",
    "title": "Current job",
-   "k": "job jobs current currently role position title employer employed occupation work works working workplace employment now present right present profession do for living university kennesaw department based located live city",
+   "k": "job jobs current currently role position title employer employed occupation work works working workplace employment now present right present profession do for living kennesaw department based located live city",
    "ex": "what is his current job; where does he work; what does he do for work; what is his current position",
    "a": "Right now Nitin is a PhD student in Computer Science and a Graduate Research Assistant at Kennesaw State University (Marietta, Georgia), where he has worked since August 2023. He does theoretical and simulation-based research on quantum networks and communication as a member of the Quantum Information Lab (Room 1212), advised by Dr. Abhishek Parakh.",
    "links": [

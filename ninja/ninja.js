@@ -6,7 +6,7 @@
 
   // ---------- engine (pure, testable in Node) ----------
   var STOP = {};
-  ('a an the and or of to in on for with at by from is are was were be been am do does did what whats which who whom how can could would should where when why tell me about his he him her she nitin nitins ninja you your i my it its this that these those any some there has have had get got please want know like also just really very more so if but not no yes').split(' ').forEach(function (w) { STOP[w] = 1; });
+  ('a an the and or of to in on for with at by from is are was were be been am do does did what whats which who whom how can could would should where when why give tell me about his he him her she nitin nitins ninja you your i my it its this that these those any some there has have had get got please want know like also just really very more so if but not no yes').split(' ').forEach(function (w) { STOP[w] = 1; });
 
   function stem(w) {
     if (w.length < 4) return w;
@@ -47,7 +47,7 @@
 
   function createEngine(kb) {
     var entries = kb.entries;
-    var byId = {}, chipMap = {}, docs = [], df = {};
+    var byId = {}, chipMap = {}, docs = [], titles = [], df = {};
 
     entries.forEach(function (e) {
       byId[e.id] = e;
@@ -57,12 +57,16 @@
         tokens(str).forEach(function (t) { if (!w[t] || w[t] < weight) w[t] = weight; });
       }
       put(e.title, 3); put(e.k, 2); put(e.ex || '', 1.5);
+      var tt = tokens(e.title);
+      titles.push({ set: tt, len: tt.length });
       docs.push(w);
       Object.keys(w).forEach(function (t) { df[t] = (df[t] || 0) + 1; });
     });
 
     var N = entries.length;
     var vocab = Object.keys(df);
+    var WEAK = {};
+    tokens('experience background information details').forEach(function (t) { WEAK[t] = 1; });
     function idf(t) { return Math.log(1 + N / df[t]); }
 
     function correct(t) {
@@ -88,14 +92,22 @@
       var seen = {};
       qt = qt.filter(function (t) { return seen[t] ? false : (seen[t] = 1); });
       if (!qt.length) return null;
-      var best = null, bestScore = 0;
+      var best = null, bestScore = 0, scored = [];
       docs.forEach(function (w, i) {
         var s = 0;
-        qt.forEach(function (t) { if (w[t]) s += idf(t) * w[t]; });
-        if (s > bestScore) { best = entries[i].id; bestScore = s; }
+        qt.forEach(function (t) { if (w[t]) s += idf(t) * w[t] * (WEAK[t] ? 0.4 : 1); });
+        var th = qt.some(function (t) { return titles[i].set.indexOf(t) !== -1; }) ? 1 : 0;
+        scored.push([entries[i].id, s, th, titles[i].len]);
       });
-      if (!best || bestScore < 2.2) return null;
-      return { id: best, score: bestScore };
+      scored.sort(function (a, b) { return (b[1] - a[1]) || (b[2] - a[2]) || (a[3] - b[3]); });
+      best = scored[0][0]; bestScore = scored[0][1];
+      if (bestScore < 2.2) return null;
+      var second = scored[1] ? scored[1][1] : 0;
+      var low = bestScore < 5 || second > 0.72 * bestScore;
+      var s0 = scored[0], s1 = scored[1] || [0, 0, 0, 0];
+      var amb = second > 0.92 * bestScore && !(s0[2] && (!s1[2] || s0[3] < s1[3]));
+      var alts = scored.filter(function (x) { return x[1] >= 0.5 * bestScore && byId[x[0]].chip; }).slice(0, 3).map(function (x) { return x[0]; });
+      return { id: best, score: bestScore, second: second, low: low, amb: amb, alts: alts };
     }
 
     function chipsFor(ids) {
@@ -109,6 +121,12 @@
       var text = e.a;
       if (e.links && e.links.length) {
         text += '\n' + e.links.map(function (l) { return '[' + l[0] + '](' + l[1] + ')'; }).join(' · ');
+      }
+      if (hit.amb && hit.alts.length > 1) {
+        return { text: 'That could mean a few things. Did you mean one of these?', chips: chipsFor(hit.alts), id: null, amb: true, dbg: [hit.id, hit.score, hit.second, hit.alts] };
+      }
+      if (hit.low && hit.alts.length > 1) {
+        return { text: text + '\nIf that is not what you meant, try one of these.', chips: chipsFor(hit.alts), id: e.id };
       }
       return { text: text, chips: chipsFor(e.related || []), id: e.id };
     }
