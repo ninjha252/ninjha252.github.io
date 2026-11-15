@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+      (function() {
+        const _id = [71,45,48,89,82,54,52,84,66,68,54,75].map(n=>String.fromCharCode(n)).join('');
+        const _allowed = ['ninjha252.github.io', 'nitinjha.github.io', 'localhost', '127.0.0.1'];
+        if (!_allowed.some(h => location.hostname === h || location.hostname.endsWith('.' + h))) return;
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', _id);
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + _id;
+        document.head.appendChild(s);
+      })();
+    </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Three-Stage Protocol</title>
